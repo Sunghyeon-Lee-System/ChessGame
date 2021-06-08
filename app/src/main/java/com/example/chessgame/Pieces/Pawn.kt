@@ -60,33 +60,35 @@ class Pawn(color: Boolean) : Piece() {
         val primaryX=x
         val primaryY=y
 
-        x=0;y=0
-
         val targetPos=HashSet<Position>()
+
+        if(primaryY==0){
+            android.util.Log.i("ChessGame", "아아아아아악")
+        }
 
         if(colorId){
             x=-1;y=1
-            if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                if(isInBoard(Position(primaryX+x, primaryY+y))){
+            if(primaryY!=7){
+                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
                     targetPos.add(Position(primaryX+x, primaryY+y))
                 }
             }
             x=-1;y=-1
-            if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                if(isInBoard(Position(primaryX+x, primaryY+y))){
+            if(primaryY!=0){
+                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
                     targetPos.add(Position(primaryX+x, primaryY+y))
                 }
             }
         }else{
             x=1;y=1
-            if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                if(isInBoard(Position(primaryX+x, primaryY+y))){
+            if(primaryY!=7){
+                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
                     targetPos.add(Position(primaryX+x, primaryY+y))
                 }
             }
             x=1;y=-1
-            if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                if(isInBoard(Position(primaryX+x, primaryY+y))){
+            if(primaryY!=0){
+                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
                     targetPos.add(Position(primaryX+x, primaryY+y))
                 }
             }
