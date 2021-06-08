@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             boardPosition[clickedTileX][clickedTileY] = Empty()
 
             when (clickedTileType) {
-                "Pawn" -> boardPosition[x][y] = Pawn(clickedTileColor);
+                "Pawn" -> boardPosition[x][y] = Pawn(clickedTileColor)
                 "Rook" -> boardPosition[x][y] = Rook(clickedTileColor)
                 "Knight" -> boardPosition[x][y] = Knight(clickedTileColor)
                 "Bishop" -> boardPosition[x][y] = Bishop(clickedTileColor)
@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         canMoveTiles.clear()
-        var textViewSet: HashSet<TextView>?=HashSet<TextView>()
+        var canEatPosition = HashSet<Position>()
         val intId = v?.id
         val id = intId?.let { resources.getResourceEntryName(it) }
         android.util.Log.d("ChessGame", id.toString())
@@ -230,7 +230,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             canMoveTiles.add(textView)
             boardPosition[x][y].onCanMove = true
         }
+
+        when (pieceKind(boardPosition[x][y])) {
+            "Pawn" -> canEatPosition =
+                (boardPosition[x][y] as Pawn).isCanEat(position, boardPosition)
+            "Rook" -> canEatPosition =
+                (boardPosition[x][y] as Rook).isCanEat(position, boardPosition)
+        }
+
+        getCanEatTiles(canEatPosition)
+        val canEatPositionIter: Iterator<Position> = canEatPosition.iterator()
+        while (canEatPositionIter.hasNext()) {
+            val pos = canEatPositionIter.next()
+            val x = pos.x
+            val y = pos.y
+            boardPosition[x][y].onCanMove = true
+        }
         setMoveListener()
+    }
+
+    fun getCanEatTiles(targetPos: HashSet<Position>) {
+        val iter = targetPos.iterator()
+        while (iter.hasNext()) {
+            val pos = iter.next()
+            val x = pos.x
+            val y = pos.y
+            val id = resources.getIdentifier("b$x$y", "id", packageName)
+            val textView: TextView = findViewById(id)
+            textView.setBackgroundColor(resources.getColor(R.color.CANEAT_BOARD))
+        }
     }
 
     private fun setListener() {
@@ -377,7 +405,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         b06.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
         b07.setBackgroundColor(resources.getColor(R.color.BLACK_BOARD))
         b10.setBackgroundColor(resources.getColor(R.color.BLACK_BOARD))
-        b01.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
+        b11.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
         b12.setBackgroundColor(resources.getColor(R.color.BLACK_BOARD))
         b13.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
         b14.setBackgroundColor(resources.getColor(R.color.BLACK_BOARD))

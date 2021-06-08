@@ -21,7 +21,10 @@ class Rook(color: Boolean) : Piece() {
         target.setBackgroundResource(drawableId)
     }
 
-    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): LinkedHashSet<Position> {
+    fun getCanMoveArea(
+        currentPosition: Position,
+        board: Array<Array<Piece>>
+    ): LinkedHashSet<Position> {
         val canMovePositions = LinkedHashSet<Position>()
 
         var x = currentPosition.x
@@ -33,42 +36,58 @@ class Rook(color: Boolean) : Piece() {
         x = 0
         y = 0
 
-        while (primaryX+x < 8) {
+        while (primaryX + x < 8) {
             x++
-            if (primaryX+x>=8 || getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y)) != -1) {
+            if (primaryX + x >= 8 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + x, primaryY + y)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+x, primaryY+y))
+            canMovePositions.add(Position(primaryX + x, primaryY + y))
         }
 
-        x=0
-        y=0
-        while (primaryY+y < 8) {
+        x = 0
+        y = 0
+        while (primaryY + y < 8) {
             y++
-            if (primaryY+y>=8 || getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y)) != -1) {
+            if (primaryY + y >= 8 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + x, primaryY + y)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+x, primaryY+y))
+            canMovePositions.add(Position(primaryX + x, primaryY + y))
         }
 
-        x=0
-        y=0
-        while (primaryX+x >= 0) {
+        x = 0
+        y = 0
+        while (primaryX + x >= 0) {
             x--
-            if (primaryX+x<0 || getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y)) != -1) {
+            if (primaryX + x < 0 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + x, primaryY + y)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+x, primaryY+y))
+            canMovePositions.add(Position(primaryX + x, primaryY + y))
         }
 
-        x=0
-        y=0
-        while (primaryY+y >= 0) {
+        x = 0
+        y = 0
+        while (primaryY + y >= 0) {
             y--
-            if (primaryY+y<0 || getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y)) != -1) {
+            if (primaryY + y < 0 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + x, primaryY + y)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+x, primaryY+y))
+            canMovePositions.add(Position(primaryX + x, primaryY + y))
         }
 
         canMovePositions.add(Position(primaryX, primaryY))
@@ -76,101 +95,110 @@ class Rook(color: Boolean) : Piece() {
         return canMovePositions
     }
 
-    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>) {
-        var x=currentPosition.x
-        var y=currentPosition.y
+    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+        var x = currentPosition.x
+        var y = currentPosition.y
 
-        val primaryX=x
-        val primaryY=y
+        val primaryX = x
+        val primaryY = y
 
-        val targetPos= HashSet<Position>()
+        val targetPos = HashSet<Position>()
 
-        val mainActivity= MainActivity()
+        x = 0; y = 0
 
-        x=0; y=0
-
-        while(true){
+        while (primaryX + x < 8) {
             x++
-            if(primaryX+x<8){
+            if (primaryX + x >= 8) {
                 break
             }
-            if(color){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
                 }
-            }else{
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
                 }
             }
         }
 
-        x=0;y=0
+        x = 0;y = 0
 
-        while(true){
+        while (primaryX + x >= 0) {
             x--
-            if(primaryX+x<0){
+            if (primaryX + x < 0) {
                 break
             }
-            if(color){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
                 }
-            }else{
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
                 }
             }
         }
 
-        x=0;y=0
+        x = 0;y = 0
 
-        while(true){
+        while (primaryY + y < 8) {
             y++
-            if(primaryY+y<8){
+            if (primaryY + y >= 8) {
                 break
             }
-            if(color){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
                 }
-            }else{
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
                 }
             }
         }
 
-        x=0;y=0
+        x = 0;y = 0
 
-        while(true){
+        while (primaryY + y >= 0) {
             y--
-            if(primaryY+y<0){
+            if (primaryY + y < 0) {
                 break
             }
-            if(color){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
                 }
-            }else{
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
                 }
             }
         }
-
-        val iter=targetPos.iterator()
-        while(iter.hasNext()){
-            val pos=iter.next()
-            val x=pos.x
-            val y=pos.y
-            val id=mainActivity.resources.getIdentifier("b$x$y", "id", mainActivity.packageName)
-            val textView: TextView=mainActivity.findViewById(id)
-            textView.setBackgroundColor(mainActivity.resources.getColor(R.color.CANEAT_BOARD))
-        }
-
-        if(targetPos.size==0){
-            android.util.Log.i("ChessGame", "no size")
-        }
+        return targetPos
     }
 }
