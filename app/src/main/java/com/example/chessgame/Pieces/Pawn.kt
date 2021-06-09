@@ -62,10 +62,6 @@ class Pawn(color: Boolean) : Piece() {
 
         val targetPos=HashSet<Position>()
 
-        if(primaryY==0){
-            android.util.Log.i("ChessGame", "아아아아아악")
-        }
-
         if(colorId){
             x=-1;y=1
             if(primaryY!=7){
