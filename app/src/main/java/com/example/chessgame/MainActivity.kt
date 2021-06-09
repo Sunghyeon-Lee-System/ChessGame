@@ -236,6 +236,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 (boardPosition[x][y] as Pawn).isCanEat(position, boardPosition)
             "Rook" -> canEatPosition =
                 (boardPosition[x][y] as Rook).isCanEat(position, boardPosition)
+            "Knight" -> canEatPosition =
+                (boardPosition[x][y] as Knight).isCanEat(position, boardPosition)
         }
 
         getCanEatTiles(canEatPosition)
