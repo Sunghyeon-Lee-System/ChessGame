@@ -230,6 +230,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             canMoveTiles.add(textView)
             boardPosition[x][y].onCanMove = true
         }
+        canMovePositions.clear()
 
         when (pieceKind(boardPosition[x][y])) {
             "Pawn" -> canEatPosition =
