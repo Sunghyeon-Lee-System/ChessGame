@@ -80,4 +80,110 @@ class King(color: Boolean) : Piece() {
 
         return canMovePosition
     }
+
+    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+        val primaryX=currentPosition.x
+        val primaryY=currentPosition.y
+
+        val canMovePosition=HashSet<Position>()
+
+        if(colorId){
+            var x = primaryX + 1
+            var y = primaryY
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX - 1
+            y = primaryY
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX
+            y = primaryY + 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX
+            y = primaryY - 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX + 1
+            y = primaryY + 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX - 1
+            y = primaryY - 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX - 1
+            y = primaryY + 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX + 1
+            y = primaryY - 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 0) {
+                canMovePosition.add(Position(x, y))
+            }
+        }else{
+            var x = primaryX + 1
+            var y = primaryY
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX - 1
+            y = primaryY
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX
+            y = primaryY + 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX
+            y = primaryY - 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX + 1
+            y = primaryY + 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX - 1
+            y = primaryY - 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX - 1
+            y = primaryY + 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+
+            x = primaryX + 1
+            y = primaryY - 1
+            if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
+                canMovePosition.add(Position(x, y))
+            }
+        }
+        return canMovePosition
+    }
 }

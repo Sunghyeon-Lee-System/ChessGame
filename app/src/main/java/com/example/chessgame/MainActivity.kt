@@ -239,6 +239,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 (boardPosition[x][y] as Rook).isCanEat(position, boardPosition)
             "Knight" -> canEatPosition =
                 (boardPosition[x][y] as Knight).isCanEat(position, boardPosition)
+            "Bishop" -> canEatPosition =
+                (boardPosition[x][y] as Bishop).isCanEat(position, boardPosition)
+            "Queen" -> canEatPosition =
+                (boardPosition[x][y] as Queen).isCanEat(position, boardPosition)
+            "King" -> canEatPosition =
+                (boardPosition[x][y] as King).isCanEat(position, boardPosition)
         }
 
         getCanEatTiles(canEatPosition)

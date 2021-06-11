@@ -110,4 +110,217 @@ class Queen(color: Boolean) : Piece() {
 
         return canMovePositions
     }
+
+    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+        var x = currentPosition.x
+        var y = currentPosition.y
+
+        val primaryX = x
+        val primaryY = y
+
+        val targetPos = HashSet<Position>()
+
+        x = 0; y = 0
+
+        while (primaryX + x < 8) {
+            x++
+            if (primaryX + x >= 8) {
+                break
+            }
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
+                }
+            }
+        }
+
+        x = 0;y = 0
+
+        while (primaryX + x >= 0) {
+            x--
+            if (primaryX + x < 0) {
+                break
+            }
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
+                }
+            }
+        }
+
+        x = 0;y = 0
+
+        while (primaryY + y < 8) {
+            y++
+            if (primaryY + y >= 8) {
+                break
+            }
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
+                }
+            }
+        }
+
+        x = 0;y = 0
+
+        while (primaryY + y >= 0) {
+            y--
+            if (primaryY + y < 0) {
+                break
+            }
+            if (colorId) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            } else {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            }
+        }
+
+        if (colorId) {
+            while (primaryX + x < 8 && primaryY + y < 8) {
+                x++
+                y++
+                if (primaryX + x >= 8 || primaryY + y >= 8) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            }
+            x = 0;y = 0
+            while (primaryX + x >= 0 && primaryY + y < 8) {
+                x--
+                y++
+                if (primaryX + x < 0 || primaryY + y >= 8) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            }
+            x = 0;y = 0
+            while (primaryX + x < 8 && primaryY + y >= 0) {
+                x++
+                y--
+                if (primaryX + x >= 8 || primaryY + y < 0) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            }
+            x = 0;y = 0
+            while (primaryX + x >= 0 && primaryY + y >= 0) {
+                x--
+                y--
+                if (primaryX + x < 0 || primaryY + y < 0) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    break
+                }
+            }
+        } else {
+            while (primaryX + x < 8 && primaryY + y < 8) {
+                x++
+                y++
+                if (primaryX + x >= 8 || primaryY + y >= 8) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
+                }
+            }
+            x = 0;y = 0
+            while (primaryX + x >= 0 && primaryY + y < 8) {
+                x--
+                y++
+                if (primaryX + x < 0 || primaryY + y >= 8) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
+                }
+            }
+            x = 0;y = 0
+            while (primaryX + x < 8 && primaryY + y >= 0) {
+                x++
+                y--
+                if (primaryX + x >= 8 || primaryY + y < 0) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
+                }
+            }
+            x = 0;y = 0
+            while (primaryX + x >= 0 && primaryY + y >= 0) {
+                x--
+                y--
+                if (primaryX + x < 0 || primaryY + y < 0) {
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
+                    break
+                } else if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    break
+                }
+            }
+        }
+        return targetPos
+    }
 }
