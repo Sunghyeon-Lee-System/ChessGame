@@ -8,7 +8,6 @@ import com.example.chessgame.Pieces.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-    private var canMoveTiles = HashSet<TextView>()
     private lateinit var clickedTilePosition: Position
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
@@ -16,7 +15,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    val onMoveListener = View.OnClickListener {
+    private val onMoveListener = View.OnClickListener {
         val intId = it.id
         val id = resources.getResourceEntryName(intId)
         val x = Integer.parseInt(id.get(1).toString())
@@ -56,6 +55,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             resetBoardColor()
             setListener()
+        }
+
+        for(i in 0..7){
+            for(j in 0..7){
+                boardPosition[i][j].onCanMove=false
+            }
         }
     }
 
@@ -201,6 +206,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         clickedTilePosition = position
         var canMovePositions = HashSet<Position>()
 
+        for(i in 0..7){
+            for(j in 0..7){
+                boardPosition[x][y].onCanMove=false
+            }
+        }
+
         when (pieceKind(boardPosition[x][y])) {
             "Pawn" -> canMovePositions =
                 (boardPosition[x][y] as Pawn).getCanMoveArea(position, boardPosition)
@@ -226,7 +237,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             android.util.Log.d("ChessGame", "b$x$y")
             val textView: TextView = findViewById(textViewId)
             textView.setBackgroundColor(resources.getColor(R.color.CANGO_BOARD))
-            canMoveTiles.add(textView)
             boardPosition[x][y].onCanMove = true
         }
         canMovePositions.clear()
@@ -258,7 +268,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setMoveListener()
     }
 
-    fun getCanEatTiles(targetPos: HashSet<Position>) {
+    private fun getCanEatTiles(targetPos: HashSet<Position>) {
         val iter = targetPos.iterator()
         while (iter.hasNext()) {
             val pos = iter.next()
