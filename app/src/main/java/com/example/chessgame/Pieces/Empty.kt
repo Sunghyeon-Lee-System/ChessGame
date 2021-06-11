@@ -8,7 +8,7 @@ class Empty : Piece() {
         target.setBackgroundResource(0)
     }
 
-    fun getCanMoveArea(cursorPosition: Position, board: Array<Array<Piece>>): LinkedHashSet<Position> {
-        return LinkedHashSet()
+    fun getCanMoveArea(cursorPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+        return HashSet()
     }
 }

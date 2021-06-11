@@ -20,8 +20,8 @@ class King(color: Boolean) : Piece() {
         target.setBackgroundResource(drawableId)
     }
 
-    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): LinkedHashSet<Position> {
-        val canMovePosition = LinkedHashSet<Position>()
+    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+        val canMovePosition = HashSet<Position>()
 
         val primaryX = currentPosition.x
         val primaryY = currentPosition.y

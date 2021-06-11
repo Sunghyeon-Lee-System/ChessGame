@@ -24,8 +24,8 @@ class Rook(color: Boolean) : Piece() {
     fun getCanMoveArea(
         currentPosition: Position,
         board: Array<Array<Piece>>
-    ): LinkedHashSet<Position> {
-        val canMovePositions = LinkedHashSet<Position>()
+    ): HashSet<Position> {
+        val canMovePositions = HashSet<Position>()
 
         var x = currentPosition.x
         var y = currentPosition.y

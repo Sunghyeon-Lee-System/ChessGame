@@ -190,7 +190,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        canMoveTiles.clear()
         var canEatPosition = HashSet<Position>()
         val intId = v?.id
         val id = intId?.let { resources.getResourceEntryName(it) }
@@ -255,6 +254,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val y = pos.y
             boardPosition[x][y].onCanMove = true
         }
+        canEatPosition.clear()
         setMoveListener()
     }
 

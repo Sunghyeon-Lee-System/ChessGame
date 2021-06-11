@@ -20,8 +20,8 @@ class Queen(color: Boolean) : Piece() {
         target.setBackgroundResource(drawableId)
     }
 
-    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): LinkedHashSet<Position> {
-        val canMovePositions = LinkedHashSet<Position>()
+    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+        val canMovePositions = HashSet<Position>()
 
         var crossX = currentPosition.x
         var crossY = currentPosition.y
