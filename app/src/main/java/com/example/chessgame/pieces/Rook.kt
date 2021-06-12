@@ -1,7 +1,6 @@
-package com.example.chessgame.Pieces
+package com.example.chessgame.pieces
 
 import android.widget.TextView
-import com.example.chessgame.MainActivity
 import com.example.chessgame.Position
 import com.example.chessgame.R
 

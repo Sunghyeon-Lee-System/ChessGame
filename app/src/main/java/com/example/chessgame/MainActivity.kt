@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.chessgame.Pieces.*
+import com.example.chessgame.pieces.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -57,9 +57,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             setListener()
         }
 
-        for(i in 0..7){
-            for(j in 0..7){
-                boardPosition[i][j].onCanMove=false
+        for (i in 0..7) {
+            for (j in 0..7) {
+                boardPosition[i][j].onCanMove = false
             }
         }
     }
@@ -206,9 +206,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         clickedTilePosition = position
         var canMovePositions = HashSet<Position>()
 
-        for(i in 0..7){
-            for(j in 0..7){
-                boardPosition[x][y].onCanMove=false
+        for (i in 0..7) {
+            for (j in 0..7) {
+                boardPosition[x][y].onCanMove = false
             }
         }
 

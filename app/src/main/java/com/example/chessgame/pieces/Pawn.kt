@@ -1,4 +1,4 @@
-package com.example.chessgame.Pieces
+package com.example.chessgame.pieces
 
 import android.widget.TextView
 import com.example.chessgame.Position
