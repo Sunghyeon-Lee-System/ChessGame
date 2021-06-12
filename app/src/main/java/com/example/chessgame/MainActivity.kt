@@ -3,9 +3,11 @@ package com.example.chessgame
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.pieces.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.white_promotion_dialog.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 "Queen" -> boardPosition[x][y] = Queen(clickedTileColor)
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
             }
+
+            pawnPromotion()
 
             updateUi()
             resetBoardColor()
@@ -278,6 +282,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val textView: TextView = findViewById(id)
             textView.setBackgroundColor(resources.getColor(R.color.CANEAT_BOARD))
         }
+    }
+
+    private fun pawnPromotion() {
+        var selectedType: String
+
+        var x = 0
+        for (y in 0..7) {
+            if (boardPosition[x][y] is Pawn) {
+                whitePawnPromotion()
+            }
+        }
+
+        x = 7
+        for (y in 0..7) {
+            if (boardPosition[x][y] is Pawn) {
+                blackPawnPromotion()
+            }
+        }
+    }
+
+    private fun whitePawnPromotion() {
+        val builder = AlertDialog.Builder(this)
+        builder.setView(R.layout.white_promotion_dialog)
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun blackPawnPromotion() {
+        val builder = AlertDialog.Builder(this)
+        builder.setView(R.layout.black_promotion_dialog)
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun setListener() {
