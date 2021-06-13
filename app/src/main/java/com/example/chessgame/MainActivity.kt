@@ -285,8 +285,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun pawnPromotion() {
-        var selectedType: String
-
         var x = 0
         for (y in 0..7) {
             if (boardPosition[x][y] is Pawn) {

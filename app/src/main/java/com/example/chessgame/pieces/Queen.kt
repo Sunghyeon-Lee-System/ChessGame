@@ -1,5 +1,6 @@
 package com.example.chessgame.pieces
 
+import android.util.Log
 import android.widget.TextView
 import com.example.chessgame.Position
 import com.example.chessgame.R
@@ -216,6 +217,7 @@ class Queen(color: Boolean) : Piece() {
             }
         }
 
+        x=0;y=0
         if (colorId) {
             while (primaryX + x < 8 && primaryY + y < 8) {
                 x++
