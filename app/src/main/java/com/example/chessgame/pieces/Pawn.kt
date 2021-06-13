@@ -32,7 +32,11 @@ class Pawn(color: Boolean) : Piece() {
             }
 
             if (currentPosition.x == 6) {
-                if (getColorAndIsEmpty(board, Position(x - 1, y)) == -1) {
+                if (getColorAndIsEmpty(board, Position(x - 1, y)) == -1 && getColorAndIsEmpty(
+                        board,
+                        Position(x - 2, y)
+                    ) == -1
+                ) {
                     canMovePositions.add(Position(x - 2, y))
                 }
             }
@@ -42,7 +46,11 @@ class Pawn(color: Boolean) : Piece() {
             }
 
             if (currentPosition.x == 1) {
-                if (getColorAndIsEmpty(board, Position(x + 1, y)) == -1) {
+                if (getColorAndIsEmpty(board, Position(x + 1, y)) == -1 && getColorAndIsEmpty(
+                        board,
+                        Position(x + 2, y)
+                    ) == -1
+                ) {
                     canMovePositions.add(Position(x + 2, y))
                 }
             }
@@ -54,38 +62,38 @@ class Pawn(color: Boolean) : Piece() {
     }
 
     fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
-        var x=currentPosition.x
-        var y=currentPosition.y
+        var x = currentPosition.x
+        var y = currentPosition.y
 
-        val primaryX=x
-        val primaryY=y
+        val primaryX = x
+        val primaryY = y
 
-        val targetPos=HashSet<Position>()
+        val targetPos = HashSet<Position>()
 
-        if(colorId){
-            x=-1;y=1
-            if(primaryY!=7){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+        if (colorId) {
+            x = -1;y = 1
+            if (primaryY != 7) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
-            x=-1;y=-1
-            if(primaryY!=0){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==0){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            x = -1;y = -1
+            if (primaryY != 0) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
-        }else{
-            x=1;y=1
-            if(primaryY!=7){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+        } else {
+            x = 1;y = 1
+            if (primaryY != 7) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
-            x=1;y=-1
-            if(primaryY!=0){
-                if(getColorAndIsEmpty(board, Position(primaryX+x, primaryY+y))==1){
-                    targetPos.add(Position(primaryX+x, primaryY+y))
+            x = 1;y = -1
+            if (primaryY != 0) {
+                if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
+                    targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
         }
