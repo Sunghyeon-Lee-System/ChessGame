@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val onMoveListener = View.OnClickListener {
         val intId = it.id
         val id = resources.getResourceEntryName(intId)
-        val x = Integer.parseInt(id.get(1).toString())
-        val y = Integer.parseInt(id.get(2).toString())
+        val x = Integer.parseInt(id[1].toString())
+        val y = Integer.parseInt(id[2].toString())
 
         val clickedTileX = clickedTilePosition.x
         val clickedTileY = clickedTilePosition.y
