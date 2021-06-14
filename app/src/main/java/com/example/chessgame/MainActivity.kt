@@ -295,30 +295,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         x = 7
         for (y in 0..7) {
             if (boardPosition[x][y] is Pawn) {
-                blackPawnPromotion()
+                blackPawnPromotion(x, y)
             }
         }
     }
 
     private fun whitePawnPromotion(x: Int, y: Int) {
-        /*val builder = AlertDialog.Builder(this)
-        builder.setView(R.layout.white_promotion_dialog)
-        val dialog = builder.create()
-        dialog.show()*/
         val dialog = WhitePawnPromotionDialog(this)
         dialog.setDialogListener(object : WhiteDialogListener {
             override fun onClicked(type: Piece) {
                 boardPosition[x][y]=type
-                android.util.Log.i("ChessGame", "아이고아이고아이고191919")
+                updateUi()
             }
         })
         dialog.show()
     }
 
-    private fun blackPawnPromotion() {
-        val builder = AlertDialog.Builder(this)
-        builder.setView(R.layout.black_promotion_dialog)
-        val dialog = builder.create()
+    private fun blackPawnPromotion(x: Int, y: Int) {
+        val dialog=BlackPawnPromotionDialog(this)
+        dialog.setDialogListener(object : BlackDialogListener {
+            override fun onClicked(type: Piece) {
+                boardPosition[x][y]=type
+                updateUi()
+            }
+        })
         dialog.show()
     }
 

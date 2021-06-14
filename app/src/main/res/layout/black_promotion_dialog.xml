@@ -8,18 +8,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <ImageButton
+            android:id="@+id/bknight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/bknight" />
         <ImageButton
+            android:id="@+id/bbishop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/bbishop" />
         <ImageButton
+            android:id="@+id/brook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/brook" />
         <ImageButton
+            android:id="@+id/bqueen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/bqueen" />
