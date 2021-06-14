@@ -288,7 +288,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         var x = 0
         for (y in 0..7) {
             if (boardPosition[x][y] is Pawn) {
-                whitePawnPromotion()
+                whitePawnPromotion(x, y)
             }
         }
 
@@ -300,10 +300,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun whitePawnPromotion() {
-        val builder = AlertDialog.Builder(this)
+    private fun whitePawnPromotion(x: Int, y: Int) {
+        /*val builder = AlertDialog.Builder(this)
         builder.setView(R.layout.white_promotion_dialog)
         val dialog = builder.create()
+        dialog.show()*/
+        val dialog = WhitePawnPromotionDialog(this)
+        dialog.setDialogListener(object : WhiteDialogListener {
+            override fun onClicked(type: Piece) {
+                boardPosition[x][y]=type
+                android.util.Log.i("ChessGame", "아이고아이고아이고191919")
+            }
+        })
         dialog.show()
     }
 
