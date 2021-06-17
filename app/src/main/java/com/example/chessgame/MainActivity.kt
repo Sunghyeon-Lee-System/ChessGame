@@ -3,7 +3,6 @@ package com.example.chessgame
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.pieces.*
 import com.google.firebase.database.DataSnapshot
@@ -11,7 +10,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.white_promotion_dialog.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
