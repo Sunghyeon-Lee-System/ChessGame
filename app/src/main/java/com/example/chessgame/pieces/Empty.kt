@@ -4,6 +4,8 @@ import android.widget.TextView
 import com.example.chessgame.Position
 
 class Empty : Piece() {
+    val className="Empty"
+
     fun setDrawable(target: TextView) {
         target.setBackgroundResource(0)
     }

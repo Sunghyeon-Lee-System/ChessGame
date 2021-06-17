@@ -5,8 +5,9 @@ import com.example.chessgame.Position
 import com.example.chessgame.R
 
 class Knight(color: Boolean) : Piece() {
-    private var drawableId: Int
+    private var drawableId: Int = 0
     val colorId = color
+    val className = "Knight"
 
     init {
         drawableId = if (color) {
@@ -112,12 +113,12 @@ class Knight(color: Boolean) : Piece() {
     }
 
     fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
-        val targetPos=HashSet<Position>()
+        val targetPos = HashSet<Position>()
 
-        val primaryX=currentPosition.x
-        val primaryY=currentPosition.y
+        val primaryX = currentPosition.x
+        val primaryY = currentPosition.y
 
-        if(colorId){
+        if (colorId) {
             var x = 2
             var y = 1
             if (isInBoard(Position(primaryX + x, primaryY + y)) && getColorAndIsEmpty(
@@ -197,7 +198,7 @@ class Knight(color: Boolean) : Piece() {
             ) {
                 targetPos.add(Position(primaryX + x, primaryY + y))
             }
-        }else{
+        } else {
             var x = 2
             var y = 1
             if (isInBoard(Position(primaryX + x, primaryY + y)) && getColorAndIsEmpty(

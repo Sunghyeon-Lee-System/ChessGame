@@ -5,8 +5,9 @@ import com.example.chessgame.Position
 import com.example.chessgame.R
 
 class Bishop(color: Boolean) : Piece() {
-    private var drawableId: Int
+    private var drawableId: Int = 0
     val colorId = color
+    val className = "Bishop"
 
     init {
         drawableId = if (color) {

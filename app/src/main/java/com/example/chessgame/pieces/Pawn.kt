@@ -7,6 +7,7 @@ import com.example.chessgame.R
 class Pawn(color: Boolean) : Piece() {
     private var drawableId: Int
     val colorId = color
+    val className = "Pawn"
 
     init {
         drawableId = if (color) {

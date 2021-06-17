@@ -6,11 +6,19 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.pieces.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.white_promotion_dialog.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
+
+    private val dataBase = FirebaseDatabase.getInstance()
+    private val myRef = dataBase.getReference("boardData")
+
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
             Empty()
@@ -74,6 +82,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         boardInitialize()
         setListener()
+        //myRef.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val value=snapshot.value
+                boardPosition=ExchangeArrayAndList.listToPiece(value as ArrayList<HashMap<String, Any>>)
+                updateUi()
+            }
+        })
     }
 
     private fun boardInitialize() {
@@ -168,6 +192,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     "King" -> (boardPosition[i][j] as King).setDrawable(textView)
                     "Empty" -> (boardPosition[i][j] as Empty).setDrawable(textView)
                 }
+                push(boardPosition)
             }
         }
     }
@@ -521,5 +546,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         b75.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
         b76.setBackgroundColor(resources.getColor(R.color.BLACK_BOARD))
         b77.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
+    }
+
+    private fun push(board: Array<Array<Piece>>) {
+        myRef.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
     }
 }

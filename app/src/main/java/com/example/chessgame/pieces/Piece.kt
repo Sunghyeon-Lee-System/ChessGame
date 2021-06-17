@@ -3,7 +3,6 @@ package com.example.chessgame.pieces
 import com.example.chessgame.Position
 
 open class Piece {
-    val color = true
     var onCanMove=false
 
     fun isInBoard(position: Position): Boolean {

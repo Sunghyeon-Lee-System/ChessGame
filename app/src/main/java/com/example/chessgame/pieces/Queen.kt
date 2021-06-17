@@ -6,8 +6,9 @@ import com.example.chessgame.Position
 import com.example.chessgame.R
 
 class Queen(color: Boolean) : Piece() {
-    private var drawableId: Int
+    private var drawableId: Int = 0
     val colorId = color
+    val className = "Queen"
 
     init {
         drawableId = if (color) {
@@ -36,42 +37,62 @@ class Queen(color: Boolean) : Piece() {
         crossX = 0
         crossY = 0
 
-        while (primaryX+linearX < 8) {
+        while (primaryX + linearX < 8) {
             linearX++
-            if (primaryX+linearX>=8 || getColorAndIsEmpty(board, Position(primaryX+linearX, primaryY+linearY)) != -1) {
+            if (primaryX + linearX >= 8 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + linearX, primaryY + linearY)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+linearX, primaryY+linearY))
+            canMovePositions.add(Position(primaryX + linearX, primaryY + linearY))
         }
-        linearX=0; linearY=0
-        while (primaryY+linearY < 8) {
+        linearX = 0; linearY = 0
+        while (primaryY + linearY < 8) {
             linearY++
-            if (primaryY+linearY>=8 || getColorAndIsEmpty(board, Position(primaryX+linearX, primaryY+linearY)) != -1) {
+            if (primaryY + linearY >= 8 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + linearX, primaryY + linearY)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+linearX, primaryY+linearY))
+            canMovePositions.add(Position(primaryX + linearX, primaryY + linearY))
         }
-        linearX=0; linearY=0
-        while (primaryY+linearY >= 0) {
+        linearX = 0; linearY = 0
+        while (primaryY + linearY >= 0) {
             linearX--
-            if (primaryX+linearX<0 || getColorAndIsEmpty(board, Position(primaryX+linearX, primaryY+linearY)) != -1) {
+            if (primaryX + linearX < 0 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + linearX, primaryY + linearY)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+linearX, primaryY+linearY))
+            canMovePositions.add(Position(primaryX + linearX, primaryY + linearY))
         }
-        linearX=0; linearY=0
-        while (primaryY+linearY >= 0) {
+        linearX = 0; linearY = 0
+        while (primaryY + linearY >= 0) {
             linearY--
-            if (primaryY+linearY<0 || getColorAndIsEmpty(board, Position(primaryX+linearX, primaryY+linearY)) != -1) {
+            if (primaryY + linearY < 0 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + linearX, primaryY + linearY)
+                ) != -1
+            ) {
                 break
             }
-            canMovePositions.add(Position(primaryX+linearX, primaryY+linearY))
+            canMovePositions.add(Position(primaryX + linearX, primaryY + linearY))
         }
 
         while (primaryX + crossX < 8 && primaryY + crossY < 8) {
             crossX++
             crossY++
-            if(primaryX+crossX>=8 || primaryY+crossY>=8 || getColorAndIsEmpty(board, Position(primaryX+crossX, primaryY+crossY))!=-1){
+            if (primaryX + crossX >= 8 || primaryY + crossY >= 8 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + crossX, primaryY + crossY)
+                ) != -1
+            ) {
                 break
             }
             canMovePositions.add(Position(primaryX + crossX, primaryY + crossY))
@@ -81,7 +102,11 @@ class Queen(color: Boolean) : Piece() {
         while (primaryX + crossX >= 0 && primaryY + crossY >= 0) {
             crossX--
             crossY--
-            if(primaryX+crossX<0 || primaryY+crossY<0 || getColorAndIsEmpty(board, Position(primaryX+crossX, primaryY+crossY))!=-1){
+            if (primaryX + crossX < 0 || primaryY + crossY < 0 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + crossX, primaryY + crossY)
+                ) != -1
+            ) {
                 break
             }
             canMovePositions.add(Position(primaryX + crossX, primaryY + crossY))
@@ -91,7 +116,11 @@ class Queen(color: Boolean) : Piece() {
         while (primaryX + crossX >= 0 && primaryY + crossY < 8) {
             crossX--
             crossY++
-            if(primaryX+crossX<0 || primaryY+crossY>=8 || getColorAndIsEmpty(board, Position(primaryX+crossX, primaryY+crossY))!=-1){
+            if (primaryX + crossX < 0 || primaryY + crossY >= 8 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + crossX, primaryY + crossY)
+                ) != -1
+            ) {
                 break
             }
             canMovePositions.add(Position(primaryX + crossX, primaryY + crossY))
@@ -101,7 +130,11 @@ class Queen(color: Boolean) : Piece() {
         while (primaryX + crossX < 8 && primaryY + crossY >= 0) {
             crossX++
             crossY--
-            if(primaryX+crossX>=8 || primaryY+crossY<0 || getColorAndIsEmpty(board, Position(primaryX+crossX, primaryY+crossY))!=-1){
+            if (primaryX + crossX >= 8 || primaryY + crossY < 0 || getColorAndIsEmpty(
+                    board,
+                    Position(primaryX + crossX, primaryY + crossY)
+                ) != -1
+            ) {
                 break
             }
             canMovePositions.add(Position(primaryX + crossX, primaryY + crossY))
@@ -217,7 +250,7 @@ class Queen(color: Boolean) : Piece() {
             }
         }
 
-        x=0;y=0
+        x = 0;y = 0
         if (colorId) {
             while (primaryX + x < 8 && primaryY + y < 8) {
                 x++
