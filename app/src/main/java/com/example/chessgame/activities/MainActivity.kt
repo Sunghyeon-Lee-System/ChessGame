@@ -1,9 +1,10 @@
-package com.example.chessgame
+package com.example.chessgame.activities
 
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.chessgame.*
 import com.example.chessgame.pieces.*
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
