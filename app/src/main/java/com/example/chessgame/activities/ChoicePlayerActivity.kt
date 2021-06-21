@@ -14,11 +14,13 @@ class ChoicePlayerActivity : AppCompatActivity() {
         btn_1.setOnClickListener {
             val intent=Intent(this, OneDeviceGameActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         btn_2.setOnClickListener{
             val intent= Intent(this, EnterNameActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }

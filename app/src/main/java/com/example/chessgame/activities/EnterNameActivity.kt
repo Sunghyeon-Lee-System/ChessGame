@@ -16,6 +16,7 @@ class EnterNameActivity : AppCompatActivity() {
             val intent= Intent(this, MainActivity::class.java)
             intent.putExtra("name", name)
             startActivity(intent)
+            finish()
         }
     }
 }
