@@ -12,6 +12,7 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChessGame">
+        <activity android:name=".activities.OneDeviceGameActivity"></activity>
         <activity android:name=".activities.EnterNameActivity" />
         <activity android:name=".activities.ChoicePlayerActivity">
             <intent-filter>
@@ -20,8 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity">
-        </activity>
+        <activity android:name=".activities.MainActivity"></activity>
     </application>
 
 </manifest>

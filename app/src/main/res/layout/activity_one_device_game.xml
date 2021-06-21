@@ -1,0 +1,741 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/background" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:columnCount="8"
+                android:rowCount="8">
+
+                <TextView
+                    android:id="@+id/o_b00"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b01"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b02"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b03"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b04"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b05"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b06"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b07"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b10"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b11"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b12"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b13"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b14"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b15"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b16"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b17"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b20"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b21"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b22"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b23"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b24"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b25"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b26"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b27"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b30"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b31"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b32"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b33"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b34"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b35"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b36"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b37"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b40"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b41"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b42"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b43"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b44"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b45"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b46"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b47"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b50"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b51"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b52"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b53"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b54"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b55"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b56"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b57"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b60"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b61"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b62"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b63"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b64"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b65"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b66"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b67"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b70"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b71"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b72"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b73"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b74"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b75"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b76"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/BLACK_BOARD" />
+
+                <TextView
+                    android:id="@+id/o_b77"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/WHITE_BOARD" />
+            </GridLayout>
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:columnCount="8"
+                android:rowCount="8">
+
+                <TextView
+                    android:id="@+id/o_p00"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p01"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p02"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p03"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p04"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p05"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p06"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p07"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p10"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p11"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p12"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p13"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p14"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p15"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p16"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p17"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p20"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p21"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p22"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p23"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p24"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p25"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p26"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p27"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p30"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p31"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p32"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p33"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p34"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p35"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p36"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p37"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p40"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p41"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p42"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p43"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p44"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p45"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p46"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p47"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p50"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p51"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p52"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p53"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p54"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p55"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p56"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p57"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p60"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p61"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p62"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p63"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p64"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p65"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p66"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p67"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p70"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p71"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p72"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p73"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p74"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p75"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p76"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <TextView
+                    android:id="@+id/o_p77"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+            </GridLayout>
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

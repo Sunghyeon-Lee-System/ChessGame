@@ -12,7 +12,8 @@ class ChoicePlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_choice_player)
 
         btn_1.setOnClickListener {
-
+            val intent=Intent(this, OneDeviceGameActivity::class.java)
+            startActivity(intent)
         }
 
         btn_2.setOnClickListener{
