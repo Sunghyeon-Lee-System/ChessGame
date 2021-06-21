@@ -13,6 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/blackTurn"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/teal_200"
+            android:orientation="horizontal" />
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -737,5 +743,12 @@
                     android:layout_height="40dp" />
             </GridLayout>
         </FrameLayout>
+        <LinearLayout
+            android:id="@+id/whiteTurn"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/teal_200"
+            android:visibility="invisible"
+            android:orientation="horizontal" />
     </LinearLayout>
 </FrameLayout>

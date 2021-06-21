@@ -11,12 +11,8 @@ import kotlinx.android.synthetic.main.activity_one_device_game.*
 class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
 
-    private var isMyTurn = true
-
-    private var isFirstCall = true
-
-    private lateinit var mMyName: String
-    private var mYourName = "yourName"
+    private var isValidTouch = true
+    private var isWhiteTurn = false
 
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
@@ -35,6 +31,8 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
 
         val touchPiece = boardPosition[x][y]
 
+        isValidTouch = true
+
         if (touchPiece.onCanMove) {
             val clickedTileType = pieceKind(boardPosition[clickedTileX][clickedTileY])
             val clickedTileColor = when (clickedTileType) {
@@ -45,6 +43,10 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 "Queen" -> (boardPosition[clickedTileX][clickedTileY] as Queen).colorId
                 "King" -> (boardPosition[clickedTileX][clickedTileY] as King).colorId
                 else -> true
+            }
+
+            if (x == clickedTileX && y == clickedTileY) {
+                isValidTouch = false
             }
 
             boardPosition[clickedTileX][clickedTileY] = Empty()
@@ -64,6 +66,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             resetBoardColor()
             setListener()
         } else {
+            isValidTouch = false
             resetBoardColor()
             setListener()
         }
@@ -394,6 +397,8 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
         o_p75.setOnClickListener(this)
         o_p76.setOnClickListener(this)
         o_p77.setOnClickListener(this)
+
+        turnManager()
     }
 
     private fun setMoveListener() {
@@ -528,5 +533,18 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
         o_b75.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
         o_b76.setBackgroundColor(resources.getColor(R.color.BLACK_BOARD))
         o_b77.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
+    }
+
+    private fun turnManager() {
+        if (isValidTouch) {
+            if (whiteTurn.visibility == View.VISIBLE) {
+                whiteTurn.visibility = View.INVISIBLE
+                blackTurn.visibility = View.VISIBLE
+            } else if (whiteTurn.visibility == View.INVISIBLE) {
+                whiteTurn.visibility = View.VISIBLE
+                blackTurn.visibility = View.INVISIBLE
+            }
+            isWhiteTurn = !isWhiteTurn
+        }
     }
 }
