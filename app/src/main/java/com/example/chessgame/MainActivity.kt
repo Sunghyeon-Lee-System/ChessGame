@@ -15,7 +15,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
 
     private val dataBase = FirebaseDatabase.getInstance()
-    private val myRef = dataBase.getReference("boardData")
+    private val myRef = dataBase.getReference("data")
+    private var game = myRef.child("game1")
+    private val userData = game.child("userData")
+    private val boardData = game.child("boardData")
+
+    private var isMyTurn = true
+
+    private var isFirstCall = true
+
+    private lateinit var mMyName: String
+    private var mYourName = "yourName"
 
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
@@ -60,6 +70,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             pawnPromotion()
 
             updateUi()
+            push()
             resetBoardColor()
             setListener()
         } else {
@@ -78,22 +89,49 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val intent = intent
+        mMyName = intent.getStringExtra("name").toString()
+        myName.text = mMyName
+
+        userData.setValue(mMyName)
+
         boardInitialize()
         setListener()
-        //myRef.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
     }
 
     override fun onStart() {
         super.onStart()
 
-        myRef.addValueEventListener(object : ValueEventListener {
+        boardData.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                val value=snapshot.value
-                boardPosition=ExchangeArrayAndList.listToPiece(value as ArrayList<HashMap<String, Any>>)
+                val value = snapshot.value
+                boardPosition =
+                    ExchangeArrayAndList.listToPiece(value as ArrayList<HashMap<String, Any>>)
                 updateUi()
+                isMyTurn = !isMyTurn
+                //android.util.Log.i("ChessGame", isMyTurn.toString())
+            }
+        })
+
+        userData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val value = snapshot.value as String
+
+                if (value != mMyName) {
+                    mYourName = value
+                    if (isFirstCall) {
+                        userData.setValue(mMyName)
+                        isFirstCall = false
+                    }
+                }
+
+                yourName.text = mYourName
+            }
+
+            override fun onCancelled(error: DatabaseError) {
             }
         })
     }
@@ -173,6 +211,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         boardPosition[7][7] = Rook(true)
 
         updateUi()
+        push()
     }
 
     private fun updateUi() {
@@ -190,7 +229,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     "King" -> (boardPosition[i][j] as King).setDrawable(textView)
                     "Empty" -> (boardPosition[i][j] as Empty).setDrawable(textView)
                 }
-                push(boardPosition)
             }
         }
     }
@@ -327,19 +365,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val dialog = WhitePawnPromotionDialog(this)
         dialog.setDialogListener(object : WhiteDialogListener {
             override fun onClicked(type: Piece) {
-                boardPosition[x][y]=type
+                boardPosition[x][y] = type
                 updateUi()
+                push()
             }
         })
         dialog.show()
     }
 
     private fun blackPawnPromotion(x: Int, y: Int) {
-        val dialog=BlackPawnPromotionDialog(this)
+        val dialog = BlackPawnPromotionDialog(this)
         dialog.setDialogListener(object : BlackDialogListener {
             override fun onClicked(type: Piece) {
-                boardPosition[x][y]=type
+                boardPosition[x][y] = type
                 updateUi()
+                push()
             }
         })
         dialog.show()
@@ -546,7 +586,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         b77.setBackgroundColor(resources.getColor(R.color.WHITE_BOARD))
     }
 
-    private fun push(board: Array<Array<Piece>>) {
-        myRef.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
+    private fun push() {
+        boardData.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
     }
 }

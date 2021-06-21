@@ -12,13 +12,15 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChessGame">
-        <activity android:name=".GameChoiceActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".EnterNameActivity" />
+        <activity android:name=".ChoicePlayerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity">
         </activity>
     </application>
 
