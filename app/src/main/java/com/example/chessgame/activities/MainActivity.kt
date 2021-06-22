@@ -1,5 +1,6 @@
 package com.example.chessgame.activities
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -11,6 +12,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
@@ -20,13 +25,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var game = myRef.child("game1")
     private val userData = game.child("userData")
     private val boardData = game.child("boardData")
+    private val firstOrderData = game.child("firstOrderData")
+    private val orderData = game.child("orderData")
 
     private var isMyTurn = true
+    private var isIWhite = false
+    private var turnCount = 0L
 
-    private var isFirstCall = true
+    private var isFirstCall_name = true
+    private var isFirstCall_order = true
+
+    private var isValidTouch = true
+    private var isWhiteTurn = false
 
     private lateinit var mMyName: String
     private var mYourName = "yourName"
+    private lateinit var progressDialog: ProgressDialog
 
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
@@ -45,6 +59,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val touchPiece = boardPosition[x][y]
 
+        isValidTouch = true
+
         if (touchPiece.onCanMove) {
             val clickedTileType = pieceKind(boardPosition[clickedTileX][clickedTileY])
             val clickedTileColor = when (clickedTileType) {
@@ -55,6 +71,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 "Queen" -> (boardPosition[clickedTileX][clickedTileY] as Queen).colorId
                 "King" -> (boardPosition[clickedTileX][clickedTileY] as King).colorId
                 else -> true
+            }
+
+            if (x == clickedTileX && y == clickedTileY) {
+                isValidTouch = false
             }
 
             boardPosition[clickedTileX][clickedTileY] = Empty()
@@ -75,6 +95,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             resetBoardColor()
             setListener()
         } else {
+            isValidTouch = false
             resetBoardColor()
             setListener()
         }
@@ -96,8 +117,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         userData.setValue(mMyName)
 
+        firstOrderData.setValue(Pair(mMyName, Random().nextBoolean()))
+
         boardInitialize()
         setListener()
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Wait...")
+        progressDialog.setCancelable(false)
+        progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Horizontal)
+        progressDialog.show()
     }
 
     override fun onStart() {
@@ -113,7 +142,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     ExchangeArrayAndList.listToPiece(value as ArrayList<HashMap<String, Any>>)
                 updateUi()
                 isMyTurn = !isMyTurn
-                //android.util.Log.i("ChessGame", isMyTurn.toString())
             }
         })
 
@@ -123,13 +151,49 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                 if (value != mMyName) {
                     mYourName = value
-                    if (isFirstCall) {
+                    if (progressDialog.isShowing) {
+                        progressDialog.dismiss()
+                    }
+                    if (isFirstCall_name) {
                         userData.setValue(mMyName)
-                        isFirstCall = false
+                        isFirstCall_name = false
                     }
                 }
 
                 yourName.text = mYourName
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
+        firstOrderData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val value = snapshot.value as HashMap<String, Any>
+
+                val name = value["first"]
+                val order = value["second"]
+
+                if (name != mMyName) {
+                    isIWhite = (order as Boolean)
+                    if (isFirstCall_order) {
+                        isFirstCall_order = false
+                        firstOrderData.setValue(Pair(mMyName, !order))
+                    }
+                    rotate()
+                }
+
+                android.util.Log.i("ChessGame", order.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
+        orderData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                turnCount = snapshot.value as Long
+                turnManager()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -451,6 +515,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         p75.setOnClickListener(this)
         p76.setOnClickListener(this)
         p77.setOnClickListener(this)
+
+        if (isValidTouch) {
+            turnCount += 1
+            orderData.setValue(turnCount)
+        }
     }
 
     private fun setMoveListener() {
@@ -589,5 +658,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun push() {
         boardData.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
+    }
+
+    private fun turnManager() {
+        if (isValidTouch) {
+            if (whiteTurn.visibility == View.VISIBLE) {
+                whiteTurn.visibility = View.INVISIBLE
+                blackTurn.visibility = View.VISIBLE
+            } else if (whiteTurn.visibility == View.INVISIBLE) {
+                whiteTurn.visibility = View.VISIBLE
+                blackTurn.visibility = View.INVISIBLE
+            }
+            isWhiteTurn = !isWhiteTurn
+        }
+    }
+
+    private fun rotate() {
+        if (!isIWhite) {
+            board.rotation = 180F
+        }
     }
 }
