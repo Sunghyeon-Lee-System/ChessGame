@@ -21,7 +21,11 @@ class Bishop(color: Boolean) : Piece() {
         target.setBackgroundResource(drawableId)
     }
 
-    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun getCanMoveArea(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         val canMovePositions = HashSet<Position>()
 
         var x = currentPosition.x
@@ -89,10 +93,18 @@ class Bishop(color: Boolean) : Piece() {
             }
             canMovePositions.add(Position(primaryX + x, primaryY + y))
         }
+
+        if (isIWhite != colorId) {
+            canMovePositions.clear()
+        }
         return canMovePositions
     }
 
-    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun isCanEat(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         val canMovePositions = HashSet<Position>()
 
         val primaryX = currentPosition.x
@@ -205,6 +217,10 @@ class Bishop(color: Boolean) : Piece() {
                     break
                 }
             }
+        }
+
+        if (isIWhite != colorId) {
+            canMovePositions.clear()
         }
         return canMovePositions
     }

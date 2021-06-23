@@ -21,7 +21,11 @@ class King(color: Boolean) : Piece() {
         target.setBackgroundResource(drawableId)
     }
 
-    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun getCanMoveArea(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         val canMovePosition = HashSet<Position>()
 
         val primaryX = currentPosition.x
@@ -79,10 +83,18 @@ class King(color: Boolean) : Piece() {
         y = primaryY
         canMovePosition.add(Position(x, y))
 
+        if (isIWhite != colorId) {
+            canMovePosition.clear()
+        }
+
         return canMovePosition
     }
 
-    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun isCanEat(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         val primaryX = currentPosition.x
         val primaryY = currentPosition.y
 
@@ -184,6 +196,10 @@ class King(color: Boolean) : Piece() {
             if (isInBoard(Position(x, y)) && getColorAndIsEmpty(board, Position(x, y)) == 1) {
                 canMovePosition.add(Position(x, y))
             }
+        }
+
+        if (isIWhite != colorId) {
+            canMovePosition.clear()
         }
         return canMovePosition
     }

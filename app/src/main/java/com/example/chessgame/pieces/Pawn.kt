@@ -21,7 +21,11 @@ class Pawn(color: Boolean) : Piece() {
         target.setBackgroundResource(drawableId)
     }
 
-    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun getCanMoveArea(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         val canMovePositions = HashSet<Position>()
 
         val x = currentPosition.x
@@ -59,10 +63,18 @@ class Pawn(color: Boolean) : Piece() {
 
         canMovePositions.add(Position(x, y))
 
+        if (isIWhite != colorId) {
+            canMovePositions.clear()
+        }
+
         return canMovePositions
     }
 
-    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun isCanEat(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         var x = currentPosition.x
         var y = currentPosition.y
 
@@ -97,6 +109,10 @@ class Pawn(color: Boolean) : Piece() {
                     targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
+        }
+
+        if (isIWhite != colorId) {
+            targetPos.clear()
         }
         return targetPos
     }

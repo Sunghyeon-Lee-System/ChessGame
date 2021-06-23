@@ -21,7 +21,11 @@ class Knight(color: Boolean) : Piece() {
         target.setBackgroundResource(drawableId)
     }
 
-    fun getCanMoveArea(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun getCanMoveArea(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         val canMovePosition = HashSet<Position>()
 
         val primaryX = currentPosition.x
@@ -109,10 +113,18 @@ class Knight(color: Boolean) : Piece() {
 
         canMovePosition.add(Position(primaryX, primaryY))
 
+        if (isIWhite != colorId) {
+            canMovePosition.clear()
+        }
+
         return canMovePosition
     }
 
-    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun isCanEat(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         val targetPos = HashSet<Position>()
 
         val primaryX = currentPosition.x
@@ -278,6 +290,10 @@ class Knight(color: Boolean) : Piece() {
             ) {
                 targetPos.add(Position(primaryX + x, primaryY + y))
             }
+        }
+
+        if (isIWhite != colorId) {
+            targetPos.clear()
         }
         return targetPos
     }

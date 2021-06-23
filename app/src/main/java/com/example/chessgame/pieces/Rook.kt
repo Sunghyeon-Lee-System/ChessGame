@@ -23,7 +23,7 @@ class Rook(color: Boolean) : Piece() {
 
     fun getCanMoveArea(
         currentPosition: Position,
-        board: Array<Array<Piece>>
+        board: Array<Array<Piece>>, isIWhite: Boolean
     ): HashSet<Position> {
         val canMovePositions = HashSet<Position>()
 
@@ -92,10 +92,18 @@ class Rook(color: Boolean) : Piece() {
 
         canMovePositions.add(Position(primaryX, primaryY))
 
+        if (isIWhite != colorId) {
+            canMovePositions.clear()
+        }
+
         return canMovePositions
     }
 
-    fun isCanEat(currentPosition: Position, board: Array<Array<Piece>>): HashSet<Position> {
+    fun isCanEat(
+        currentPosition: Position,
+        board: Array<Array<Piece>>,
+        isIWhite: Boolean
+    ): HashSet<Position> {
         var x = currentPosition.x
         var y = currentPosition.y
 
@@ -198,6 +206,10 @@ class Rook(color: Boolean) : Piece() {
                     break
                 }
             }
+        }
+
+        if (isIWhite != colorId) {
+            targetPos.clear()
         }
         return targetPos
     }
