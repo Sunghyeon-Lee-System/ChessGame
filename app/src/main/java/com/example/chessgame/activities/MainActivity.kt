@@ -358,6 +358,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             "Empty" -> canMovePositions =
                 (boardPosition[x][y] as Empty).getCanMoveArea(position, boardPosition)
         }
+        if (isIWhite) {
+            if (turnCount.toInt() % 2 != 1) {
+                canMovePositions.clear()
+            }
+        } else {
+            if (turnCount.toInt() % 2 != 0) {
+                canMovePositions.clear()
+            }
+        }
         val iter: Iterator<Position> = canMovePositions.iterator()
         while (iter.hasNext()) {
             val pos = iter.next()
@@ -385,7 +394,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             "King" -> canEatPosition =
                 (boardPosition[x][y] as King).isCanEat(position, boardPosition, isIWhite)
         }
-
+        if (isIWhite) {
+            if (turnCount.toInt() % 2 != 1) {
+                canMovePositions.clear()
+            }
+        } else {
+            if (turnCount.toInt() % 2 != 0) {
+                canMovePositions.clear()
+            }
+        }
         getCanEatTiles(canEatPosition)
         val canEatPositionIter: Iterator<Position> = canEatPosition.iterator()
         while (canEatPositionIter.hasNext()) {

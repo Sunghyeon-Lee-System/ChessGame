@@ -228,17 +228,17 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
 
         when (pieceKind(boardPosition[x][y])) {
             "Pawn" -> canMovePositions =
-                (boardPosition[x][y] as Pawn).getCanMoveArea(position, boardPosition)
+                (boardPosition[x][y] as Pawn).getCanMoveArea(position, boardPosition, isWhiteTurn)
             "Rook" -> canMovePositions =
-                (boardPosition[x][y] as Rook).getCanMoveArea(position, boardPosition)
+                (boardPosition[x][y] as Rook).getCanMoveArea(position, boardPosition, isWhiteTurn)
             "Knight" -> canMovePositions =
-                (boardPosition[x][y] as Knight).getCanMoveArea(position, boardPosition)
+                (boardPosition[x][y] as Knight).getCanMoveArea(position, boardPosition, isWhiteTurn)
             "Bishop" -> canMovePositions =
-                (boardPosition[x][y] as Bishop).getCanMoveArea(position, boardPosition)
+                (boardPosition[x][y] as Bishop).getCanMoveArea(position, boardPosition, isWhiteTurn)
             "Queen" -> canMovePositions =
-                (boardPosition[x][y] as Queen).getCanMoveArea(position, boardPosition)
+                (boardPosition[x][y] as Queen).getCanMoveArea(position, boardPosition, isWhiteTurn)
             "King" -> canMovePositions =
-                (boardPosition[x][y] as King).getCanMoveArea(position, boardPosition)
+                (boardPosition[x][y] as King).getCanMoveArea(position, boardPosition, isWhiteTurn)
             "Empty" -> canMovePositions =
                 (boardPosition[x][y] as Empty).getCanMoveArea(position, boardPosition)
         }
@@ -255,19 +255,20 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
         }
         canMovePositions.clear()
 
+
         when (pieceKind(boardPosition[x][y])) {
             "Pawn" -> canEatPosition =
-                (boardPosition[x][y] as Pawn).isCanEat(position, boardPosition)
+                (boardPosition[x][y] as Pawn).isCanEat(position, boardPosition, isWhiteTurn)
             "Rook" -> canEatPosition =
-                (boardPosition[x][y] as Rook).isCanEat(position, boardPosition)
+                (boardPosition[x][y] as Rook).isCanEat(position, boardPosition, isWhiteTurn)
             "Knight" -> canEatPosition =
-                (boardPosition[x][y] as Knight).isCanEat(position, boardPosition)
+                (boardPosition[x][y] as Knight).isCanEat(position, boardPosition, isWhiteTurn)
             "Bishop" -> canEatPosition =
-                (boardPosition[x][y] as Bishop).isCanEat(position, boardPosition)
+                (boardPosition[x][y] as Bishop).isCanEat(position, boardPosition, isWhiteTurn)
             "Queen" -> canEatPosition =
-                (boardPosition[x][y] as Queen).isCanEat(position, boardPosition)
+                (boardPosition[x][y] as Queen).isCanEat(position, boardPosition, isWhiteTurn)
             "King" -> canEatPosition =
-                (boardPosition[x][y] as King).isCanEat(position, boardPosition)
+                (boardPosition[x][y] as King).isCanEat(position, boardPosition, isWhiteTurn)
         }
 
         getCanEatTiles(canEatPosition)
