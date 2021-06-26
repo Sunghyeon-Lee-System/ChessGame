@@ -1,8 +1,10 @@
 package com.example.chessgame.activities
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
@@ -47,6 +49,57 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
 
             if (x == clickedTileX && y == clickedTileY) {
                 isValidTouch = false
+            } else if (clickedTileType == "King") {
+                if (clickedTileColor) {
+                    MovementOfKindAndRook.isWhiteKingMoved = true
+                } else {
+                    MovementOfKindAndRook.isBlackKingMoved = true
+                }
+            } else if (clickedTileType == "Rook") {
+                if (y == 0) {
+                    if (clickedTileColor) {
+                        MovementOfKindAndRook.isWhiteLeftRookMoved = true
+                    } else {
+                        MovementOfKindAndRook.isBlackLeftRookMoved = true
+                    }
+                } else if (y == 7) {
+                    if (clickedTileColor) {
+                        MovementOfKindAndRook.isWhiteRightRookMoved = true
+                    } else {
+                        MovementOfKindAndRook.isBlackRightRookMoved = true
+                    }
+                }
+            }
+
+            when {
+                MovementOfKindAndRook.whiteKSC -> {
+                    if (x == 7 && y == 6) {
+                        boardPosition[7][7] = Empty()
+                        boardPosition[7][5] = Rook(true)
+                    }
+                    MovementOfKindAndRook.whiteKSC = false
+                }
+                MovementOfKindAndRook.whiteQSC -> {
+                    if (x == 7 && y == 2) {
+                        boardPosition[7][0] = Empty()
+                        boardPosition[7][3] = Rook(true)
+                    }
+                    MovementOfKindAndRook.whiteQSC = false
+                }
+                MovementOfKindAndRook.blackKSC -> {
+                    if (x == 0 && y == 6) {
+                        boardPosition[0][7] = Empty()
+                        boardPosition[0][5] = Rook(false)
+                    }
+                    MovementOfKindAndRook.blackKSC = false
+                }
+                MovementOfKindAndRook.blackQSC -> {
+                    if (x == 0 && y == 2) {
+                        boardPosition[0][0] = Empty()
+                        boardPosition[0][3] = Rook(false)
+                    }
+                    MovementOfKindAndRook.blackQSC = false
+                }
             }
 
             boardPosition[clickedTileX][clickedTileY] = Empty()
@@ -242,6 +295,25 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             "Empty" -> canMovePositions =
                 (boardPosition[x][y] as Empty).getCanMoveArea(position, boardPosition)
         }
+        val castlingPositionSet: HashSet<Position>? = DetailedRules(boardPosition).castlingManager()
+        if (castlingPositionSet != null) {
+            val castlingIter = castlingPositionSet.iterator()
+            while (castlingIter.hasNext()) {
+                val castlingPosition = castlingIter.next()
+                if (boardPosition[x][y] is King) {
+                    if (castlingPosition.x == 0) {
+                        if(!isWhiteTurn){
+                            canMovePositions.add(castlingPosition)
+                        }
+                    }else if(castlingPosition.x == 7){
+                        if(isWhiteTurn){
+                            canMovePositions.add(castlingPosition)
+                        }
+                    }
+                }
+            }
+        }
+
         val iter: Iterator<Position> = canMovePositions.iterator()
         while (iter.hasNext()) {
             val pos = iter.next()
@@ -547,5 +619,12 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             }
             isWhiteTurn = !isWhiteTurn
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+        finishAndRemoveTask()
+        android.os.Process.killProcess(android.os.Process.myPid())
     }
 }
