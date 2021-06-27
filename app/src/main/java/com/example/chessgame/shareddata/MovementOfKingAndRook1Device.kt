@@ -1,6 +1,6 @@
-package com.example.chessgame
+package com.example.chessgame.shareddata
 
-class MovementOfKindAndRook {
+class MovementOfKingAndRook1Device {
     companion object {
         var isWhiteKingMoved = false
         var isWhiteLeftRookMoved = false

@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
+import com.example.chessgame.shareddata.MovementOfKingAndRook1Device
 import kotlinx.android.synthetic.main.activity_one_device_game.*
 
 class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
@@ -15,6 +16,8 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isValidTouch = true
     private var isWhiteTurn = false
+    private var canEnpassant = false
+    private val enpassantPosition = HashSet<Position>()
 
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
@@ -47,57 +50,96 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 else -> true
             }
 
-            if (x == clickedTileX && y == clickedTileY) {
-                isValidTouch = false
-            } else if (clickedTileType == "King") {
-                if (clickedTileColor) {
-                    MovementOfKindAndRook.isWhiteKingMoved = true
-                } else {
-                    MovementOfKindAndRook.isBlackKingMoved = true
-                }
-            } else if (clickedTileType == "Rook") {
-                if (y == 0) {
-                    if (clickedTileColor) {
-                        MovementOfKindAndRook.isWhiteLeftRookMoved = true
-                    } else {
-                        MovementOfKindAndRook.isBlackLeftRookMoved = true
-                    }
-                } else if (y == 7) {
-                    if (clickedTileColor) {
-                        MovementOfKindAndRook.isWhiteRightRookMoved = true
-                    } else {
-                        MovementOfKindAndRook.isBlackRightRookMoved = true
+            val enpassantIter = enpassantPosition.iterator()
+            while (enpassantIter.hasNext()) {
+                val enpassant = enpassantIter.next()
+
+                if (enpassant == Position(x, y)) {
+                    if (x == 5) {
+                        boardPosition[x - 1][y] = Empty()
+                    } else if (x == 2) {
+                        boardPosition[x + 1][y] = Empty()
                     }
                 }
             }
 
-            if(MovementOfKindAndRook.whiteKSC) {
+            if (x == clickedTileX && y == clickedTileY) {
+                isValidTouch = false
+            } else if (clickedTileType == "King") {
+                if (clickedTileColor) {
+                    MovementOfKingAndRook1Device.isWhiteKingMoved = true
+                } else {
+                    MovementOfKingAndRook1Device.isBlackKingMoved = true
+                }
+            } else if (clickedTileType == "Rook") {
+                if (y == 0) {
+                    if (clickedTileColor) {
+                        MovementOfKingAndRook1Device.isWhiteLeftRookMoved = true
+                    } else {
+                        MovementOfKingAndRook1Device.isBlackLeftRookMoved = true
+                    }
+                } else if (y == 7) {
+                    if (clickedTileColor) {
+                        MovementOfKingAndRook1Device.isWhiteRightRookMoved = true
+                    } else {
+                        MovementOfKingAndRook1Device.isBlackRightRookMoved = true
+                    }
+                }
+            }
+
+            if (MovementOfKingAndRook1Device.whiteKSC) {
                 if (x == 7 && y == 6) {
                     boardPosition[7][7] = Empty()
                     boardPosition[7][5] = Rook(true)
                 }
-                MovementOfKindAndRook.whiteKSC = false
+                MovementOfKingAndRook1Device.whiteKSC = false
             }
-            if(MovementOfKindAndRook.whiteQSC) {
+            if (MovementOfKingAndRook1Device.whiteQSC) {
                 if (x == 7 && y == 2) {
                     boardPosition[7][0] = Empty()
                     boardPosition[7][3] = Rook(true)
                 }
-                MovementOfKindAndRook.whiteQSC = false
+                MovementOfKingAndRook1Device.whiteQSC = false
             }
-            if(MovementOfKindAndRook.blackKSC) {
+            if (MovementOfKingAndRook1Device.blackKSC) {
                 if (x == 0 && y == 6) {
                     boardPosition[0][7] = Empty()
                     boardPosition[0][5] = Rook(false)
                 }
-                MovementOfKindAndRook.blackKSC = false
+                MovementOfKingAndRook1Device.blackKSC = false
             }
-            if(MovementOfKindAndRook.blackQSC) {
+            if (MovementOfKingAndRook1Device.blackQSC) {
                 if (x == 0 && y == 2) {
                     boardPosition[0][0] = Empty()
                     boardPosition[0][3] = Rook(false)
                 }
-                MovementOfKindAndRook.blackQSC = false
+                MovementOfKingAndRook1Device.blackQSC = false
+            }
+
+            val enpassant = DetailedRules(boardPosition).enpassantManager()
+            if (enpassant.isNotEmpty()) {
+                val iterator = enpassant.iterator()
+                while (iterator.hasNext()) {
+                    val enpassantPair = iterator.next()
+                    val first = enpassantPair.first
+                    val second = enpassantPair.second
+
+                    if (first.x == 6) {
+                        if (x == second.x - 2 && y == second.y) {
+                            canEnpassant = true
+                            enpassantPosition.add(Position(first.x - 1, first.y))
+                        } else {
+                            android.util.Log.d("ChessGame", "이시현 바보")
+                        }
+                    } else if (first.x == 1) {
+                        if (x == first.x + 2 && y == first.y) {
+                            canEnpassant = true
+                            enpassantPosition.add(Position(first.x + 1, first.y))
+                        } else {
+                            android.util.Log.d("ChessGame", "이가현 바보")
+                        }
+                    }
+                }
             }
 
             boardPosition[clickedTileX][clickedTileY] = Empty()
@@ -293,6 +335,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             "Empty" -> canMovePositions =
                 (boardPosition[x][y] as Empty).getCanMoveArea(position, boardPosition)
         }
+
         val castlingPositionSet: HashSet<Position>? = DetailedRules(boardPosition).castlingManager()
         if (castlingPositionSet != null) {
             val castlingIter = castlingPositionSet.iterator()
@@ -300,11 +343,11 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 val castlingPosition = castlingIter.next()
                 if (boardPosition[x][y] is King) {
                     if (castlingPosition.x == 0) {
-                        if(!isWhiteTurn){
+                        if (!isWhiteTurn) {
                             canMovePositions.add(castlingPosition)
                         }
-                    }else if(castlingPosition.x == 7){
-                        if(isWhiteTurn){
+                    } else if (castlingPosition.x == 7) {
+                        if (isWhiteTurn) {
                             canMovePositions.add(castlingPosition)
                         }
                     }
@@ -323,7 +366,6 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             textView.setBackgroundColor(resources.getColor(R.color.CANGO_BOARD))
             boardPosition[x][y].onCanMove = true
         }
-        canMovePositions.clear()
 
 
         when (pieceKind(boardPosition[x][y])) {
@@ -341,6 +383,13 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 (boardPosition[x][y] as King).isCanEat(position, boardPosition, isWhiteTurn)
         }
 
+        val enpassantIterator = enpassantPosition.iterator()
+        while (enpassantIterator.hasNext()) {
+            if (canEnpassant) {
+                canEatPosition.add(enpassantIterator.next())
+            }
+        }
+
         getCanEatTiles(canEatPosition)
         val canEatPositionIter: Iterator<Position> = canEatPosition.iterator()
         while (canEatPositionIter.hasNext()) {
@@ -350,7 +399,10 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             boardPosition[x][y].onCanMove = true
         }
         canEatPosition.clear()
-        setMoveListener()
+        if(canMovePositions.isNotEmpty()){
+            setMoveListener()
+            canMovePositions.clear()
+        }
     }
 
     private fun getCanEatTiles(targetPos: HashSet<Position>) {

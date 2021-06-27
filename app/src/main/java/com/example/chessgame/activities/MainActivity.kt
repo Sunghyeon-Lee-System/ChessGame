@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
+import com.example.chessgame.shareddata.MovementOfKingAndRook2Device
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -75,6 +76,55 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             if (x == clickedTileX && y == clickedTileY) {
                 isValidTouch = false
+            } else if (clickedTileType == "King") {
+                if (clickedTileColor) {
+                    MovementOfKingAndRook2Device.isWhiteKingMoved = true
+                } else {
+                    MovementOfKingAndRook2Device.isBlackKingMoved = true
+                }
+            } else if (clickedTileType == "Rook") {
+                if (y == 0) {
+                    if (clickedTileColor) {
+                        MovementOfKingAndRook2Device.isWhiteLeftRookMoved = true
+                    } else {
+                        MovementOfKingAndRook2Device.isBlackLeftRookMoved = true
+                    }
+                } else if (y == 7) {
+                    if (clickedTileColor) {
+                        MovementOfKingAndRook2Device.isWhiteRightRookMoved = true
+                    } else {
+                        MovementOfKingAndRook2Device.isBlackRightRookMoved = true
+                    }
+                }
+            }
+
+            if(MovementOfKingAndRook2Device.whiteKSC) {
+                if (x == 7 && y == 6) {
+                    boardPosition[7][7] = Empty()
+                    boardPosition[7][5] = Rook(true)
+                }
+                MovementOfKingAndRook2Device.whiteKSC = false
+            }
+            if(MovementOfKingAndRook2Device.whiteQSC) {
+                if (x == 7 && y == 2) {
+                    boardPosition[7][0] = Empty()
+                    boardPosition[7][3] = Rook(true)
+                }
+                MovementOfKingAndRook2Device.whiteQSC = false
+            }
+            if(MovementOfKingAndRook2Device.blackKSC) {
+                if (x == 0 && y == 6) {
+                    boardPosition[0][7] = Empty()
+                    boardPosition[0][5] = Rook(false)
+                }
+                MovementOfKingAndRook2Device.blackKSC = false
+            }
+            if(MovementOfKingAndRook2Device.blackQSC) {
+                if (x == 0 && y == 2) {
+                    boardPosition[0][0] = Empty()
+                    boardPosition[0][3] = Rook(false)
+                }
+                MovementOfKingAndRook2Device.blackQSC = false
             }
 
             boardPosition[clickedTileX][clickedTileY] = Empty()
@@ -367,6 +417,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 canMovePositions.clear()
             }
         }
+
+        val castlingPositionSet: HashSet<Position>? = DetailedRules(boardPosition).castlingManager()
+        if (castlingPositionSet != null) {
+            val castlingIter = castlingPositionSet.iterator()
+            while (castlingIter.hasNext()) {
+                val castlingPosition = castlingIter.next()
+                if (boardPosition[x][y] is King) {
+                    if (castlingPosition.x == 0) {
+                        if(!isWhiteTurn){
+                            canMovePositions.add(castlingPosition)
+                        }
+                    }else if(castlingPosition.x == 7){
+                        if(isWhiteTurn){
+                            canMovePositions.add(castlingPosition)
+                        }
+                    }
+                }
+            }
+        }
+
         val iter: Iterator<Position> = canMovePositions.iterator()
         while (iter.hasNext()) {
             val pos = iter.next()
