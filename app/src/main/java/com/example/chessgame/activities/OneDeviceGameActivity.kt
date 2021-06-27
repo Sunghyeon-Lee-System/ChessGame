@@ -125,18 +125,14 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                     val second = enpassantPair.second
 
                     if (first.x == 6) {
-                        if (x == second.x - 2 && y == second.y) {
+                        if (x == first.x - 2 && y == first.y) {
                             canEnpassant = true
                             enpassantPosition.add(Position(first.x - 1, first.y))
-                        } else {
-                            android.util.Log.d("ChessGame", "이시현 바보")
                         }
                     } else if (first.x == 1) {
                         if (x == first.x + 2 && y == first.y) {
                             canEnpassant = true
                             enpassantPosition.add(Position(first.x + 1, first.y))
-                        } else {
-                            android.util.Log.d("ChessGame", "이가현 바보")
                         }
                     }
                 }

@@ -1,9 +1,11 @@
 package com.example.chessgame.activities
 
 import android.app.ProgressDialog
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
@@ -39,6 +41,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var isValidTouch = true
     private var isWhiteTurn = false
 
+    private var canEnpassant = false
+    private val enpassantPosition = HashSet<Position>()
+
     private lateinit var mMyName: String
     private var mYourName = "yourName"
     private lateinit var progressDialog: ProgressDialog
@@ -72,6 +77,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 "Queen" -> (boardPosition[clickedTileX][clickedTileY] as Queen).colorId
                 "King" -> (boardPosition[clickedTileX][clickedTileY] as King).colorId
                 else -> true
+            }
+
+            val enpassantIter = enpassantPosition.iterator()
+            while (enpassantIter.hasNext()) {
+                val enpassant = enpassantIter.next()
+
+                if (enpassant == Position(x, y)) {
+                    if (x == 5) {
+                        boardPosition[x - 1][y] = Empty()
+                    } else if (x == 2) {
+                        boardPosition[x + 1][y] = Empty()
+                    }
+                }
             }
 
             if (x == clickedTileX && y == clickedTileY) {
@@ -125,6 +143,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     boardPosition[0][3] = Rook(false)
                 }
                 MovementOfKingAndRook2Device.blackQSC = false
+            }
+
+            val enpassant = DetailedRules(boardPosition).enpassantManager()
+            if (enpassant.isNotEmpty()) {
+                val iterator = enpassant.iterator()
+                while (iterator.hasNext()) {
+                    val enpassantPair = iterator.next()
+                    val first = enpassantPair.first
+                    val second = enpassantPair.second
+
+                    if (first.x == 6) {
+                        if (x == first.x - 2 && y == first.y) {
+                            canEnpassant = true
+                            enpassantPosition.add(Position(first.x - 1, first.y))
+                        }
+                    } else if (first.x == 1) {
+                        if (x == first.x + 2 && y == first.y) {
+                            canEnpassant = true
+                            enpassantPosition.add(Position(first.x + 1, first.y))
+                        }
+                    }
+                }
             }
 
             boardPosition[clickedTileX][clickedTileY] = Empty()
@@ -448,7 +488,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             textView.setBackgroundColor(resources.getColor(R.color.CANGO_BOARD))
             boardPosition[x][y].onCanMove = true
         }
-        canMovePositions.clear()
 
         when (pieceKind(boardPosition[x][y])) {
             "Pawn" -> canEatPosition =
@@ -464,6 +503,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             "King" -> canEatPosition =
                 (boardPosition[x][y] as King).isCanEat(position, boardPosition, isIWhite)
         }
+
+        val enpassantIterator = enpassantPosition.iterator()
+        while (enpassantIterator.hasNext()) {
+            if (canEnpassant) {
+                canEatPosition.add(enpassantIterator.next())
+            }
+        }
+
         if (isIWhite) {
             if (turnCount.toInt() % 2 != 1) {
                 canMovePositions.clear()
@@ -482,7 +529,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             boardPosition[x][y].onCanMove = true
         }
         canEatPosition.clear()
-        setMoveListener()
+        if(canMovePositions.isNotEmpty()){
+            setMoveListener()
+            canMovePositions.clear()
+        }
     }
 
     private fun getCanEatTiles(targetPos: HashSet<Position>) {
@@ -764,5 +814,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (!isIWhite) {
             board.rotation = 180F
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+        finishAndRemoveTask()
+        android.os.Process.killProcess(android.os.Process.myPid())
     }
 }
