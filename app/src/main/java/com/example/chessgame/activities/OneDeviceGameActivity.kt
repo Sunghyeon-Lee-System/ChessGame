@@ -71,35 +71,33 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-            when {
-                MovementOfKindAndRook.whiteKSC -> {
-                    if (x == 7 && y == 6) {
-                        boardPosition[7][7] = Empty()
-                        boardPosition[7][5] = Rook(true)
-                    }
-                    MovementOfKindAndRook.whiteKSC = false
+            if(MovementOfKindAndRook.whiteKSC) {
+                if (x == 7 && y == 6) {
+                    boardPosition[7][7] = Empty()
+                    boardPosition[7][5] = Rook(true)
                 }
-                MovementOfKindAndRook.whiteQSC -> {
-                    if (x == 7 && y == 2) {
-                        boardPosition[7][0] = Empty()
-                        boardPosition[7][3] = Rook(true)
-                    }
-                    MovementOfKindAndRook.whiteQSC = false
+                MovementOfKindAndRook.whiteKSC = false
+            }
+            if(MovementOfKindAndRook.whiteQSC) {
+                if (x == 7 && y == 2) {
+                    boardPosition[7][0] = Empty()
+                    boardPosition[7][3] = Rook(true)
                 }
-                MovementOfKindAndRook.blackKSC -> {
-                    if (x == 0 && y == 6) {
-                        boardPosition[0][7] = Empty()
-                        boardPosition[0][5] = Rook(false)
-                    }
-                    MovementOfKindAndRook.blackKSC = false
+                MovementOfKindAndRook.whiteQSC = false
+            }
+            if(MovementOfKindAndRook.blackKSC) {
+                if (x == 0 && y == 6) {
+                    boardPosition[0][7] = Empty()
+                    boardPosition[0][5] = Rook(false)
                 }
-                MovementOfKindAndRook.blackQSC -> {
-                    if (x == 0 && y == 2) {
-                        boardPosition[0][0] = Empty()
-                        boardPosition[0][3] = Rook(false)
-                    }
-                    MovementOfKindAndRook.blackQSC = false
+                MovementOfKindAndRook.blackKSC = false
+            }
+            if(MovementOfKindAndRook.blackQSC) {
+                if (x == 0 && y == 2) {
+                    boardPosition[0][0] = Empty()
+                    boardPosition[0][3] = Rook(false)
                 }
+                MovementOfKindAndRook.blackQSC = false
             }
 
             boardPosition[clickedTileX][clickedTileY] = Empty()
