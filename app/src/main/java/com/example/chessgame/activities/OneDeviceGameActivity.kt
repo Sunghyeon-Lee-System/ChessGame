@@ -4,12 +4,15 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
 import com.example.chessgame.shareddata.MovementOfKingAndRook1Device
 import kotlinx.android.synthetic.main.activity_one_device_game.*
+import kotlinx.android.synthetic.main.check_dialog.view.*
 
 class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
@@ -147,6 +150,40 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 "Bishop" -> boardPosition[x][y] = Bishop(clickedTileColor)
                 "Queen" -> boardPosition[x][y] = Queen(clickedTileColor)
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
+            }
+
+            val isKingInDanger =
+                DetailedRules(boardPosition).isKingInDanger(x, y, clickedTileType, clickedTileColor)
+            android.util.Log.i("ChessGame", isKingInDanger.toString())
+            if (isKingInDanger) {
+                if (!clickedTileColor) {
+                    val checkView =
+                        View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
+                    val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                    builder.setView(checkView)
+                    val dialog = builder.create()
+                    dialog.show()
+                    dialog.window?.setLayout(650, 400)
+
+                    val okButton: TextView = checkView.okButton
+                    okButton.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                } else {
+                    val checkView =
+                        View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
+                    checkView.rotation = 180F
+                    val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                    builder.setView(checkView)
+                    val dialog = builder.create()
+                    dialog.show()
+                    dialog.window?.setLayout(650, 400)
+
+                    val okButton: TextView = checkView.okButton
+                    okButton.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                }
             }
 
             pawnPromotion()
@@ -394,8 +431,9 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             val y = pos.y
             boardPosition[x][y].onCanMove = true
         }
+
         canEatPosition.clear()
-        if(canMovePositions.isNotEmpty()){
+        if (canMovePositions.isNotEmpty()) {
             setMoveListener()
             canMovePositions.clear()
         }

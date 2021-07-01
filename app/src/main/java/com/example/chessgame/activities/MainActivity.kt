@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.check_dialog.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -30,16 +32,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val boardData = game.child("boardData")
     private val firstOrderData = game.child("firstOrderData")
     private val orderData = game.child("orderData")
+    private val checkData = game.child("checkData")
 
     private var isMyTurn = true
     private var isIWhite = false
-    private var turnCount = 0L
+    private var turnCount = -1L
 
     private var isFirstCall_name = true
     private var isFirstCall_order = true
 
     private var isValidTouch = true
-    private var isWhiteTurn = false
+    private var isWhiteTurn = true
 
     private var canEnpassant = false
     private val enpassantPosition = HashSet<Position>()
@@ -116,28 +119,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-            if(MovementOfKingAndRook2Device.whiteKSC) {
+            if (MovementOfKingAndRook2Device.whiteKSC) {
                 if (x == 7 && y == 6) {
                     boardPosition[7][7] = Empty()
                     boardPosition[7][5] = Rook(true)
                 }
                 MovementOfKingAndRook2Device.whiteKSC = false
             }
-            if(MovementOfKingAndRook2Device.whiteQSC) {
+            if (MovementOfKingAndRook2Device.whiteQSC) {
                 if (x == 7 && y == 2) {
                     boardPosition[7][0] = Empty()
                     boardPosition[7][3] = Rook(true)
                 }
                 MovementOfKingAndRook2Device.whiteQSC = false
             }
-            if(MovementOfKingAndRook2Device.blackKSC) {
+            if (MovementOfKingAndRook2Device.blackKSC) {
                 if (x == 0 && y == 6) {
                     boardPosition[0][7] = Empty()
                     boardPosition[0][5] = Rook(false)
                 }
                 MovementOfKingAndRook2Device.blackKSC = false
             }
-            if(MovementOfKingAndRook2Device.blackQSC) {
+            if (MovementOfKingAndRook2Device.blackQSC) {
                 if (x == 0 && y == 2) {
                     boardPosition[0][0] = Empty()
                     boardPosition[0][3] = Rook(false)
@@ -176,6 +179,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 "Bishop" -> boardPosition[x][y] = Bishop(clickedTileColor)
                 "Queen" -> boardPosition[x][y] = Queen(clickedTileColor)
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
+            }
+
+            val isKingInDanger =
+                DetailedRules(boardPosition).isKingInDanger(x, y, clickedTileType, clickedTileColor)
+            android.util.Log.i("ChessGame", isKingInDanger.toString())
+            if (isKingInDanger) {
+                checkData.setValue(mMyName)
+                /*val checkView =
+                    View.inflate(this@MainActivity, R.layout.check_dialog, null)
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setView(checkView)
+                val dialog = builder.create()
+                dialog.show()
+                dialog.window?.setLayout(650, 400)
+
+                val okButton: TextView = checkView.okButton
+                okButton.setOnClickListener {
+                    dialog.dismiss()
+                }*/
             }
 
             pawnPromotion()
@@ -284,6 +306,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 turnCount = snapshot.value as Long
                 turnManager()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+
+        checkData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(snapshot.value != null){
+                    val checkName = snapshot.value as String
+                    if (checkName != mMyName) {
+                        val checkView =
+                            View.inflate(this@MainActivity, R.layout.check_dialog, null)
+                        val builder = AlertDialog.Builder(this@MainActivity)
+                        builder.setView(checkView)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialog.window?.setLayout(650, 400)
+
+                        val okButton: TextView = checkView.okButton
+                        okButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
+                    }
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -449,11 +496,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 (boardPosition[x][y] as Empty).getCanMoveArea(position, boardPosition)
         }
         if (isIWhite) {
-            if (turnCount.toInt() % 2 != 1) {
+            if (turnCount.toInt() % 2 != 0) {
                 canMovePositions.clear()
             }
         } else {
-            if (turnCount.toInt() % 2 != 0) {
+            if (turnCount.toInt() % 2 != 1) {
                 canMovePositions.clear()
             }
         }
@@ -465,11 +512,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val castlingPosition = castlingIter.next()
                 if (boardPosition[x][y] is King) {
                     if (castlingPosition.x == 0) {
-                        if(!isWhiteTurn){
+                        if (!isWhiteTurn) {
                             canMovePositions.add(castlingPosition)
                         }
-                    }else if(castlingPosition.x == 7){
-                        if(isWhiteTurn){
+                    } else if (castlingPosition.x == 7) {
+                        if (isWhiteTurn) {
                             canMovePositions.add(castlingPosition)
                         }
                     }
@@ -511,15 +558,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        if (isIWhite) {
-            if (turnCount.toInt() % 2 != 1) {
-                canMovePositions.clear()
-            }
-        } else {
-            if (turnCount.toInt() % 2 != 0) {
-                canMovePositions.clear()
-            }
-        }
         getCanEatTiles(canEatPosition)
         val canEatPositionIter: Iterator<Position> = canEatPosition.iterator()
         while (canEatPositionIter.hasNext()) {
@@ -529,7 +567,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             boardPosition[x][y].onCanMove = true
         }
         canEatPosition.clear()
-        if(canMovePositions.isNotEmpty()){
+        if (canMovePositions.isNotEmpty()) {
             setMoveListener()
             canMovePositions.clear()
         }

@@ -34,6 +34,6 @@
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="30dp"
-        android:text="Promotion"
+        android:text="승진  Promotion"
         android:rotation="180" />
 </LinearLayout>

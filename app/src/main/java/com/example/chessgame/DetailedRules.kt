@@ -1,8 +1,6 @@
 package com.example.chessgame
 
-import com.example.chessgame.pieces.Empty
-import com.example.chessgame.pieces.Pawn
-import com.example.chessgame.pieces.Piece
+import com.example.chessgame.pieces.*
 import com.example.chessgame.shareddata.MovementOfKingAndRook1Device
 import com.example.chessgame.shareddata.MovementOfKingAndRook2Device
 
@@ -115,5 +113,43 @@ class DetailedRules(val board: Array<Array<Piece>>) {
             }
         }
         return state
+    }
+
+    fun isKingInDanger(
+        x: Int,
+        y: Int,
+        clickedTileType: String,
+        clickedTileColor: Boolean
+    ): Boolean {
+        val canEatPosition = when (clickedTileType) {
+            "Pawn" -> (board[x][y] as Pawn).isCanEat(Position(x, y), board, clickedTileColor)
+            "Rook" -> (board[x][y] as Rook).isCanEat(Position(x, y), board, clickedTileColor)
+            "Knight" -> (board[x][y] as Knight).isCanEat(Position(x, y), board, clickedTileColor)
+            "Bishop" -> (board[x][y] as Bishop).isCanEat(Position(x, y), board, clickedTileColor)
+            "Queen" -> (board[x][y] as Queen).isCanEat(Position(x, y), board, clickedTileColor)
+            "King" -> (board[x][y] as King).isCanEat(Position(x, y), board, clickedTileColor)
+            else -> HashSet()
+        }
+        val iterator=canEatPosition.iterator()
+
+        for (i in 0..7) {
+            for (j in 0..7) {
+                if (board[i][j] is King) {
+                    if((board[i][j] as King).colorId != clickedTileColor){
+                        val kingPosition = Position(i, j)
+                        android.util.Log.i("ChessGame", kingPosition.toString())
+
+                        while(iterator.hasNext()){
+                            val position=iterator.next()
+                            if(position == kingPosition){
+                                return true
+                            }
+                        }
+                        break
+                    }
+                }
+            }
+        }
+        return false
     }
 }
