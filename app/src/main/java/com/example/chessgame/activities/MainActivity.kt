@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isFirstCall_name = true
     private var isFirstCall_order = true
+    private var isFirstCall_check = true
 
     private var isValidTouch = true
     private var isWhiteTurn = true
@@ -183,21 +184,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             val isKingInDanger =
                 DetailedRules(boardPosition).isKingInDanger(x, y, clickedTileType, clickedTileColor)
-            android.util.Log.i("ChessGame", isKingInDanger.toString())
             if (isKingInDanger) {
                 checkData.setValue(mMyName)
-                /*val checkView =
-                    View.inflate(this@MainActivity, R.layout.check_dialog, null)
-                val builder = AlertDialog.Builder(this@MainActivity)
-                builder.setView(checkView)
-                val dialog = builder.create()
-                dialog.show()
-                dialog.window?.setLayout(650, 400)
-
-                val okButton: TextView = checkView.okButton
-                okButton.setOnClickListener {
-                    dialog.dismiss()
-                }*/
             }
 
             pawnPromotion()
@@ -235,7 +223,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setListener()
 
         progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Wait...")
+        progressDialog.setMessage("다른 사용자의 접속을 기다리는 중입니다...")
         progressDialog.setCancelable(false)
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Horizontal)
         progressDialog.show()
@@ -294,8 +282,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
                     rotate()
                 }
-
-                android.util.Log.i("ChessGame", order.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -315,19 +301,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         checkData.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.value != null){
-                    val checkName = snapshot.value as String
-                    if (checkName != mMyName) {
-                        val checkView =
-                            View.inflate(this@MainActivity, R.layout.check_dialog, null)
-                        val builder = AlertDialog.Builder(this@MainActivity)
-                        builder.setView(checkView)
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setLayout(650, 400)
+                    if(isFirstCall_check){
+                        isFirstCall_check=false
+                    }else{
+                        val checkName = snapshot.value as String
+                        if (checkName != mMyName) {
+                            val checkView =
+                                View.inflate(this@MainActivity, R.layout.check_dialog, null)
+                            val builder = AlertDialog.Builder(this@MainActivity)
+                            builder.setView(checkView)
+                            val dialog = builder.create()
+                            dialog.show()
+                            dialog.window?.setLayout(650, 400)
 
-                        val okButton: TextView = checkView.okButton
-                        okButton.setOnClickListener {
-                            dialog.dismiss()
+                            val okButton: TextView = checkView.okButton
+                            okButton.setOnClickListener {
+                                dialog.dismiss()
+                            }
                         }
                     }
                 }
