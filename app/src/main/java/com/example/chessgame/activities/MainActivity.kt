@@ -312,9 +312,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                             builder.setView(checkView)
                             val dialog = builder.create()
                             dialog.show()
-                            dialog.window?.setLayout(650, 400)
+                            dialog.window?.setLayout(650, 500)
 
-                            val okButton: TextView = checkView.okButton
+                            val okButton: TextView = checkView.check_okButton
                             okButton.setOnClickListener {
                                 dialog.dismiss()
                             }

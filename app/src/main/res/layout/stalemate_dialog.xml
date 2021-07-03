@@ -4,17 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="#CFCB73">
+    android:background="#43B63F">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="체크 Check"
+        android:gravity="center"
+        android:text="스테일메이트\nStaleMate"
         android:textSize="40dp"
         android:textStyle="bold" />
     <Button
-        android:id="@+id/check_okButton"
+        android:id="@+id/stalemate_okButton"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="OK"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:textStyle="bold" />
 </LinearLayout>

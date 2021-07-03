@@ -65,6 +65,13 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         }
     }
 
+    private fun isInBoard(x: Int, y: Int): Boolean {
+        if (x in 0..7 && y in 0..7) {
+            return true
+        }
+        return false
+    }
+
     fun enpassantManager(): HashSet<Pair<Position, Position>> {
         val state = HashSet<Pair<Position, Position>>()
 
@@ -130,24 +137,120 @@ class DetailedRules(val board: Array<Array<Piece>>) {
             "King" -> (board[x][y] as King).isCanEat(Position(x, y), board, clickedTileColor)
             else -> HashSet()
         }
-        val iterator=canEatPosition.iterator()
+        val iterator = canEatPosition.iterator()
 
         for (i in 0..7) {
             for (j in 0..7) {
                 if (board[i][j] is King) {
-                    if((board[i][j] as King).colorId != clickedTileColor){
+                    if ((board[i][j] as King).colorId != clickedTileColor) {
                         val kingPosition = Position(i, j)
-                        android.util.Log.i("ChessGame", kingPosition.toString())
 
-                        while(iterator.hasNext()){
-                            val position=iterator.next()
-                            if(position == kingPosition){
+                        while (iterator.hasNext()) {
+                            val position = iterator.next()
+                            if (position == kingPosition) {
                                 return true
                             }
                         }
                         break
                     }
                 }
+            }
+        }
+        return false
+    }
+
+    private fun getKingPosition(color: Boolean): Position {
+        for (i in 0..7) {
+            for (j in 0..7) {
+                if (board[i][j] is King) {
+                    if ((board[i][j] as King).colorId == color) {
+                        return Position(i, j)
+                    }
+                }
+            }
+        }
+        return Position(-1, -1)
+    }
+
+    fun isCheck(x: Int, y: Int, color: Boolean): Boolean {
+        val canEatSet = HashSet<HashSet<Position>>()
+
+        for (i in 0..7) {
+            for (j in 0..7) {
+                when (board[i][j]) {
+                    is Pawn -> canEatSet.add(
+                        (board[i][j] as Pawn).getCanMoveArea(
+                            Position(i, j),
+                            board,
+                            !color
+                        )
+                    )
+                    is Rook -> canEatSet.add(
+                        (board[i][j] as Rook).getCanMoveArea(
+                            Position(i, j),
+                            board,
+                            !color
+                        )
+                    )
+                    is Knight -> canEatSet.add(
+                        (board[i][j] as Knight).getCanMoveArea(
+                            Position(i, j),
+                            board,
+                            !color
+                        )
+                    )
+                    is Bishop -> canEatSet.add(
+                        (board[i][j] as Bishop).getCanMoveArea(
+                            Position(i, j),
+                            board,
+                            !color
+                        )
+                    )
+                    is Queen -> canEatSet.add(
+                        (board[i][j] as Queen).getCanMoveArea(
+                            Position(i, j),
+                            board,
+                            !color
+                        )
+                    )
+                    is King -> {
+                    }
+                }
+            }
+        }
+
+        val bigIterator = canEatSet.iterator()
+        while (bigIterator.hasNext()) {
+            val smallIterator = bigIterator.next().iterator()
+            while (smallIterator.hasNext()) {
+                if (smallIterator.next() == Position(x, y)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    fun isCheckMate(color: Boolean): Boolean {
+        var aroundOfKingIsEmpty = false
+        val kingPosition = getKingPosition(!color)
+        val x = kingPosition.x
+        val y = kingPosition.y
+
+        for (i in -1..1) {
+            for (j in -1..1) {
+                if (isInBoard(x + i, y + j)) {
+                    if (board[x + i][y + j] is Empty) {
+                        aroundOfKingIsEmpty = true
+                    }
+                }
+            }
+        }
+
+        if (aroundOfKingIsEmpty) {
+            val canMoveSet = (board[x][y] as King).getCanMoveArea(kingPosition, board, !color)
+            if (canMoveSet.size == 1) {
+                return true
             }
         }
         return false

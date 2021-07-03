@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +12,8 @@ import com.example.chessgame.pieces.*
 import com.example.chessgame.shareddata.MovementOfKingAndRook1Device
 import kotlinx.android.synthetic.main.activity_one_device_game.*
 import kotlinx.android.synthetic.main.check_dialog.view.*
+import kotlinx.android.synthetic.main.checkmate_dialog.view.*
+import kotlinx.android.synthetic.main.stalemate_dialog.view.*
 
 class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
@@ -28,6 +29,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private val onMoveListener = View.OnClickListener {
         val intId = it.id
         val id = resources.getResourceEntryName(intId)
@@ -154,34 +156,64 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
 
             val isKingInDanger =
                 DetailedRules(boardPosition).isKingInDanger(x, y, clickedTileType, clickedTileColor)
-            android.util.Log.i("ChessGame", isKingInDanger.toString())
             if (isKingInDanger) {
-                if (!clickedTileColor) {
-                    val checkView =
-                        View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
-                    val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                    builder.setView(checkView)
-                    val dialog = builder.create()
-                    dialog.show()
-                    dialog.window?.setLayout(650, 400)
+                if(DetailedRules(boardPosition).isCheckMate(clickedTileColor)){
+                    if (!clickedTileColor) {
+                        val checkMateView =
+                            View.inflate(this@OneDeviceGameActivity, R.layout.checkmate_dialog, null)
+                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                        builder.setView(checkMateView)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialog.window?.setLayout(650, 500)
 
-                    val okButton: TextView = checkView.okButton
-                    okButton.setOnClickListener {
-                        dialog.dismiss()
+                        val okButton: TextView = checkMateView.checkmate_okButton
+                        okButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
+                    } else {
+                        val checkMateView =
+                            View.inflate(this@OneDeviceGameActivity, R.layout.checkmate_dialog, null)
+                        checkMateView.rotation = 180F
+                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                        builder.setView(checkMateView)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialog.window?.setLayout(650, 500)
+
+                        val okButton: TextView = checkMateView.checkmate_okButton
+                        okButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
                     }
-                } else {
-                    val checkView =
-                        View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
-                    checkView.rotation = 180F
-                    val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                    builder.setView(checkView)
-                    val dialog = builder.create()
-                    dialog.show()
-                    dialog.window?.setLayout(650, 400)
+                }else{
+                    if (!clickedTileColor) {
+                        val checkView =
+                            View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
+                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                        builder.setView(checkView)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialog.window?.setLayout(650, 360)
 
-                    val okButton: TextView = checkView.okButton
-                    okButton.setOnClickListener {
-                        dialog.dismiss()
+                        val okButton: TextView = checkView.check_okButton
+                        okButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
+                    } else {
+                        val checkView =
+                            View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
+                        checkView.rotation = 180F
+                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                        builder.setView(checkView)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialog.window?.setLayout(650, 360)
+
+                        val okButton: TextView = checkView.check_okButton
+                        okButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
                     }
                 }
             }
@@ -334,6 +366,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onClick(v: View?) {
         var canEatPosition = HashSet<Position>()
         val intId = v?.id
@@ -558,6 +591,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
         turnManager()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setMoveListener() {
         o_p00.setOnClickListener(onMoveListener)
         o_p01.setOnClickListener(onMoveListener)
