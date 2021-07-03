@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.check_dialog.view.*
+import kotlinx.android.synthetic.main.checkmate_dialog.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -185,7 +186,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val isKingInDanger =
                 DetailedRules(boardPosition).isKingInDanger(x, y, clickedTileType, clickedTileColor)
             if (isKingInDanger) {
-                checkData.setValue(mMyName)
+                if(DetailedRules(boardPosition).isCheckMate(clickedTileColor)){
+                    checkData.setValue(Pair(mMyName, "checkmate"))
+                }else{
+                    checkData.setValue(Pair(mMyName, "check"))
+                }
             }
 
             pawnPromotion()
@@ -304,19 +309,39 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     if(isFirstCall_check){
                         isFirstCall_check=false
                     }else{
-                        val checkName = snapshot.value as String
+                        val check = snapshot.value as HashMap<String, String>
+                        val checkName= check["first"]
+                        val checkSort=check["second"]
                         if (checkName != mMyName) {
-                            val checkView =
-                                View.inflate(this@MainActivity, R.layout.check_dialog, null)
-                            val builder = AlertDialog.Builder(this@MainActivity)
-                            builder.setView(checkView)
-                            val dialog = builder.create()
-                            dialog.show()
-                            dialog.window?.setLayout(650, 500)
+                            when(checkSort){
+                                "check" -> {
+                                    val checkView =
+                                        View.inflate(this@MainActivity, R.layout.check_dialog, null)
+                                    val builder = AlertDialog.Builder(this@MainActivity)
+                                    builder.setView(checkView)
+                                    val dialog = builder.create()
+                                    dialog.show()
+                                    dialog.window?.setLayout(650, 500)
 
-                            val okButton: TextView = checkView.check_okButton
-                            okButton.setOnClickListener {
-                                dialog.dismiss()
+                                    val okButton: TextView = checkView.check_okButton
+                                    okButton.setOnClickListener {
+                                        dialog.dismiss()
+                                    }
+                                }
+                                "checkmate" -> {
+                                    val checkMateView =
+                                        View.inflate(this@MainActivity, R.layout.checkmate_dialog, null)
+                                    val builder = AlertDialog.Builder(this@MainActivity)
+                                    builder.setView(checkMateView)
+                                    val dialog = builder.create()
+                                    dialog.show()
+                                    dialog.window?.setLayout(650, 500)
+
+                                    val okButton: TextView = checkMateView.checkmate_okButton
+                                    okButton.setOnClickListener {
+                                        dialog.dismiss()
+                                    }
+                                }
                             }
                         }
                     }
