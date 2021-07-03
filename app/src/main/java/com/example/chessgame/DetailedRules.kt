@@ -5,13 +5,14 @@ import com.example.chessgame.shareddata.MovementOfKingAndRook1Device
 import com.example.chessgame.shareddata.MovementOfKingAndRook2Device
 
 class DetailedRules(val board: Array<Array<Piece>>) {
+    var pPieceWhichCheck = Position(-1, -1)
+
     private fun isCanCastling(): HashSet<String> {
 
         val state = HashSet<String>()
         if (!MovementOfKingAndRook1Device.isWhiteKingMoved && !MovementOfKingAndRook1Device.isWhiteRightRookMoved
             && board[7][5] is Empty && board[7][6] is Empty
         ) {
-            android.util.Log.d("ChessGame", "first if")
             MovementOfKingAndRook1Device.whiteKSC = true
             MovementOfKingAndRook2Device.whiteKSC = true
             state.add("WhiteKSC")
@@ -19,7 +20,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         if (!MovementOfKingAndRook1Device.isWhiteKingMoved && !MovementOfKingAndRook1Device.isWhiteLeftRookMoved
             && board[7][1] is Empty && board[7][2] is Empty && board[7][3] is Empty
         ) {
-            android.util.Log.d("ChessGame", "second if")
             MovementOfKingAndRook1Device.whiteQSC = true
             MovementOfKingAndRook2Device.whiteQSC = true
             state.add("WhiteQSC")
@@ -27,7 +27,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         if (!MovementOfKingAndRook1Device.isBlackKingMoved && !MovementOfKingAndRook1Device.isBlackRightRookMoved
             && board[0][5] is Empty && board[0][6] is Empty
         ) {
-            android.util.Log.d("ChessGame", "third if")
             MovementOfKingAndRook1Device.blackKSC = true
             MovementOfKingAndRook2Device.blackKSC = true
             state.add("BlackKSC")
@@ -35,7 +34,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         if (!MovementOfKingAndRook1Device.isBlackKingMoved && !MovementOfKingAndRook1Device.isBlackLeftRookMoved
             && board[0][1] is Empty && board[0][2] is Empty && board[0][3] is Empty
         ) {
-            android.util.Log.d("ChessGame", "fourth if")
             MovementOfKingAndRook1Device.blackQSC = true
             MovementOfKingAndRook2Device.blackQSC = true
             state.add("BlackQSC")
@@ -129,14 +127,28 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         clickedTileColor: Boolean
     ): Boolean {
         val canEatPosition = when (clickedTileType) {
-            "Pawn" -> (board[x][y] as Pawn).isCanEat(Position(x, y), board, clickedTileColor)
-            "Rook" -> (board[x][y] as Rook).isCanEat(Position(x, y), board, clickedTileColor)
-            "Knight" -> (board[x][y] as Knight).isCanEat(Position(x, y), board, clickedTileColor)
-            "Bishop" -> (board[x][y] as Bishop).isCanEat(Position(x, y), board, clickedTileColor)
-            "Queen" -> (board[x][y] as Queen).isCanEat(Position(x, y), board, clickedTileColor)
-            "King" -> (board[x][y] as King).isCanEat(Position(x, y), board, clickedTileColor)
+            "Pawn" -> {
+                (board[x][y] as Pawn).isCanEat(Position(x, y), board, clickedTileColor)
+            }
+            "Rook" -> {
+                (board[x][y] as Rook).isCanEat(Position(x, y), board, clickedTileColor)
+            }
+            "Knight" -> {
+                (board[x][y] as Knight).isCanEat(Position(x, y), board, clickedTileColor)
+            }
+            "Bishop" -> {
+                (board[x][y] as Bishop).isCanEat(Position(x, y), board, clickedTileColor)
+            }
+            "Queen" -> {
+                (board[x][y] as Queen).isCanEat(Position(x, y), board, clickedTileColor)
+            }
+            "King" -> {
+                (board[x][y] as King).isCanEat(Position(x, y), board, clickedTileColor)
+            }
             else -> HashSet()
         }
+        pPieceWhichCheck = Position(x, y)
+
         val iterator = canEatPosition.iterator()
 
         for (i in 0..7) {
@@ -248,9 +260,11 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         }
 
         if (aroundOfKingIsEmpty) {
-            val canMoveSet = (board[x][y] as King).getCanMoveArea(kingPosition, board, !color)
-            if (canMoveSet.size == 1) {
-                return true
+            if (!isCheck(pPieceWhichCheck.x, pPieceWhichCheck.y, color)) {
+                val canMoveSet = (board[x][y] as King).getCanMoveArea(kingPosition, board, color)
+                if (canMoveSet.size == 1) {
+                    return true
+                }
             }
         }
         return false

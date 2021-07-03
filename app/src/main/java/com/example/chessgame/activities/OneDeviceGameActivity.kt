@@ -22,6 +22,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
     private var isWhiteTurn = false
     private var canEnpassant = false
     private val enpassantPosition = HashSet<Position>()
+    private var enpassantPawnPosition = Position(-1, -1)
 
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
@@ -132,11 +133,13 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                     if (first.x == 6) {
                         if (x == first.x - 2 && y == first.y) {
                             canEnpassant = true
+                            enpassantPawnPosition = second
                             enpassantPosition.add(Position(first.x - 1, first.y))
                         }
                     } else if (first.x == 1) {
                         if (x == first.x + 2 && y == first.y) {
                             canEnpassant = true
+                            enpassantPawnPosition = second
                             enpassantPosition.add(Position(first.x + 1, first.y))
                         }
                     }
@@ -154,13 +157,19 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
             }
 
+            val detailedRules = DetailedRules(boardPosition)
+
             val isKingInDanger =
-                DetailedRules(boardPosition).isKingInDanger(x, y, clickedTileType, clickedTileColor)
+                detailedRules.isKingInDanger(x, y, clickedTileType, clickedTileColor)
             if (isKingInDanger) {
-                if(DetailedRules(boardPosition).isCheckMate(clickedTileColor)){
+                if (detailedRules.isCheckMate(clickedTileColor)) {
                     if (!clickedTileColor) {
                         val checkMateView =
-                            View.inflate(this@OneDeviceGameActivity, R.layout.checkmate_dialog, null)
+                            View.inflate(
+                                this@OneDeviceGameActivity,
+                                R.layout.checkmate_dialog,
+                                null
+                            )
                         val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                         builder.setView(checkMateView)
                         val dialog = builder.create()
@@ -173,7 +182,11 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     } else {
                         val checkMateView =
-                            View.inflate(this@OneDeviceGameActivity, R.layout.checkmate_dialog, null)
+                            View.inflate(
+                                this@OneDeviceGameActivity,
+                                R.layout.checkmate_dialog,
+                                null
+                            )
                         checkMateView.rotation = 180F
                         val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                         builder.setView(checkMateView)
@@ -186,7 +199,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                             dialog.dismiss()
                         }
                     }
-                }else{
+                } else {
                     if (!clickedTileColor) {
                         val checkView =
                             View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
@@ -435,24 +448,41 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
 
 
         when (pieceKind(boardPosition[x][y])) {
-            "Pawn" -> canEatPosition =
-                (boardPosition[x][y] as Pawn).isCanEat(position, boardPosition, isWhiteTurn)
-            "Rook" -> canEatPosition =
-                (boardPosition[x][y] as Rook).isCanEat(position, boardPosition, isWhiteTurn)
-            "Knight" -> canEatPosition =
-                (boardPosition[x][y] as Knight).isCanEat(position, boardPosition, isWhiteTurn)
-            "Bishop" -> canEatPosition =
-                (boardPosition[x][y] as Bishop).isCanEat(position, boardPosition, isWhiteTurn)
-            "Queen" -> canEatPosition =
-                (boardPosition[x][y] as Queen).isCanEat(position, boardPosition, isWhiteTurn)
-            "King" -> canEatPosition =
-                (boardPosition[x][y] as King).isCanEat(position, boardPosition, isWhiteTurn)
+            "Pawn" -> {
+                canEatPosition =
+                    (boardPosition[x][y] as Pawn).isCanEat(position, boardPosition, isWhiteTurn)
+            }
+            "Rook" -> {
+                canEatPosition =
+                    (boardPosition[x][y] as Rook).isCanEat(position, boardPosition, isWhiteTurn)
+            }
+            "Knight" -> {
+                canEatPosition =
+                    (boardPosition[x][y] as Knight).isCanEat(position, boardPosition, isWhiteTurn)
+            }
+            "Bishop" -> {
+                canEatPosition =
+                    (boardPosition[x][y] as Bishop).isCanEat(position, boardPosition, isWhiteTurn)
+            }
+            "Queen" -> {
+                canEatPosition =
+                    (boardPosition[x][y] as Queen).isCanEat(position, boardPosition, isWhiteTurn)
+            }
+            "King" -> {
+                canEatPosition =
+                    (boardPosition[x][y] as King).isCanEat(position, boardPosition, isWhiteTurn)
+            }
         }
 
-        val enpassantIterator = enpassantPosition.iterator()
-        while (enpassantIterator.hasNext()) {
-            if (canEnpassant) {
-                canEatPosition.add(enpassantIterator.next())
+        if (canMovePositions.isNotEmpty()) {
+            val enpassantIterator = enpassantPosition.iterator()
+            while (enpassantIterator.hasNext()) {
+                if (canEnpassant) {
+                    val enpassant = enpassantIterator.next()
+                    if (Position(x, y) == enpassantPawnPosition) {
+                        canEatPosition.add(enpassant)
+                    }
+                }
             }
         }
 
