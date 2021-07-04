@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private var canEnpassant = false
     private val enpassantPosition = HashSet<Position>()
+    private var enpassantPawnPosition=Position(-1, -1)
 
     private lateinit var mMyName: String
     private var mYourName = "yourName"
@@ -162,11 +163,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         if (x == first.x - 2 && y == first.y) {
                             canEnpassant = true
                             enpassantPosition.add(Position(first.x - 1, first.y))
+                            enpassantPawnPosition=second
                         }
                     } else if (first.x == 1) {
                         if (x == first.x + 2 && y == first.y) {
                             canEnpassant = true
                             enpassantPosition.add(Position(first.x + 1, first.y))
+                            enpassantPawnPosition=second
                         }
                     }
                 }
@@ -183,10 +186,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
             }
 
+            val detailedRules=DetailedRules(boardPosition)
+
             val isKingInDanger =
-                DetailedRules(boardPosition).isKingInDanger(x, y, clickedTileType, clickedTileColor)
+                detailedRules.isKingInDanger(x, y, clickedTileType, clickedTileColor)
             if (isKingInDanger) {
-                if(DetailedRules(boardPosition).isCheckMate(clickedTileColor)){
+                if(detailedRules.isCheckMate(clickedTileColor)){
                     checkData.setValue(Pair(mMyName, "checkmate"))
                 }else{
                     checkData.setValue(Pair(mMyName, "check"))
@@ -566,10 +571,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 (boardPosition[x][y] as King).isCanEat(position, boardPosition, isIWhite)
         }
 
-        val enpassantIterator = enpassantPosition.iterator()
-        while (enpassantIterator.hasNext()) {
-            if (canEnpassant) {
-                canEatPosition.add(enpassantIterator.next())
+        if (canMovePositions.isNotEmpty()) {
+            val enpassantIterator = enpassantPosition.iterator()
+            while (enpassantIterator.hasNext()) {
+                if (canEnpassant) {
+                    val enpassant = enpassantIterator.next()
+                    if (Position(x, y) == enpassantPawnPosition) {
+                        canEatPosition.add(enpassant)
+                    }
+                }
             }
         }
 

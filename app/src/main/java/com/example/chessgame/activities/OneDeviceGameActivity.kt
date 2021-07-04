@@ -229,6 +229,37 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                 }
+            }else{
+                if(DetailedRules(boardPosition).isStaleMate(!clickedTileColor)){
+                    if (!clickedTileColor) {
+                        val staleMateView =
+                            View.inflate(this@OneDeviceGameActivity, R.layout.stalemate_dialog, null)
+                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                        builder.setView(staleMateView)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialog.window?.setLayout(650, 500)
+
+                        val okButton: TextView = staleMateView.check_okButton
+                        okButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
+                    } else {
+                        val staleMateView =
+                            View.inflate(this@OneDeviceGameActivity, R.layout.stalemate_dialog, null)
+                        staleMateView.rotation = 180F
+                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                        builder.setView(staleMateView)
+                        val dialog = builder.create()
+                        dialog.show()
+                        dialog.window?.setLayout(650, 500)
+
+                        val okButton: TextView = staleMateView.stalemate_okButton
+                        okButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
+                    }
+                }
             }
 
             pawnPromotion()

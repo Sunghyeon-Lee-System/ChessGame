@@ -32,8 +32,10 @@ class Pawn(color: Boolean) : Piece() {
         val y = currentPosition.y
 
         if (colorId) {
-            if (getColorAndIsEmpty(board, Position(x - 1, y)) == -1) {
-                canMovePositions.add(Position(x - 1, y))
+            if (x != 0) {
+                if (getColorAndIsEmpty(board, Position(x - 1, y)) == -1) {
+                    canMovePositions.add(Position(x - 1, y))
+                }
             }
 
             if (currentPosition.x == 6) {
@@ -85,26 +87,26 @@ class Pawn(color: Boolean) : Piece() {
 
         if (colorId) {
             x = -1;y = 1
-            if (primaryY != 7) {
+            if (primaryX != 0 && primaryY != 7) {
                 if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
                     targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
             x = -1;y = -1
-            if (primaryY != 0) {
+            if (primaryX != 0 && primaryY != 0) {
                 if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 0) {
                     targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
         } else {
             x = 1;y = 1
-            if (primaryY != 7) {
+            if (primaryX != 7 && primaryY != 7) {
                 if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
                     targetPos.add(Position(primaryX + x, primaryY + y))
                 }
             }
             x = 1;y = -1
-            if (primaryY != 0) {
+            if (primaryX != 7 && primaryY != 0) {
                 if (getColorAndIsEmpty(board, Position(primaryX + x, primaryY + y)) == 1) {
                     targetPos.add(Position(primaryX + x, primaryY + y))
                 }

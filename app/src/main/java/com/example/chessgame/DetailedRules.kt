@@ -5,7 +5,7 @@ import com.example.chessgame.shareddata.MovementOfKingAndRook1Device
 import com.example.chessgame.shareddata.MovementOfKingAndRook2Device
 
 class DetailedRules(val board: Array<Array<Piece>>) {
-    var pPieceWhichCheck = Position(-1, -1)
+    private var pPieceWhichCheck = Position(-1, -1)
 
     private fun isCanCastling(): HashSet<String> {
 
@@ -187,16 +187,41 @@ class DetailedRules(val board: Array<Array<Piece>>) {
     fun isCheck(x: Int, y: Int, color: Boolean): Boolean {
         val canEatSet = HashSet<HashSet<Position>>()
 
+        val whiteKingPos = getKingPosition(true)
+        val blackKingPos = getKingPosition(false)
+
+        board[whiteKingPos.x][whiteKingPos.y] = Empty()
+        board[blackKingPos.x][blackKingPos.y] = Empty()
+
         for (i in 0..7) {
             for (j in 0..7) {
                 when (board[i][j]) {
-                    is Pawn -> canEatSet.add(
-                        (board[i][j] as Pawn).getCanMoveArea(
-                            Position(i, j),
-                            board,
-                            !color
-                        )
-                    )
+                    is Pawn -> {
+                        val pawnColor=(board[i][j] as Pawn).colorId
+                        val canPawnEatSet = HashSet<Position>()
+                        if(pawnColor != color){
+                            if (pawnColor) {
+                                if (i != 0) {
+                                    if (j != 0) {
+                                        canPawnEatSet.add(Position(i - 1, j - 1))
+                                    }
+                                    if (j != 7) {
+                                        canPawnEatSet.add(Position(i - 1, j + 1))
+                                    }
+                                }
+                            } else {
+                                if (i != 7) {
+                                    if (j != 0) {
+                                        canPawnEatSet.add(Position(i + 1, j - 1))
+                                    }
+                                    if (j != 7) {
+                                        canPawnEatSet.add(Position(i + 1, j + 1))
+                                    }
+                                }
+                            }
+                        }
+                        canEatSet.add(canPawnEatSet)
+                    }
                     is Rook -> canEatSet.add(
                         (board[i][j] as Rook).getCanMoveArea(
                             Position(i, j),
@@ -230,6 +255,9 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                 }
             }
         }
+
+        board[whiteKingPos.x][whiteKingPos.y] = King(true)
+        board[blackKingPos.x][blackKingPos.y] = King(false)
 
         val bigIterator = canEatSet.iterator()
         while (bigIterator.hasNext()) {
@@ -268,5 +296,36 @@ class DetailedRules(val board: Array<Array<Piece>>) {
             }
         }
         return false
+    }
+
+    fun isStaleMate(color: Boolean): Boolean {
+        var canMovePositions = HashSet<Position>()
+        var isStaleMate = true
+
+        for (i in 0..7) {
+            for (j in 0..7) {
+                when (board[i][j]) {
+                    is Pawn -> canMovePositions =
+                        (board[i][j] as Pawn).getCanMoveArea(Position(i, j), board, color)
+                    is Rook -> canMovePositions =
+                        (board[i][j] as Rook).getCanMoveArea(Position(i, j), board, color)
+                    is Knight -> canMovePositions =
+                        (board[i][j] as Knight).getCanMoveArea(Position(i, j), board, color)
+                    is Bishop -> canMovePositions =
+                        (board[i][j] as Bishop).getCanMoveArea(Position(i, j), board, color)
+                    is Queen -> canMovePositions =
+                        (board[i][j] as Queen).getCanMoveArea(Position(i, j), board, color)
+                    is King -> canMovePositions =
+                        (board[i][j] as King).getCanMoveArea(Position(i, j), board, color)
+                }
+
+                if (canMovePositions.size != 1) {
+                    if(canMovePositions.isNotEmpty()){
+                        isStaleMate = false
+                    }
+                }
+            }
+        }
+        return isStaleMate
     }
 }
