@@ -18,6 +18,8 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.check_dialog.view.*
 import kotlinx.android.synthetic.main.checkmate_dialog.view.*
+import kotlinx.android.synthetic.main.checkmate_dialog.view.checkmate_okButton
+import kotlinx.android.synthetic.main.stalemate_dialog.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private var canEnpassant = false
     private val enpassantPosition = HashSet<Position>()
-    private var enpassantPawnPosition=Position(-1, -1)
+    private var enpassantPawnPosition = Position(-1, -1)
 
     private lateinit var mMyName: String
     private var mYourName = "yourName"
@@ -163,13 +165,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         if (x == first.x - 2 && y == first.y) {
                             canEnpassant = true
                             enpassantPosition.add(Position(first.x - 1, first.y))
-                            enpassantPawnPosition=second
+                            enpassantPawnPosition = second
                         }
                     } else if (first.x == 1) {
                         if (x == first.x + 2 && y == first.y) {
                             canEnpassant = true
                             enpassantPosition.add(Position(first.x + 1, first.y))
-                            enpassantPawnPosition=second
+                            enpassantPawnPosition = second
                         }
                     }
                 }
@@ -186,15 +188,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
             }
 
-            val detailedRules=DetailedRules(boardPosition)
+            val detailedRules = DetailedRules(boardPosition)
 
             val isKingInDanger =
                 detailedRules.isKingInDanger(x, y, clickedTileType, clickedTileColor)
             if (isKingInDanger) {
-                if(detailedRules.isCheckMate(clickedTileColor)){
+                if (detailedRules.isCheckMate(clickedTileColor)) {
                     checkData.setValue(Pair(mMyName, "checkmate"))
-                }else{
+                } else {
                     checkData.setValue(Pair(mMyName, "check"))
+                }
+            } else {
+                if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
+                    checkData.setValue(Pair(mMyName, "stalemate"))
                 }
             }
 
@@ -310,15 +316,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         checkData.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if(snapshot.value != null){
-                    if(isFirstCall_check){
-                        isFirstCall_check=false
-                    }else{
+                if (snapshot.value != null) {
+                    if (isFirstCall_check) {
+                        isFirstCall_check = false
+                    } else {
                         val check = snapshot.value as HashMap<String, String>
-                        val checkName= check["first"]
-                        val checkSort=check["second"]
+                        val checkName = check["first"]
+                        val checkSort = check["second"]
                         if (checkName != mMyName) {
-                            when(checkSort){
+                            when (checkSort) {
                                 "check" -> {
                                     val checkView =
                                         View.inflate(this@MainActivity, R.layout.check_dialog, null)
@@ -335,7 +341,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                 }
                                 "checkmate" -> {
                                     val checkMateView =
-                                        View.inflate(this@MainActivity, R.layout.checkmate_dialog, null)
+                                        View.inflate(
+                                            this@MainActivity,
+                                            R.layout.checkmate_dialog,
+                                            null
+                                        )
                                     val builder = AlertDialog.Builder(this@MainActivity)
                                     builder.setView(checkMateView)
                                     val dialog = builder.create()
@@ -343,6 +353,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                     dialog.window?.setLayout(650, 500)
 
                                     val okButton: TextView = checkMateView.checkmate_okButton
+                                    okButton.setOnClickListener {
+                                        dialog.dismiss()
+                                    }
+                                }
+                                "stalemate" -> {
+                                    val staleMateView =
+                                        View.inflate(
+                                            this@MainActivity,
+                                            R.layout.stalemate_dialog,
+                                            null
+                                        )
+                                    val builder = AlertDialog.Builder(this@MainActivity)
+                                    builder.setView(staleMateView)
+                                    val dialog = builder.create()
+                                    dialog.show()
+                                    dialog.window?.setLayout(650, 500)
+
+                                    val okButton: TextView = staleMateView.stalemate_okButton
                                     okButton.setOnClickListener {
                                         dialog.dismiss()
                                     }
