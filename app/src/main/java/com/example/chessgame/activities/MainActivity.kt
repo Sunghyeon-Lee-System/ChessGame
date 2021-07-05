@@ -560,11 +560,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val castlingPosition = castlingIter.next()
                 if (boardPosition[x][y] is King) {
                     if (castlingPosition.x == 0) {
-                        if (!isWhiteTurn) {
+                        if (!isWhiteTurn && x == 0) {
                             canMovePositions.add(castlingPosition)
                         }
                     } else if (castlingPosition.x == 7) {
-                        if (isWhiteTurn) {
+                        if (isWhiteTurn && x == 7) {
                             canMovePositions.add(castlingPosition)
                         }
                     }

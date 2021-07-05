@@ -229,11 +229,15 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                 }
-            }else{
-                if(DetailedRules(boardPosition).isStaleMate(!clickedTileColor)){
+            } else {
+                if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
                     if (!clickedTileColor) {
                         val staleMateView =
-                            View.inflate(this@OneDeviceGameActivity, R.layout.stalemate_dialog, null)
+                            View.inflate(
+                                this@OneDeviceGameActivity,
+                                R.layout.stalemate_dialog,
+                                null
+                            )
                         val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                         builder.setView(staleMateView)
                         val dialog = builder.create()
@@ -246,7 +250,11 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     } else {
                         val staleMateView =
-                            View.inflate(this@OneDeviceGameActivity, R.layout.stalemate_dialog, null)
+                            View.inflate(
+                                this@OneDeviceGameActivity,
+                                R.layout.stalemate_dialog,
+                                null
+                            )
                         staleMateView.rotation = 180F
                         val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                         builder.setView(staleMateView)
@@ -453,11 +461,11 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 val castlingPosition = castlingIter.next()
                 if (boardPosition[x][y] is King) {
                     if (castlingPosition.x == 0) {
-                        if (!isWhiteTurn) {
+                        if (!isWhiteTurn && x == 0) {
                             canMovePositions.add(castlingPosition)
                         }
                     } else if (castlingPosition.x == 7) {
-                        if (isWhiteTurn) {
+                        if (isWhiteTurn && y == 7) {
                             canMovePositions.add(castlingPosition)
                         }
                     }
