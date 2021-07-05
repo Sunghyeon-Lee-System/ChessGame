@@ -465,7 +465,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                             canMovePositions.add(castlingPosition)
                         }
                     } else if (castlingPosition.x == 7) {
-                        if (isWhiteTurn && y == 7) {
+                        if (isWhiteTurn && x == 7) {
                             canMovePositions.add(castlingPosition)
                         }
                     }
