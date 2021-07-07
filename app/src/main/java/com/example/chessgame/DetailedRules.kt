@@ -171,7 +171,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         return false
     }
 
-    private fun getKingPosition(color: Boolean): Position {
+    fun getKingPosition(color: Boolean): Position {
         for (i in 0..7) {
             for (j in 0..7) {
                 if (board[i][j] is King) {

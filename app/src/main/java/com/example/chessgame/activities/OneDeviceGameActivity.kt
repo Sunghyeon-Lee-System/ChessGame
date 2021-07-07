@@ -2,8 +2,11 @@ package com.example.chessgame.activities
 
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +26,8 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
     private var canEnpassant = false
     private val enpassantPosition = HashSet<Position>()
     private var enpassantPawnPosition = Position(-1, -1)
+    private var isCheck = false
+    private var killOneself = false
 
     private var boardPosition = Array(8) {
         Array<Piece>(8) {
@@ -157,118 +162,245 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
             }
 
-            val detailedRules = DetailedRules(boardPosition)
-
-            val isKingInDanger =
-                detailedRules.isKingInDanger(x, y, clickedTileType, clickedTileColor)
-            if (isKingInDanger) {
-                if (detailedRules.isCheckMate(clickedTileColor)) {
-                    if (!clickedTileColor) {
-                        val checkMateView =
-                            View.inflate(
+            if (isCheck) {
+                val wKingPos = DetailedRules(boardPosition).getKingPosition(true)
+                val bKingPos = DetailedRules(boardPosition).getKingPosition(false)
+                val stillKingInDangerWhite =
+                    DetailedRules(boardPosition).isCheck(wKingPos.x, wKingPos.y, true)
+                val stillKingInDangerBlack =
+                    DetailedRules(boardPosition).isCheck(bKingPos.x, bKingPos.y, false)
+                if (stillKingInDangerWhite || stillKingInDangerBlack) {
+                    if (x != clickedTileX || y != clickedTileY) {
+                        val outMetrix = DisplayMetrics()
+                        windowManager.defaultDisplay.getMetrics(outMetrix)
+                        if (clickedTileColor) {
+                            val cannotMoveView =
+                                View.inflate(
+                                    this@OneDeviceGameActivity,
+                                    R.layout.toast_cannotmove,
+                                    null
+                                )
+                            val toast = Toast(this@OneDeviceGameActivity)
+                            toast.view = cannotMoveView
+                            toast.setGravity(Gravity.CENTER, 0, 320 * outMetrix.density.toInt())
+                            toast.duration = Toast.LENGTH_SHORT
+                            toast.show()
+                        } else {
+                            val cannotMoveView = View.inflate(
                                 this@OneDeviceGameActivity,
-                                R.layout.checkmate_dialog,
+                                R.layout.toast_cannotmove,
                                 null
                             )
-                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                        builder.setView(checkMateView)
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setLayout(650, 500)
+                            cannotMoveView.rotation = 180F
+                            val toast = Toast(this@OneDeviceGameActivity)
+                            toast.view = cannotMoveView
+                            toast.setGravity(Gravity.CENTER, 0, -270 * outMetrix.density.toInt())
+                            toast.duration = Toast.LENGTH_SHORT
+                            toast.show()
+                        }
+                    }
 
-                        val okButton: TextView = checkMateView.checkmate_okButton
-                        okButton.setOnClickListener {
-                            dialog.dismiss()
+                    boardPosition[x][y] = Empty()
+                    when (clickedTileType) {
+                        "Pawn" -> boardPosition[clickedTileX][clickedTileY] = Pawn(clickedTileColor)
+                        "Rook" -> boardPosition[clickedTileX][clickedTileY] = Rook(clickedTileColor)
+                        "Knight" -> boardPosition[clickedTileX][clickedTileY] =
+                            Knight(clickedTileColor)
+                        "Bishop" -> boardPosition[clickedTileX][clickedTileY] =
+                            Bishop(clickedTileColor)
+                        "Queen" -> boardPosition[clickedTileX][clickedTileY] =
+                            Queen(clickedTileColor)
+                        "King" -> boardPosition[clickedTileX][clickedTileY] = King(clickedTileColor)
+                    }
+                    setListener()
+                } else {
+                    isCheck = false
+                }
+            }
+
+            val wKingPos = DetailedRules(boardPosition).getKingPosition(true)
+            val bKingPos = DetailedRules(boardPosition).getKingPosition(false)
+
+            if (isWhiteTurn) {
+                if (DetailedRules(boardPosition).isCheck(wKingPos.x, wKingPos.y, true)) {
+                    killOneself = true
+                }
+            } else {
+                if (DetailedRules(boardPosition).isCheck(bKingPos.x, bKingPos.y, false)) {
+                    killOneself = true
+                }
+            }
+            if (killOneself) {
+                if (x != clickedTileX || y != clickedTileY) {
+                    val outMetrix = DisplayMetrics()
+                    windowManager.defaultDisplay.getMetrics(outMetrix)
+                    if (clickedTileColor) {
+                        val cannotMoveView =
+                            View.inflate(
+                                this@OneDeviceGameActivity,
+                                R.layout.toast_cannotmove,
+                                null
+                            )
+                        val toast = Toast(this@OneDeviceGameActivity)
+                        toast.view = cannotMoveView
+                        toast.setGravity(Gravity.CENTER, 0, 320 * outMetrix.density.toInt())
+                        toast.duration = Toast.LENGTH_SHORT
+                        toast.show()
+                    } else {
+                        val cannotMoveView = View.inflate(
+                            this@OneDeviceGameActivity,
+                            R.layout.toast_cannotmove,
+                            null
+                        )
+                        cannotMoveView.rotation = 180F
+                        val toast = Toast(this@OneDeviceGameActivity)
+                        toast.view = cannotMoveView
+                        toast.setGravity(Gravity.CENTER, 0, -270 * outMetrix.density.toInt())
+                        toast.duration = Toast.LENGTH_SHORT
+                        toast.show()
+                    }
+                }
+
+                boardPosition[x][y] = Empty()
+                when (clickedTileType) {
+                    "Pawn" -> boardPosition[clickedTileX][clickedTileY] = Pawn(clickedTileColor)
+                    "Rook" -> boardPosition[clickedTileX][clickedTileY] = Rook(clickedTileColor)
+                    "Knight" -> boardPosition[clickedTileX][clickedTileY] =
+                        Knight(clickedTileColor)
+                    "Bishop" -> boardPosition[clickedTileX][clickedTileY] =
+                        Bishop(clickedTileColor)
+                    "Queen" -> boardPosition[clickedTileX][clickedTileY] =
+                        Queen(clickedTileColor)
+                    "King" -> boardPosition[clickedTileX][clickedTileY] = King(clickedTileColor)
+                }
+                setListener()
+            }
+
+            if (!isCheck && !killOneself) {
+                val detailedRules = DetailedRules(boardPosition)
+
+                val isKingInDanger =
+                    detailedRules.isKingInDanger(x, y, clickedTileType, clickedTileColor)
+                if (isKingInDanger) {
+                    isCheck = true
+                    if (detailedRules.isCheckMate(clickedTileColor)) {
+                        if (!clickedTileColor) {
+                            val checkMateView =
+                                View.inflate(
+                                    this@OneDeviceGameActivity,
+                                    R.layout.checkmate_dialog,
+                                    null
+                                )
+                            val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                            builder.setView(checkMateView)
+                            val dialog = builder.create()
+                            dialog.show()
+                            dialog.window?.setLayout(650, 500)
+
+                            val okButton: TextView = checkMateView.checkmate_okButton
+                            okButton.setOnClickListener {
+                                dialog.dismiss()
+                            }
+                        } else {
+                            val checkMateView =
+                                View.inflate(
+                                    this@OneDeviceGameActivity,
+                                    R.layout.checkmate_dialog,
+                                    null
+                                )
+                            checkMateView.rotation = 180F
+                            val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                            builder.setView(checkMateView)
+                            val dialog = builder.create()
+                            dialog.show()
+                            dialog.window?.setLayout(650, 500)
+
+                            val okButton: TextView = checkMateView.checkmate_okButton
+                            okButton.setOnClickListener {
+                                dialog.dismiss()
+                            }
                         }
                     } else {
-                        val checkMateView =
-                            View.inflate(
-                                this@OneDeviceGameActivity,
-                                R.layout.checkmate_dialog,
-                                null
-                            )
-                        checkMateView.rotation = 180F
-                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                        builder.setView(checkMateView)
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setLayout(650, 500)
+                        if (!clickedTileColor) {
+                            val checkView =
+                                View.inflate(
+                                    this@OneDeviceGameActivity,
+                                    R.layout.check_dialog,
+                                    null
+                                )
+                            val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                            builder.setView(checkView)
+                            val dialog = builder.create()
+                            dialog.show()
+                            dialog.window?.setLayout(650, 360)
 
-                        val okButton: TextView = checkMateView.checkmate_okButton
-                        okButton.setOnClickListener {
-                            dialog.dismiss()
+                            val okButton: TextView = checkView.check_okButton
+                            okButton.setOnClickListener {
+                                dialog.dismiss()
+                            }
+                        } else {
+                            val checkView =
+                                View.inflate(
+                                    this@OneDeviceGameActivity,
+                                    R.layout.check_dialog,
+                                    null
+                                )
+                            checkView.rotation = 180F
+                            val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                            builder.setView(checkView)
+                            val dialog = builder.create()
+                            dialog.show()
+                            dialog.window?.setLayout(650, 360)
+
+                            val okButton: TextView = checkView.check_okButton
+                            okButton.setOnClickListener {
+                                dialog.dismiss()
+                            }
                         }
                     }
                 } else {
-                    if (!clickedTileColor) {
-                        val checkView =
-                            View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
-                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                        builder.setView(checkView)
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setLayout(650, 360)
+                    if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
+                        if (!clickedTileColor) {
+                            val staleMateView =
+                                View.inflate(
+                                    this@OneDeviceGameActivity,
+                                    R.layout.stalemate_dialog,
+                                    null
+                                )
+                            val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                            builder.setView(staleMateView)
+                            val dialog = builder.create()
+                            dialog.show()
+                            dialog.window?.setLayout(650, 500)
 
-                        val okButton: TextView = checkView.check_okButton
-                        okButton.setOnClickListener {
-                            dialog.dismiss()
-                        }
-                    } else {
-                        val checkView =
-                            View.inflate(this@OneDeviceGameActivity, R.layout.check_dialog, null)
-                        checkView.rotation = 180F
-                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                        builder.setView(checkView)
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setLayout(650, 360)
+                            val okButton: TextView = staleMateView.check_okButton
+                            okButton.setOnClickListener {
+                                dialog.dismiss()
+                            }
+                        } else {
+                            val staleMateView =
+                                View.inflate(
+                                    this@OneDeviceGameActivity,
+                                    R.layout.stalemate_dialog,
+                                    null
+                                )
+                            staleMateView.rotation = 180F
+                            val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
+                            builder.setView(staleMateView)
+                            val dialog = builder.create()
+                            dialog.show()
+                            dialog.window?.setLayout(650, 500)
 
-                        val okButton: TextView = checkView.check_okButton
-                        okButton.setOnClickListener {
-                            dialog.dismiss()
-                        }
-                    }
-                }
-            } else {
-                if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
-                    if (!clickedTileColor) {
-                        val staleMateView =
-                            View.inflate(
-                                this@OneDeviceGameActivity,
-                                R.layout.stalemate_dialog,
-                                null
-                            )
-                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                        builder.setView(staleMateView)
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setLayout(650, 500)
-
-                        val okButton: TextView = staleMateView.check_okButton
-                        okButton.setOnClickListener {
-                            dialog.dismiss()
-                        }
-                    } else {
-                        val staleMateView =
-                            View.inflate(
-                                this@OneDeviceGameActivity,
-                                R.layout.stalemate_dialog,
-                                null
-                            )
-                        staleMateView.rotation = 180F
-                        val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
-                        builder.setView(staleMateView)
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setLayout(650, 500)
-
-                        val okButton: TextView = staleMateView.stalemate_okButton
-                        okButton.setOnClickListener {
-                            dialog.dismiss()
+                            val okButton: TextView = staleMateView.stalemate_okButton
+                            okButton.setOnClickListener {
+                                dialog.dismiss()
+                            }
                         }
                     }
                 }
             }
+
+            killOneself=false
 
             pawnPromotion()
 
