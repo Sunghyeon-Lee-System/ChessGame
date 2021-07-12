@@ -190,13 +190,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             val detailedRules = DetailedRules(boardPosition)
 
+            val opposingKingPos=detailedRules.getKingPosition(!clickedTileColor)
+
             val isKingInDanger =
-                detailedRules.isKingInDanger(x, y, clickedTileType, clickedTileColor)
+                detailedRules.isCheck(opposingKingPos.x, opposingKingPos.y, clickedTileColor)
             if (isKingInDanger) {
                 if (detailedRules.isCheckMate(clickedTileColor)) {
                     checkData.setValue(Pair(mMyName, "checkmate"))
+                    android.util.Log.i("ChessGame", "아싸 호랑나비")
                 } else {
-                    checkData.setValue(Pair(mMyName, "check"))
+                    checkData.setValue(Pair(mMyName, "check $turnCount"))
                 }
             } else {
                 if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
@@ -322,9 +325,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     } else {
                         val check = snapshot.value as HashMap<String, String>
                         val checkName = check["first"]
-                        val checkSort = check["second"]
+                        val second = check["second"]
+                        val checkSort = second?.split(" ")
+
                         if (checkName != mMyName) {
-                            when (checkSort) {
+                            when (checkSort?.get(0)) {
                                 "check" -> {
                                     val checkView =
                                         View.inflate(this@MainActivity, R.layout.check_dialog, null)
@@ -332,7 +337,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                     builder.setView(checkView)
                                     val dialog = builder.create()
                                     dialog.show()
-                                    dialog.window?.setLayout(650, 500)
+                                    dialog.window?.setLayout(650, 360)
 
                                     val okButton: TextView = checkView.check_okButton
                                     okButton.setOnClickListener {

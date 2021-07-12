@@ -230,6 +230,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                     killOneself = true
                 }
             }
+
             if (killOneself) {
                 if (x != clickedTileX || y != clickedTileY) {
                     val outMetrix = DisplayMetrics()
@@ -279,8 +280,10 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
             if (!isCheck && !killOneself) {
                 val detailedRules = DetailedRules(boardPosition)
 
+                val opposingKingPos = detailedRules.getKingPosition(!clickedTileColor)
+
                 val isKingInDanger =
-                    detailedRules.isKingInDanger(x, y, clickedTileType, clickedTileColor)
+                    detailedRules.isCheck(opposingKingPos.x, opposingKingPos.y, !clickedTileColor)
                 if (isKingInDanger) {
                     isCheck = true
                     if (detailedRules.isCheckMate(clickedTileColor)) {
@@ -400,7 +403,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
 
-            killOneself=false
+            killOneself = false
 
             pawnPromotion()
 
