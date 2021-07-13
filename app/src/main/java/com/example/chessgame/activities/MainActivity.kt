@@ -3,8 +3,11 @@ package com.example.chessgame.activities
 import android.app.ProgressDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
+import android.view.Gravity
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -47,6 +50,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private var isValidTouch = true
     private var isWhiteTurn = true
+    private var killOneSelf = false
+    private var isCheck = false
 
     private var canEnpassant = false
     private val enpassantPosition = HashSet<Position>()
@@ -188,24 +193,114 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 "King" -> boardPosition[x][y] = King(clickedTileColor)
             }
 
+            val wKingPos = DetailedRules(boardPosition).getKingPosition(true)
+            val bKingPos = DetailedRules(boardPosition).getKingPosition(false)
+
+            if (isIWhite) {
+                if (DetailedRules(boardPosition).isCheck(wKingPos.x, wKingPos.y, true)) {
+                    killOneSelf = true
+                }
+            } else {
+                if (DetailedRules(boardPosition).isCheck(bKingPos.x, bKingPos.y, false)) {
+                    killOneSelf = true
+                }
+            }
+
+            if (killOneSelf) {
+                if (x != clickedTileX || y != clickedTileY) {
+                    val outMetrix = DisplayMetrics()
+                    windowManager.defaultDisplay.getMetrics(outMetrix)
+                    val cannotMoveView =
+                        View.inflate(
+                            this@MainActivity,
+                            R.layout.toast_cannotmove,
+                            null
+                        )
+                    val toast = Toast(this@MainActivity)
+                    toast.view = cannotMoveView
+                    toast.setGravity(Gravity.CENTER, 0, 320 * outMetrix.density.toInt())
+                    toast.duration = Toast.LENGTH_SHORT
+                    toast.show()
+                }
+
+                boardPosition[x][y] = Empty()
+                when (clickedTileType) {
+                    "Pawn" -> boardPosition[clickedTileX][clickedTileY] = Pawn(clickedTileColor)
+                    "Rook" -> boardPosition[clickedTileX][clickedTileY] = Rook(clickedTileColor)
+                    "Knight" -> boardPosition[clickedTileX][clickedTileY] =
+                        Knight(clickedTileColor)
+                    "Bishop" -> boardPosition[clickedTileX][clickedTileY] =
+                        Bishop(clickedTileColor)
+                    "Queen" -> boardPosition[clickedTileX][clickedTileY] =
+                        Queen(clickedTileColor)
+                    "King" -> boardPosition[clickedTileX][clickedTileY] = King(clickedTileColor)
+                }
+                setListener()
+            }
+
+            if (!killOneSelf && isCheck) {
+                val wKingPos = DetailedRules(boardPosition).getKingPosition(true)
+                val bKingPos = DetailedRules(boardPosition).getKingPosition(false)
+                val stillKingInDangerWhite =
+                    DetailedRules(boardPosition).isCheck(wKingPos.x, wKingPos.y, true)
+                val stillKingInDangerBlack =
+                    DetailedRules(boardPosition).isCheck(bKingPos.x, bKingPos.y, false)
+                if (stillKingInDangerWhite || stillKingInDangerBlack) {
+                    if (x != clickedTileX || y != clickedTileY) {
+                        val outMetrix = DisplayMetrics()
+                        windowManager.defaultDisplay.getMetrics(outMetrix)
+                        val cannotMoveView =
+                            View.inflate(
+                                this@MainActivity,
+                                R.layout.toast_cannotmove,
+                                null
+                            )
+                        val toast = Toast(this@MainActivity)
+                        toast.view = cannotMoveView
+                        toast.setGravity(Gravity.CENTER, 0, 320 * outMetrix.density.toInt())
+                        toast.duration = Toast.LENGTH_SHORT
+                        toast.show()
+                    }
+
+                    boardPosition[x][y] = Empty()
+                    when (clickedTileType) {
+                        "Pawn" -> boardPosition[clickedTileX][clickedTileY] = Pawn(clickedTileColor)
+                        "Rook" -> boardPosition[clickedTileX][clickedTileY] = Rook(clickedTileColor)
+                        "Knight" -> boardPosition[clickedTileX][clickedTileY] =
+                            Knight(clickedTileColor)
+                        "Bishop" -> boardPosition[clickedTileX][clickedTileY] =
+                            Bishop(clickedTileColor)
+                        "Queen" -> boardPosition[clickedTileX][clickedTileY] =
+                            Queen(clickedTileColor)
+                        "King" -> boardPosition[clickedTileX][clickedTileY] = King(clickedTileColor)
+                    }
+                    setListener()
+                } else {
+                    isCheck = false
+                }
+            }
+
             val detailedRules = DetailedRules(boardPosition)
 
             val opposingKingPos = detailedRules.getKingPosition(!clickedTileColor)
 
             val isKingInDanger =
-                detailedRules.isCheck(opposingKingPos.x, opposingKingPos.y, clickedTileColor)
-            if (isKingInDanger) {
-                if (detailedRules.isCheckMate(clickedTileColor)) {
-                    checkData.setValue(Pair(mMyName, "checkmate"))
-                    android.util.Log.i("ChessGame", "아싸 호랑나비")
+                detailedRules.isCheck(opposingKingPos.x, opposingKingPos.y, !clickedTileColor)
+            if (!killOneSelf && !isCheck) {
+                if (isKingInDanger) {
+                    if (detailedRules.isCheckMate(clickedTileColor)) {
+                        checkData.setValue(Pair(mMyName, "checkmate"))
+                    } else {
+                        checkData.setValue(Pair(mMyName, "check $turnCount"))
+                    }
                 } else {
-                    checkData.setValue(Pair(mMyName, "check $turnCount"))
-                }
-            } else {
-                if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
-                    checkData.setValue(Pair(mMyName, "stalemate"))
+                    if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
+                        checkData.setValue(Pair(mMyName, "stalemate"))
+                    }
                 }
             }
+
+            killOneSelf = false
 
             pawnPromotion()
 
@@ -331,6 +426,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         if (checkName != mMyName) {
                             when (checkSort?.get(0)) {
                                 "check" -> {
+                                    isCheck = true
                                     val checkView =
                                         View.inflate(this@MainActivity, R.layout.check_dialog, null)
                                     val builder = AlertDialog.Builder(this@MainActivity)
