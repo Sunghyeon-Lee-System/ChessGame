@@ -141,8 +141,11 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         val whiteKingPos = getKingPosition(true)
         val blackKingPos = getKingPosition(false)
 
-        board[whiteKingPos.x][whiteKingPos.y] = Empty()
-        board[blackKingPos.x][blackKingPos.y] = Empty()
+        if(color){
+            board[whiteKingPos.x][whiteKingPos.y] = Empty()
+        }else {
+            board[blackKingPos.x][blackKingPos.y] = Empty()
+        }
 
         for (i in 0..7) {
             for (j in 0..7) {
@@ -255,8 +258,11 @@ class DetailedRules(val board: Array<Array<Piece>>) {
             }
         }
 
-        board[whiteKingPos.x][whiteKingPos.y] = King(true)
-        board[blackKingPos.x][blackKingPos.y] = King(false)
+        if(color){
+            board[whiteKingPos.x][whiteKingPos.y] = King(true)
+        }else {
+            board[blackKingPos.x][blackKingPos.y] = King(false)
+        }
 
         return isCheck
     }

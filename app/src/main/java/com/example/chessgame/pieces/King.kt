@@ -117,6 +117,397 @@ class King(color: Boolean) : Piece() {
         x = primaryX
         y = primaryY
         canMovePosition.add(Position(x, y))
+        if (colorId) {
+            if (isInBoard(Position(x + 2, y)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y))) {
+                    canMovePosition.remove(Position(x + 1, y))
+                }
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x - 2, y)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y))) {
+                    canMovePosition.remove(Position(x - 1, y))
+                }
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x, y + 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x, y + 1))) {
+                    canMovePosition.remove(Position(x, y + 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x, y - 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x, y - 1))) {
+                    canMovePosition.remove(Position(x, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+            }
+
+            if (isInBoard(Position(x + 2, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y + 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x + 2, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y - 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x - 2, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y - 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x - 2, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y + 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+            }
+
+            if (isInBoard(Position(x + 1, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 1, y + 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x, y + 1))) {
+                    canMovePosition.remove(Position(x, y + 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x + 1, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 1, y - 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x, y - 1))) {
+                    canMovePosition.remove(Position(x, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x - 1, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 1, y + 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x, y + 1))) {
+                    canMovePosition.remove(Position(x, y + 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x - 1, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 1, y - 2)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x, y - 1))) {
+                    canMovePosition.remove(Position(x, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x + 2, y + 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y + 1)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y))) {
+                    canMovePosition.remove(Position(x + 1, y))
+                }
+            }
+            if (isInBoard(Position(x + 2, y - 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y - 1)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y))) {
+                    canMovePosition.remove(Position(x + 1, y))
+                }
+            }
+            if (isInBoard(Position(x - 2, y + 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y + 1)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y))) {
+                    canMovePosition.remove(Position(x - 1, y))
+                }
+            }
+            if (isInBoard(Position(x - 2, y - 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y - 1)
+                ) == 0
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y))) {
+                    canMovePosition.remove(Position(x - 1, y))
+                }
+            }
+        } else {
+            if (isInBoard(Position(x + 2, y)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y))) {
+                    canMovePosition.remove(Position(x + 1, y))
+                }
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x - 2, y)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y))) {
+                    canMovePosition.remove(Position(x - 1, y))
+                }
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x, y + 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x, y + 1))) {
+                    canMovePosition.remove(Position(x, y + 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x, y - 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x, y - 1))) {
+                    canMovePosition.remove(Position(x, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+            }
+
+            if (isInBoard(Position(x + 2, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y + 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x + 2, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y - 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x - 2, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y - 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x - 2, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y + 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+            }
+
+            if (isInBoard(Position(x + 1, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 1, y + 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x, y + 1))) {
+                    canMovePosition.remove(Position(x, y + 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x + 1, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 1, y - 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x, y - 1))) {
+                    canMovePosition.remove(Position(x, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x - 1, y + 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 1, y + 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x, y + 1))) {
+                    canMovePosition.remove(Position(x, y + 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+            }
+            if (isInBoard(Position(x - 1, y - 2)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 1, y - 2)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x, y - 1))) {
+                    canMovePosition.remove(Position(x, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+            }
+            if (isInBoard(Position(x + 2, y + 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y + 1)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y + 1))) {
+                    canMovePosition.remove(Position(x + 1, y + 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y))) {
+                    canMovePosition.remove(Position(x + 1, y))
+                }
+            }
+            if (isInBoard(Position(x + 2, y - 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x + 2, y - 1)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x + 1, y - 1))) {
+                    canMovePosition.remove(Position(x + 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x + 1, y))) {
+                    canMovePosition.remove(Position(x + 1, y))
+                }
+            }
+            if (isInBoard(Position(x - 2, y + 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y + 1)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y + 1))) {
+                    canMovePosition.remove(Position(x - 1, y + 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y))) {
+                    canMovePosition.remove(Position(x - 1, y))
+                }
+            }
+            if (isInBoard(Position(x - 2, y - 1)) && getColorAndIsEmpty(
+                    board,
+                    Position(x - 2, y - 1)
+                ) == 1
+            ) {
+                if (canMovePosition.contains(Position(x - 1, y - 1))) {
+                    canMovePosition.remove(Position(x - 1, y - 1))
+                }
+                if (canMovePosition.contains(Position(x - 1, y))) {
+                    canMovePosition.remove(Position(x - 1, y))
+                }
+            }
+        }
 
         if (isIWhite != colorId) {
             canMovePosition.clear()

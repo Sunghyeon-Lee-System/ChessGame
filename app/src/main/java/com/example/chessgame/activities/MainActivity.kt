@@ -190,7 +190,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             val detailedRules = DetailedRules(boardPosition)
 
-            val opposingKingPos=detailedRules.getKingPosition(!clickedTileColor)
+            val opposingKingPos = detailedRules.getKingPosition(!clickedTileColor)
 
             val isKingInDanger =
                 detailedRules.isCheck(opposingKingPos.x, opposingKingPos.y, clickedTileColor)
