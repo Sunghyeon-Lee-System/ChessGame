@@ -4,8 +4,9 @@ import android.app.ProgressDialog
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.View
 import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
 import com.example.chessgame.shareddata.MovementOfKingAndRook2Device
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val firstOrderData = game.child("firstOrderData")
     private val orderData = game.child("orderData")
     private val checkData = game.child("checkData")
+    private val chatData = game.child("chatData")
 
     private var isMyTurn = true
     private var isIWhite = false
@@ -335,6 +338,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         boardInitialize()
         setListener()
+        setChatListener()
 
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("다른 사용자의 접속을 기다리는 중입니다...")
@@ -367,6 +371,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     mYourName = value
                     if (progressDialog.isShowing) {
                         progressDialog.dismiss()
+                        chatData.removeValue()
                     }
                     if (isFirstCall_name) {
                         userData.setValue(mMyName)
@@ -777,6 +782,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
         dialog.show()
+    }
+
+    private fun setChatListener() {
+        val inflater =
+            getSystemService(android.content.Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val view = inflater.inflate(R.layout.bottom_sheet_chat, null, false)
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(view)
+        val chat = com.example.chessgame.ChatManager(this@MainActivity, mMyName, bottomSheetDialog, chatData)
+
+        chatButton.setOnClickListener {
+            bottomSheetDialog.show()
+        }
     }
 
     private fun setListener() {

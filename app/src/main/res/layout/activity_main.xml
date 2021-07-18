@@ -8,34 +8,40 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:src="@drawable/background" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/yourName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:text="name"
-            android:textSize="30dp"
             android:textColor="@color/teal_200"
-            android:textStyle="bold"/>
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:id="@+id/board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/blackTurn"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="@color/teal_200"
                 android:orientation="horizontal" />
+
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <GridLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -756,13 +762,14 @@
                         android:layout_height="40dp" />
                 </GridLayout>
             </FrameLayout>
+
             <LinearLayout
                 android:id="@+id/whiteTurn"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="@color/teal_200"
-                android:visibility="invisible"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <TextView
@@ -771,8 +778,22 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:text="name"
-            android:textSize="30dp"
             android:textColor="@color/teal_200"
-            android:textStyle="bold"/>
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/chatButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="채팅"
+                android:textSize="40dp" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>
