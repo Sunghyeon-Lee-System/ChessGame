@@ -3,23 +3,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/yourProfile"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/sample_profile"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/yourName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/yourProfile"
+        android:layout_marginLeft="6dp"
+        android:text="name"
+        android:textSize="15dp" />
+
     <TextView
         android:id="@+id/yourMessage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_toRightOf="@id/yourProfile"
+        android:layout_alignBottom="@id/yourProfile"
         android:background="@drawable/yourchatbox"
-        android:text="message"
-        android:textSize="30dp" />
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/yourMessage"
         android:layout_marginLeft="6dp"
-        android:layout_toRightOf="@id/yourMessage"
-        android:text="name" />
+        android:text="message"
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/yourTime"
@@ -33,11 +44,12 @@
     <TextView
         android:id="@+id/myMessage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
         android:layout_alignParentRight="true"
         android:background="@drawable/mychatbox"
         android:text="message"
-        android:textSize="30dp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/myTime"

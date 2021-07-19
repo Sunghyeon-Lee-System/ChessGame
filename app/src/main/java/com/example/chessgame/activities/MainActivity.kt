@@ -338,7 +338,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         boardInitialize()
         setListener()
-        setChatListener()
 
         progressDialog = ProgressDialog(this)
         progressDialog.setMessage("다른 사용자의 접속을 기다리는 중입니다...")
@@ -372,6 +371,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     if (progressDialog.isShowing) {
                         progressDialog.dismiss()
                         chatData.removeValue()
+                        setChatListener()
                     }
                     if (isFirstCall_name) {
                         userData.setValue(mMyName)
@@ -790,7 +790,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val view = inflater.inflate(R.layout.bottom_sheet_chat, null, false)
         val bottomSheetDialog = BottomSheetDialog(this)
         bottomSheetDialog.setContentView(view)
-        val chat = com.example.chessgame.ChatManager(this@MainActivity, mMyName, bottomSheetDialog, chatData)
+
+        val chat = com.example.chessgame.ChatManager(
+            this@MainActivity,
+            mMyName,
+            bottomSheetDialog,
+            chatData
+        )
 
         chatButton.setOnClickListener {
             bottomSheetDialog.show()
