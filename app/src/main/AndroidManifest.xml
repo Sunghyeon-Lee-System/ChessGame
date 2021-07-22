@@ -22,7 +22,7 @@
         <activity android:name=".activities.OneDeviceGameActivity" />
         <activity android:name=".activities.EnterNameActivity" />
         <activity android:name=".activities.ChoicePlayerActivity" />
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.TwoDeviceGameActivity" />
     </application>
 
 </manifest>

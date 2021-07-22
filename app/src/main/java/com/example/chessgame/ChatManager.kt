@@ -1,7 +1,7 @@
 package com.example.chessgame
 
 import android.app.Activity
-import android.view.View
+import android.graphics.Color
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
@@ -28,6 +28,8 @@ class ChatManager(
         val chatList = dialog.findViewById<ListView>(R.id.chatList)
         val chatMessage = dialog.findViewById<EditText>(R.id.chatMessage)
         val sendButton = dialog.findViewById<Button>(R.id.sendButton)
+
+        val chatButton = activity.findViewById<Button>(R.id.chatButton)
 
         chatList?.adapter = adapter
 
@@ -62,6 +64,16 @@ class ChatManager(
                 val value = snapshot.getValue(ChatVO::class.java)
                 if (value != null) {
                     list.add(value)
+                    if (myName != value.id) {
+                        if (!dialog.isShowing) {
+                            Toast.makeText(
+                                activity.applicationContext,
+                                "채팅이 도착했습니다",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            chatButton.setBackgroundColor(Color.rgb(0, 255, 0))
+                        }
+                    }
                 }
                 adapter.notifyDataSetChanged()
             }

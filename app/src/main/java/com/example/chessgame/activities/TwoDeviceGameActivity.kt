@@ -1,6 +1,7 @@
 package com.example.chessgame.activities
 
 import android.app.ProgressDialog
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -14,13 +15,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
+import com.example.chessgame.shareddata.DatabaseData
 import com.example.chessgame.shareddata.MovementOfKingAndRook2Device
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_two_device_game.*
 import kotlinx.android.synthetic.main.check_dialog.view.*
 import kotlinx.android.synthetic.main.checkmate_dialog.view.*
 import kotlinx.android.synthetic.main.checkmate_dialog.view.checkmate_okButton
@@ -30,18 +32,8 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class TwoDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var clickedTilePosition: Position
-
-    private val dataBase = FirebaseDatabase.getInstance()
-    private val myRef = dataBase.getReference("data")
-    private var game = myRef.child("game1")
-    private val userData = game.child("userData")
-    private val boardData = game.child("boardData")
-    private val firstOrderData = game.child("firstOrderData")
-    private val orderData = game.child("orderData")
-    private val checkData = game.child("checkData")
-    private val chatData = game.child("chatData")
 
     private var isMyTurn = true
     private var isIWhite = false
@@ -215,11 +207,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     windowManager.defaultDisplay.getMetrics(outMetrix)
                     val cannotMoveView =
                         View.inflate(
-                            this@MainActivity,
+                            this@TwoDeviceGameActivity,
                             R.layout.toast_cannotmove,
                             null
                         )
-                    val toast = Toast(this@MainActivity)
+                    val toast = Toast(this@TwoDeviceGameActivity)
                     toast.view = cannotMoveView
                     toast.setGravity(Gravity.CENTER, 0, 320 * outMetrix.density.toInt())
                     toast.duration = Toast.LENGTH_SHORT
@@ -254,11 +246,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         windowManager.defaultDisplay.getMetrics(outMetrix)
                         val cannotMoveView =
                             View.inflate(
-                                this@MainActivity,
+                                this@TwoDeviceGameActivity,
                                 R.layout.toast_cannotmove,
                                 null
                             )
-                        val toast = Toast(this@MainActivity)
+                        val toast = Toast(this@TwoDeviceGameActivity)
                         toast.view = cannotMoveView
                         toast.setGravity(Gravity.CENTER, 0, 320 * outMetrix.density.toInt())
                         toast.duration = Toast.LENGTH_SHORT
@@ -292,13 +284,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if (!killOneSelf && !isCheck) {
                 if (isKingInDanger) {
                     if (detailedRules.isCheckMate(clickedTileColor)) {
-                        checkData.setValue(Pair(mMyName, "checkmate"))
+                        DatabaseData.checkData.setValue(Pair(mMyName, "checkmate"))
                     } else {
-                        checkData.setValue(Pair(mMyName, "check $turnCount"))
+                        DatabaseData.checkData.setValue(Pair(mMyName, "check $turnCount"))
                     }
                 } else {
                     if (DetailedRules(boardPosition).isStaleMate(!clickedTileColor)) {
-                        checkData.setValue(Pair(mMyName, "stalemate"))
+                        DatabaseData.checkData.setValue(Pair(mMyName, "stalemate"))
                     }
                 }
             }
@@ -326,15 +318,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_two_device_game)
 
         val intent = intent
         mMyName = intent.getStringExtra("name").toString()
         myName.text = mMyName
 
-        userData.setValue(mMyName)
+        DatabaseData.userData.setValue(mMyName)
 
-        firstOrderData.setValue(Pair(mMyName, Random().nextBoolean()))
+        DatabaseData.firstOrderData.setValue(Pair(mMyName, Random().nextBoolean()))
 
         boardInitialize()
         setListener()
@@ -349,7 +341,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
 
-        boardData.addValueEventListener(object : ValueEventListener {
+        DatabaseData.boardData.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
@@ -362,7 +354,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        userData.addValueEventListener(object : ValueEventListener {
+        DatabaseData.userData.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val value = snapshot.value as String
 
@@ -370,11 +362,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     mYourName = value
                     if (progressDialog.isShowing) {
                         progressDialog.dismiss()
-                        chatData.removeValue()
+                        DatabaseData.chatData.removeValue()
                         setChatListener()
                     }
                     if (isFirstCall_name) {
-                        userData.setValue(mMyName)
+                        DatabaseData.userData.setValue(mMyName)
                         isFirstCall_name = false
                     }
                 }
@@ -386,7 +378,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        firstOrderData.addValueEventListener(object : ValueEventListener {
+        DatabaseData.firstOrderData.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val value = snapshot.value as HashMap<String, Any>
 
@@ -397,7 +389,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     isIWhite = (order as Boolean)
                     if (isFirstCall_order) {
                         isFirstCall_order = false
-                        firstOrderData.setValue(Pair(mMyName, !order))
+                        DatabaseData.firstOrderData.setValue(Pair(mMyName, !order))
                     }
                     rotate()
                 }
@@ -407,7 +399,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        orderData.addValueEventListener(object : ValueEventListener {
+        DatabaseData.orderData.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 turnCount = snapshot.value as Long
                 turnManager()
@@ -417,7 +409,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
 
-        checkData.addValueEventListener(object : ValueEventListener {
+        DatabaseData.checkData.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.value != null) {
                     if (isFirstCall_check) {
@@ -433,8 +425,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                 "check" -> {
                                     isCheck = true
                                     val checkView =
-                                        View.inflate(this@MainActivity, R.layout.check_dialog, null)
-                                    val builder = AlertDialog.Builder(this@MainActivity)
+                                        View.inflate(
+                                            this@TwoDeviceGameActivity,
+                                            R.layout.check_dialog,
+                                            null
+                                        )
+                                    val builder = AlertDialog.Builder(this@TwoDeviceGameActivity)
                                     builder.setView(checkView)
                                     val dialog = builder.create()
                                     dialog.show()
@@ -448,11 +444,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                 "checkmate" -> {
                                     val checkMateView =
                                         View.inflate(
-                                            this@MainActivity,
+                                            this@TwoDeviceGameActivity,
                                             R.layout.checkmate_dialog,
                                             null
                                         )
-                                    val builder = AlertDialog.Builder(this@MainActivity)
+                                    val builder = AlertDialog.Builder(this@TwoDeviceGameActivity)
                                     builder.setView(checkMateView)
                                     val dialog = builder.create()
                                     dialog.show()
@@ -466,11 +462,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                                 "stalemate" -> {
                                     val staleMateView =
                                         View.inflate(
-                                            this@MainActivity,
+                                            this@TwoDeviceGameActivity,
                                             R.layout.stalemate_dialog,
                                             null
                                         )
-                                    val builder = AlertDialog.Builder(this@MainActivity)
+                                    val builder = AlertDialog.Builder(this@TwoDeviceGameActivity)
                                     builder.setView(staleMateView)
                                     val dialog = builder.create()
                                     dialog.show()
@@ -792,14 +788,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bottomSheetDialog.setContentView(view)
 
         val chat = com.example.chessgame.ChatManager(
-            this@MainActivity,
+            this@TwoDeviceGameActivity,
             mMyName,
             bottomSheetDialog,
-            chatData
+            DatabaseData.chatData
         )
 
         chatButton.setOnClickListener {
             bottomSheetDialog.show()
+            chatButton.setBackgroundColor(Color.rgb(190, 190, 190))
         }
     }
 
@@ -871,7 +868,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         if (isValidTouch) {
             turnCount += 1
-            orderData.setValue(turnCount)
+            DatabaseData.orderData.setValue(turnCount)
         }
     }
 
@@ -1010,7 +1007,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun push() {
-        boardData.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
+        DatabaseData.boardData.setValue(ExchangeArrayAndList.arrayToList(boardPosition))
     }
 
     private fun turnManager() {

@@ -2,21 +2,39 @@ package com.example.chessgame.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.chessgame.ProfileVO
 import com.example.chessgame.R
+import com.example.chessgame.shareddata.DatabaseData
 import kotlinx.android.synthetic.main.activity_enter_name.*
+import java.io.IOException
 
 class EnterNameActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter_name)
 
-        btnOK.setOnClickListener{
-            val name=edtName.text.toString()
-            val intent= Intent(this, MainActivity::class.java)
-            intent.putExtra("name", name)
-            startActivity(intent)
-            finish()
+        btuOk.setOnClickListener {
+            if (edtName.text == null) {
+                Toast.makeText(this@EnterNameActivity, "이름을 입력해 주세요", Toast.LENGTH_SHORT).show()
+            } else {
+                val name = edtName.text.toString()
+                DatabaseData.userProfiles.push().setValue(ProfileVO(name))
+                try {
+                    val fos = openFileOutput("name", MODE_PRIVATE)
+                    fos.write(name.toByteArray())
+                    fos.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                val intent = Intent(this@EnterNameActivity, TwoDeviceGameActivity::class.java)
+                intent.putExtra("name", name)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 }

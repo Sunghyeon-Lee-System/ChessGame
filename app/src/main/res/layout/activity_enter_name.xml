@@ -4,24 +4,29 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="35dp"
+        android:textStyle="bold"
         android:gravity="center"
-        android:text="이름을 입력하세요\nPlease enter your name"
-        android:textSize="30dp"
-        android:layout_marginBottom="40dp" />
+        android:text="이름을 설정해 주세요.\n최대 12자로 제한됩니다." />
+
     <EditText
         android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginBottom="40dp"
-        android:singleLine="true" />
+        android:maxLength="12"
+        android:singleLine="true"
+        android:layout_marginTop="30dp" />
+
     <Button
-        android:id="@+id/btnOK"
+        android:id="@+id/btuOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OK"
-        android:textSize="30dp" />
+        android:layout_marginTop="30dp"
+        android:textSize="30dp"
+        android:text="확인" />
 </LinearLayout>
