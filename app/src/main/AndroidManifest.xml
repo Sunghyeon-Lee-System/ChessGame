@@ -12,6 +12,7 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChessGame">
+        <activity android:name=".activities.MainActivity"></activity>
         <activity android:name=".activities.LogoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

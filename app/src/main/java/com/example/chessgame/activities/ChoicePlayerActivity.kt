@@ -2,14 +2,17 @@ package com.example.chessgame.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.R
-import kotlinx.android.synthetic.main.activity_choice_player.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
 class ChoicePlayerActivity : AppCompatActivity() {
+    private val btn_1 = findViewById<Button>(R.id.btn_1)
+    private val btn_2 = findViewById<Button>(R.id.btn_2)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choice_player)

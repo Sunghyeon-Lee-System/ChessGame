@@ -8,6 +8,8 @@ import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -20,19 +22,150 @@ import com.example.chessgame.shareddata.MovementOfKingAndRook2Device
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_two_device_game.*
-import kotlinx.android.synthetic.main.check_dialog.view.*
-import kotlinx.android.synthetic.main.checkmate_dialog.view.*
-import kotlinx.android.synthetic.main.checkmate_dialog.view.checkmate_okButton
-import kotlinx.android.synthetic.main.stalemate_dialog.view.*
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 class TwoDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
+    private val board = findViewById<LinearLayout>(R.id.board)
+
+    private val p00 = findViewById<TextView>(R.id.p00)
+    private val p01 = findViewById<TextView>(R.id.p01)
+    private val p02 = findViewById<TextView>(R.id.p02)
+    private val p03 = findViewById<TextView>(R.id.p03)
+    private val p04 = findViewById<TextView>(R.id.p04)
+    private val p05 = findViewById<TextView>(R.id.p05)
+    private val p06 = findViewById<TextView>(R.id.p06)
+    private val p07 = findViewById<TextView>(R.id.p07)
+    private val p10 = findViewById<TextView>(R.id.p10)
+    private val p11 = findViewById<TextView>(R.id.p11)
+    private val p12 = findViewById<TextView>(R.id.p12)
+    private val p13 = findViewById<TextView>(R.id.p13)
+    private val p14 = findViewById<TextView>(R.id.p14)
+    private val p15 = findViewById<TextView>(R.id.p15)
+    private val p16 = findViewById<TextView>(R.id.p16)
+    private val p17 = findViewById<TextView>(R.id.p17)
+    private val p20 = findViewById<TextView>(R.id.p20)
+    private val p21 = findViewById<TextView>(R.id.p21)
+    private val p22 = findViewById<TextView>(R.id.p22)
+    private val p23 = findViewById<TextView>(R.id.p23)
+    private val p24 = findViewById<TextView>(R.id.p24)
+    private val p25 = findViewById<TextView>(R.id.p25)
+    private val p26 = findViewById<TextView>(R.id.p26)
+    private val p27 = findViewById<TextView>(R.id.p27)
+    private val p30 = findViewById<TextView>(R.id.p30)
+    private val p31 = findViewById<TextView>(R.id.p31)
+    private val p32 = findViewById<TextView>(R.id.p32)
+    private val p33 = findViewById<TextView>(R.id.p33)
+    private val p34 = findViewById<TextView>(R.id.p34)
+    private val p35 = findViewById<TextView>(R.id.p35)
+    private val p36 = findViewById<TextView>(R.id.p36)
+    private val p37 = findViewById<TextView>(R.id.p37)
+    private val p40 = findViewById<TextView>(R.id.p40)
+    private val p41 = findViewById<TextView>(R.id.p41)
+    private val p42 = findViewById<TextView>(R.id.p42)
+    private val p43 = findViewById<TextView>(R.id.p43)
+    private val p44 = findViewById<TextView>(R.id.p44)
+    private val p45 = findViewById<TextView>(R.id.p45)
+    private val p46 = findViewById<TextView>(R.id.p46)
+    private val p47 = findViewById<TextView>(R.id.p47)
+    private val p50 = findViewById<TextView>(R.id.p50)
+    private val p51 = findViewById<TextView>(R.id.p51)
+    private val p52 = findViewById<TextView>(R.id.p52)
+    private val p53 = findViewById<TextView>(R.id.p53)
+    private val p54 = findViewById<TextView>(R.id.p54)
+    private val p55 = findViewById<TextView>(R.id.p55)
+    private val p56 = findViewById<TextView>(R.id.p56)
+    private val p57 = findViewById<TextView>(R.id.p57)
+    private val p60 = findViewById<TextView>(R.id.p60)
+    private val p61 = findViewById<TextView>(R.id.p61)
+    private val p62 = findViewById<TextView>(R.id.p62)
+    private val p63 = findViewById<TextView>(R.id.p63)
+    private val p64 = findViewById<TextView>(R.id.p64)
+    private val p65 = findViewById<TextView>(R.id.p65)
+    private val p66 = findViewById<TextView>(R.id.p66)
+    private val p67 = findViewById<TextView>(R.id.p67)
+    private val p70 = findViewById<TextView>(R.id.p70)
+    private val p71 = findViewById<TextView>(R.id.p71)
+    private val p72 = findViewById<TextView>(R.id.p72)
+    private val p73 = findViewById<TextView>(R.id.p73)
+    private val p74 = findViewById<TextView>(R.id.p74)
+    private val p75 = findViewById<TextView>(R.id.p75)
+    private val p76 = findViewById<TextView>(R.id.p76)
+    private val p77 = findViewById<TextView>(R.id.p77)
+
+    private val b00 = findViewById<TextView>(R.id.b00)
+    private val b01 = findViewById<TextView>(R.id.b01)
+    private val b02 = findViewById<TextView>(R.id.b02)
+    private val b03 = findViewById<TextView>(R.id.b03)
+    private val b04 = findViewById<TextView>(R.id.b04)
+    private val b05 = findViewById<TextView>(R.id.b05)
+    private val b06 = findViewById<TextView>(R.id.b06)
+    private val b07 = findViewById<TextView>(R.id.b07)
+    private val b10 = findViewById<TextView>(R.id.b10)
+    private val b11 = findViewById<TextView>(R.id.b11)
+    private val b12 = findViewById<TextView>(R.id.b12)
+    private val b13 = findViewById<TextView>(R.id.b13)
+    private val b14 = findViewById<TextView>(R.id.b14)
+    private val b15 = findViewById<TextView>(R.id.b15)
+    private val b16 = findViewById<TextView>(R.id.b16)
+    private val b17 = findViewById<TextView>(R.id.b17)
+    private val b20 = findViewById<TextView>(R.id.b20)
+    private val b21 = findViewById<TextView>(R.id.b21)
+    private val b22 = findViewById<TextView>(R.id.b22)
+    private val b23 = findViewById<TextView>(R.id.b23)
+    private val b24 = findViewById<TextView>(R.id.b24)
+    private val b25 = findViewById<TextView>(R.id.b25)
+    private val b26 = findViewById<TextView>(R.id.b26)
+    private val b27 = findViewById<TextView>(R.id.b27)
+    private val b30 = findViewById<TextView>(R.id.b30)
+    private val b31 = findViewById<TextView>(R.id.b31)
+    private val b32 = findViewById<TextView>(R.id.b32)
+    private val b33 = findViewById<TextView>(R.id.b33)
+    private val b34 = findViewById<TextView>(R.id.b34)
+    private val b35 = findViewById<TextView>(R.id.b35)
+    private val b36 = findViewById<TextView>(R.id.b36)
+    private val b37 = findViewById<TextView>(R.id.b37)
+    private val b40 = findViewById<TextView>(R.id.b40)
+    private val b41 = findViewById<TextView>(R.id.b41)
+    private val b42 = findViewById<TextView>(R.id.b42)
+    private val b43 = findViewById<TextView>(R.id.b43)
+    private val b44 = findViewById<TextView>(R.id.b44)
+    private val b45 = findViewById<TextView>(R.id.b45)
+    private val b46 = findViewById<TextView>(R.id.b46)
+    private val b47 = findViewById<TextView>(R.id.b47)
+    private val b50 = findViewById<TextView>(R.id.b50)
+    private val b51 = findViewById<TextView>(R.id.b51)
+    private val b52 = findViewById<TextView>(R.id.b52)
+    private val b53 = findViewById<TextView>(R.id.b53)
+    private val b54 = findViewById<TextView>(R.id.b54)
+    private val b55 = findViewById<TextView>(R.id.b55)
+    private val b56 = findViewById<TextView>(R.id.b56)
+    private val b57 = findViewById<TextView>(R.id.b57)
+    private val b60 = findViewById<TextView>(R.id.b60)
+    private val b61 = findViewById<TextView>(R.id.b61)
+    private val b62 = findViewById<TextView>(R.id.b62)
+    private val b63 = findViewById<TextView>(R.id.b63)
+    private val b64 = findViewById<TextView>(R.id.b64)
+    private val b65 = findViewById<TextView>(R.id.b65)
+    private val b66 = findViewById<TextView>(R.id.b66)
+    private val b67 = findViewById<TextView>(R.id.b67)
+    private val b70 = findViewById<TextView>(R.id.b70)
+    private val b71 = findViewById<TextView>(R.id.b71)
+    private val b72 = findViewById<TextView>(R.id.b72)
+    private val b73 = findViewById<TextView>(R.id.b73)
+    private val b74 = findViewById<TextView>(R.id.b74)
+    private val b75 = findViewById<TextView>(R.id.b75)
+    private val b76 = findViewById<TextView>(R.id.b76)
+    private val b77 = findViewById<TextView>(R.id.b77)
+
+    private val blackTurn = findViewById<LinearLayout>(R.id.blackTurn)
+    private val whiteTurn = findViewById<LinearLayout>(R.id.whiteTurn)
+
+    private val myName = findViewById<TextView>(R.id.myName)
+    private val yourName = findViewById<TextView>(R.id.yourName)
+    private val chatButton = findViewById<Button>(R.id.chatButton)
+
     private lateinit var clickedTilePosition: Position
 
     private var isMyTurn = true
@@ -430,13 +563,14 @@ class TwoDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                             R.layout.check_dialog,
                                             null
                                         )
+                                    val check_okButton = findViewById<Button>(R.id.check_okButton)
                                     val builder = AlertDialog.Builder(this@TwoDeviceGameActivity)
                                     builder.setView(checkView)
                                     val dialog = builder.create()
                                     dialog.show()
                                     dialog.window?.setLayout(650, 360)
 
-                                    val okButton: TextView = checkView.check_okButton
+                                    val okButton: TextView = check_okButton
                                     okButton.setOnClickListener {
                                         dialog.dismiss()
                                     }
@@ -448,13 +582,15 @@ class TwoDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                             R.layout.checkmate_dialog,
                                             null
                                         )
+                                    val checkmate_okButton =
+                                        findViewById<Button>(R.id.checkmate_okButton)
                                     val builder = AlertDialog.Builder(this@TwoDeviceGameActivity)
                                     builder.setView(checkMateView)
                                     val dialog = builder.create()
                                     dialog.show()
                                     dialog.window?.setLayout(650, 500)
 
-                                    val okButton: TextView = checkMateView.checkmate_okButton
+                                    val okButton: TextView = checkmate_okButton
                                     okButton.setOnClickListener {
                                         dialog.dismiss()
                                     }
@@ -466,13 +602,15 @@ class TwoDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                             R.layout.stalemate_dialog,
                                             null
                                         )
+                                    val stalemate_okButton =
+                                        findViewById<Button>(R.id.stalemate_okButton)
                                     val builder = AlertDialog.Builder(this@TwoDeviceGameActivity)
                                     builder.setView(staleMateView)
                                     val dialog = builder.create()
                                     dialog.show()
                                     dialog.window?.setLayout(650, 500)
 
-                                    val okButton: TextView = staleMateView.stalemate_okButton
+                                    val okButton: TextView = stalemate_okButton
                                     okButton.setOnClickListener {
                                         dialog.dismiss()
                                     }

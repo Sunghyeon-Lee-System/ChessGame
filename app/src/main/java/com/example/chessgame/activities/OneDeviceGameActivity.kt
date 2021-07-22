@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
+import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -13,12 +15,141 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.chessgame.*
 import com.example.chessgame.pieces.*
 import com.example.chessgame.shareddata.MovementOfKingAndRook1Device
-import kotlinx.android.synthetic.main.activity_one_device_game.*
-import kotlinx.android.synthetic.main.check_dialog.view.*
-import kotlinx.android.synthetic.main.checkmate_dialog.view.*
-import kotlinx.android.synthetic.main.stalemate_dialog.view.*
 
 class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
+    private val o_p00 = findViewById<TextView>(R.id.o_p00)
+    private val o_p01 = findViewById<TextView>(R.id.o_p01)
+    private val o_p02 = findViewById<TextView>(R.id.o_p02)
+    private val o_p03 = findViewById<TextView>(R.id.o_p03)
+    private val o_p04 = findViewById<TextView>(R.id.o_p04)
+    private val o_p05 = findViewById<TextView>(R.id.o_p05)
+    private val o_p06 = findViewById<TextView>(R.id.o_p06)
+    private val o_p07 = findViewById<TextView>(R.id.o_p07)
+    private val o_p10 = findViewById<TextView>(R.id.o_p10)
+    private val o_p11 = findViewById<TextView>(R.id.o_p11)
+    private val o_p12 = findViewById<TextView>(R.id.o_p12)
+    private val o_p13 = findViewById<TextView>(R.id.o_p13)
+    private val o_p14 = findViewById<TextView>(R.id.o_p14)
+    private val o_p15 = findViewById<TextView>(R.id.o_p15)
+    private val o_p16 = findViewById<TextView>(R.id.o_p16)
+    private val o_p17 = findViewById<TextView>(R.id.o_p17)
+    private val o_p20 = findViewById<TextView>(R.id.o_p20)
+    private val o_p21 = findViewById<TextView>(R.id.o_p21)
+    private val o_p22 = findViewById<TextView>(R.id.o_p22)
+    private val o_p23 = findViewById<TextView>(R.id.o_p23)
+    private val o_p24 = findViewById<TextView>(R.id.o_p24)
+    private val o_p25 = findViewById<TextView>(R.id.o_p25)
+    private val o_p26 = findViewById<TextView>(R.id.o_p26)
+    private val o_p27 = findViewById<TextView>(R.id.o_p27)
+    private val o_p30 = findViewById<TextView>(R.id.o_p30)
+    private val o_p31 = findViewById<TextView>(R.id.o_p31)
+    private val o_p32 = findViewById<TextView>(R.id.o_p32)
+    private val o_p33 = findViewById<TextView>(R.id.o_p33)
+    private val o_p34 = findViewById<TextView>(R.id.o_p34)
+    private val o_p35 = findViewById<TextView>(R.id.o_p35)
+    private val o_p36 = findViewById<TextView>(R.id.o_p36)
+    private val o_p37 = findViewById<TextView>(R.id.o_p37)
+    private val o_p40 = findViewById<TextView>(R.id.o_p40)
+    private val o_p41 = findViewById<TextView>(R.id.o_p41)
+    private val o_p42 = findViewById<TextView>(R.id.o_p42)
+    private val o_p43 = findViewById<TextView>(R.id.o_p43)
+    private val o_p44 = findViewById<TextView>(R.id.o_p44)
+    private val o_p45 = findViewById<TextView>(R.id.o_p45)
+    private val o_p46 = findViewById<TextView>(R.id.o_p46)
+    private val o_p47 = findViewById<TextView>(R.id.o_p47)
+    private val o_p50 = findViewById<TextView>(R.id.o_p50)
+    private val o_p51 = findViewById<TextView>(R.id.o_p51)
+    private val o_p52 = findViewById<TextView>(R.id.o_p52)
+    private val o_p53 = findViewById<TextView>(R.id.o_p53)
+    private val o_p54 = findViewById<TextView>(R.id.o_p54)
+    private val o_p55 = findViewById<TextView>(R.id.o_p55)
+    private val o_p56 = findViewById<TextView>(R.id.o_p56)
+    private val o_p57 = findViewById<TextView>(R.id.o_p57)
+    private val o_p60 = findViewById<TextView>(R.id.o_p60)
+    private val o_p61 = findViewById<TextView>(R.id.o_p61)
+    private val o_p62 = findViewById<TextView>(R.id.o_p62)
+    private val o_p63 = findViewById<TextView>(R.id.o_p63)
+    private val o_p64 = findViewById<TextView>(R.id.o_p64)
+    private val o_p65 = findViewById<TextView>(R.id.o_p65)
+    private val o_p66 = findViewById<TextView>(R.id.o_p66)
+    private val o_p67 = findViewById<TextView>(R.id.o_p67)
+    private val o_p70 = findViewById<TextView>(R.id.o_p70)
+    private val o_p71 = findViewById<TextView>(R.id.o_p71)
+    private val o_p72 = findViewById<TextView>(R.id.o_p72)
+    private val o_p73 = findViewById<TextView>(R.id.o_p73)
+    private val o_p74 = findViewById<TextView>(R.id.o_p74)
+    private val o_p75 = findViewById<TextView>(R.id.o_p75)
+    private val o_p76 = findViewById<TextView>(R.id.o_p76)
+    private val o_p77 = findViewById<TextView>(R.id.o_p77)
+
+    private val o_b00 = findViewById<TextView>(R.id.o_b00)
+    private val o_b01 = findViewById<TextView>(R.id.o_b01)
+    private val o_b02 = findViewById<TextView>(R.id.o_b02)
+    private val o_b03 = findViewById<TextView>(R.id.o_b03)
+    private val o_b04 = findViewById<TextView>(R.id.o_b04)
+    private val o_b05 = findViewById<TextView>(R.id.o_b05)
+    private val o_b06 = findViewById<TextView>(R.id.o_b06)
+    private val o_b07 = findViewById<TextView>(R.id.o_b07)
+    private val o_b10 = findViewById<TextView>(R.id.o_b10)
+    private val o_b11 = findViewById<TextView>(R.id.o_b11)
+    private val o_b12 = findViewById<TextView>(R.id.o_b12)
+    private val o_b13 = findViewById<TextView>(R.id.o_b13)
+    private val o_b14 = findViewById<TextView>(R.id.o_b14)
+    private val o_b15 = findViewById<TextView>(R.id.o_b15)
+    private val o_b16 = findViewById<TextView>(R.id.o_b16)
+    private val o_b17 = findViewById<TextView>(R.id.o_b17)
+    private val o_b20 = findViewById<TextView>(R.id.o_b20)
+    private val o_b21 = findViewById<TextView>(R.id.o_b21)
+    private val o_b22 = findViewById<TextView>(R.id.o_b22)
+    private val o_b23 = findViewById<TextView>(R.id.o_b23)
+    private val o_b24 = findViewById<TextView>(R.id.o_b24)
+    private val o_b25 = findViewById<TextView>(R.id.o_b25)
+    private val o_b26 = findViewById<TextView>(R.id.o_b26)
+    private val o_b27 = findViewById<TextView>(R.id.o_b27)
+    private val o_b30 = findViewById<TextView>(R.id.o_b30)
+    private val o_b31 = findViewById<TextView>(R.id.o_b31)
+    private val o_b32 = findViewById<TextView>(R.id.o_b32)
+    private val o_b33 = findViewById<TextView>(R.id.o_b33)
+    private val o_b34 = findViewById<TextView>(R.id.o_b34)
+    private val o_b35 = findViewById<TextView>(R.id.o_b35)
+    private val o_b36 = findViewById<TextView>(R.id.o_b36)
+    private val o_b37 = findViewById<TextView>(R.id.o_b37)
+    private val o_b40 = findViewById<TextView>(R.id.o_b40)
+    private val o_b41 = findViewById<TextView>(R.id.o_b41)
+    private val o_b42 = findViewById<TextView>(R.id.o_b42)
+    private val o_b43 = findViewById<TextView>(R.id.o_b43)
+    private val o_b44 = findViewById<TextView>(R.id.o_b44)
+    private val o_b45 = findViewById<TextView>(R.id.o_b45)
+    private val o_b46 = findViewById<TextView>(R.id.o_b46)
+    private val o_b47 = findViewById<TextView>(R.id.o_b47)
+    private val o_b50 = findViewById<TextView>(R.id.o_b50)
+    private val o_b51 = findViewById<TextView>(R.id.o_b51)
+    private val o_b52 = findViewById<TextView>(R.id.o_b52)
+    private val o_b53 = findViewById<TextView>(R.id.o_b53)
+    private val o_b54 = findViewById<TextView>(R.id.o_b54)
+    private val o_b55 = findViewById<TextView>(R.id.o_b55)
+    private val o_b56 = findViewById<TextView>(R.id.o_b56)
+    private val o_b57 = findViewById<TextView>(R.id.o_b57)
+    private val o_b60 = findViewById<TextView>(R.id.o_b60)
+    private val o_b61 = findViewById<TextView>(R.id.o_b61)
+    private val o_b62 = findViewById<TextView>(R.id.o_b62)
+    private val o_b63 = findViewById<TextView>(R.id.o_b63)
+    private val o_b64 = findViewById<TextView>(R.id.o_b64)
+    private val o_b65 = findViewById<TextView>(R.id.o_b65)
+    private val o_b66 = findViewById<TextView>(R.id.o_b66)
+    private val o_b67 = findViewById<TextView>(R.id.o_b67)
+    private val o_b70 = findViewById<TextView>(R.id.o_b70)
+    private val o_b71 = findViewById<TextView>(R.id.o_b71)
+    private val o_b72 = findViewById<TextView>(R.id.o_b72)
+    private val o_b73 = findViewById<TextView>(R.id.o_b73)
+    private val o_b74 = findViewById<TextView>(R.id.o_b74)
+    private val o_b75 = findViewById<TextView>(R.id.o_b75)
+    private val o_b76 = findViewById<TextView>(R.id.o_b76)
+    private val o_b77 = findViewById<TextView>(R.id.o_b77)
+
+    private val blackTurn = findViewById<LinearLayout>(R.id.blackTurn)
+    private val whiteTurn = findViewById<LinearLayout>(R.id.whiteTurn)
+
     private lateinit var clickedTilePosition: Position
 
     private var isValidTouch = true
@@ -294,13 +425,14 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                     R.layout.checkmate_dialog,
                                     null
                                 )
+                            val checkmate_okButton = findViewById<Button>(R.id.checkmate_okButton)
                             val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                             builder.setView(checkMateView)
                             val dialog = builder.create()
                             dialog.show()
                             dialog.window?.setLayout(650, 500)
 
-                            val okButton: TextView = checkMateView.checkmate_okButton
+                            val okButton: TextView = checkmate_okButton
                             okButton.setOnClickListener {
                                 dialog.dismiss()
                             }
@@ -311,6 +443,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                     R.layout.checkmate_dialog,
                                     null
                                 )
+                            val checkmate_okButton = findViewById<Button>(R.id.checkmate_okButton)
                             checkMateView.rotation = 180F
                             val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                             builder.setView(checkMateView)
@@ -318,7 +451,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                             dialog.show()
                             dialog.window?.setLayout(650, 500)
 
-                            val okButton: TextView = checkMateView.checkmate_okButton
+                            val okButton: TextView = checkmate_okButton
                             okButton.setOnClickListener {
                                 dialog.dismiss()
                             }
@@ -331,13 +464,14 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                     R.layout.check_dialog,
                                     null
                                 )
+                            val check_okButton = findViewById<Button>(R.id.check_okButton)
                             val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                             builder.setView(checkView)
                             val dialog = builder.create()
                             dialog.show()
                             dialog.window?.setLayout(650, 360)
 
-                            val okButton: TextView = checkView.check_okButton
+                            val okButton: TextView = check_okButton
                             okButton.setOnClickListener {
                                 dialog.dismiss()
                             }
@@ -348,6 +482,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                     R.layout.check_dialog,
                                     null
                                 )
+                            val check_okButton = findViewById<Button>(R.id.check_okButton)
                             checkView.rotation = 180F
                             val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                             builder.setView(checkView)
@@ -355,7 +490,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                             dialog.show()
                             dialog.window?.setLayout(650, 360)
 
-                            val okButton: TextView = checkView.check_okButton
+                            val okButton: TextView = check_okButton
                             okButton.setOnClickListener {
                                 dialog.dismiss()
                             }
@@ -370,13 +505,14 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                     R.layout.stalemate_dialog,
                                     null
                                 )
+                            val stalemate_okButton = findViewById<Button>(R.id.stalemate_okButton)
                             val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                             builder.setView(staleMateView)
                             val dialog = builder.create()
                             dialog.show()
                             dialog.window?.setLayout(650, 500)
 
-                            val okButton: TextView = staleMateView.check_okButton
+                            val okButton: TextView = stalemate_okButton
                             okButton.setOnClickListener {
                                 dialog.dismiss()
                             }
@@ -387,6 +523,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                                     R.layout.stalemate_dialog,
                                     null
                                 )
+                            val stalemate_okButton = findViewById<Button>(R.id.stalemate_okButton)
                             staleMateView.rotation = 180F
                             val builder = AlertDialog.Builder(this@OneDeviceGameActivity)
                             builder.setView(staleMateView)
@@ -394,7 +531,7 @@ class OneDeviceGameActivity : AppCompatActivity(), View.OnClickListener {
                             dialog.show()
                             dialog.window?.setLayout(650, 500)
 
-                            val okButton: TextView = staleMateView.stalemate_okButton
+                            val okButton: TextView = stalemate_okButton
                             okButton.setOnClickListener {
                                 dialog.dismiss()
                             }
