@@ -291,7 +291,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                 val iterator2 = pPieceWhichCheckKind.iterator()
                 val pPieceWhichCheckKindStr = iterator2.next()
 
-                if (!isCheck(pPieceWhichCheckPosition.x, pPieceWhichCheckPosition.y, color)) {
+                if (!isCheck(pPieceWhichCheckPosition.x, pPieceWhichCheckPosition.y, !color)) {
                     val canMoveSet =
                         (board[x][y] as King).getCanMoveArea(kingPosition, board, !color)
                     when (pPieceWhichCheckKindStr) {
