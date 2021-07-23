@@ -13,12 +13,12 @@ import java.io.IOException
 
 class EnterNameActivity : AppCompatActivity() {
 
-    private val btnOk = findViewById<Button>(R.id.btuOk)
-    private val edtName = findViewById<EditText>(R.id.edtName)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enter_name)
+
+        val btnOk = findViewById<Button>(R.id.btuOk)
+        val edtName = findViewById<EditText>(R.id.edtName)
 
         btnOk.setOnClickListener {
             if (edtName.text == null) {

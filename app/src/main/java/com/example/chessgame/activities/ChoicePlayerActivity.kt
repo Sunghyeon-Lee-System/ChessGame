@@ -10,12 +10,13 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 class ChoicePlayerActivity : AppCompatActivity() {
-    private val btn_1 = findViewById<Button>(R.id.btn_1)
-    private val btn_2 = findViewById<Button>(R.id.btn_2)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_choice_player)
+
+        val btn_1 = findViewById<Button>(R.id.btn_1)
+        val btn_2 = findViewById<Button>(R.id.btn_2)
 
         btn_1.setOnClickListener {
             val intent = Intent(this, OneDeviceGameActivity::class.java)
