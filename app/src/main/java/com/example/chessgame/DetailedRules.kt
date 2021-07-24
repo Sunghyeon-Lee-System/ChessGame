@@ -14,30 +14,62 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         if (!MovementOfKingAndRook1Device.isWhiteKingMoved && !MovementOfKingAndRook1Device.isWhiteRightRookMoved
             && board[7][5] is Empty && board[7][6] is Empty
         ) {
-            MovementOfKingAndRook1Device.whiteKSC = true
-            MovementOfKingAndRook2Device.whiteKSC = true
-            state.add("WhiteKSC")
+            var canCastling = true
+            for (y in 4..6) {
+                if (isCheck(7, y, true)) {
+                    canCastling = false
+                }
+            }
+            if (canCastling) {
+                MovementOfKingAndRook1Device.whiteKSC = true
+                MovementOfKingAndRook2Device.whiteKSC = true
+                state.add("WhiteKSC")
+            }
         }
         if (!MovementOfKingAndRook1Device.isWhiteKingMoved && !MovementOfKingAndRook1Device.isWhiteLeftRookMoved
             && board[7][1] is Empty && board[7][2] is Empty && board[7][3] is Empty
         ) {
-            MovementOfKingAndRook1Device.whiteQSC = true
-            MovementOfKingAndRook2Device.whiteQSC = true
-            state.add("WhiteQSC")
+            var canCastling = true
+            for (y in 1..4) {
+                if (isCheck(7, y, true)) {
+                    canCastling = false
+                }
+            }
+            if (canCastling) {
+                MovementOfKingAndRook1Device.whiteQSC = true
+                MovementOfKingAndRook2Device.whiteQSC = true
+                state.add("WhiteQSC")
+            }
         }
         if (!MovementOfKingAndRook1Device.isBlackKingMoved && !MovementOfKingAndRook1Device.isBlackRightRookMoved
             && board[0][5] is Empty && board[0][6] is Empty
         ) {
-            MovementOfKingAndRook1Device.blackKSC = true
-            MovementOfKingAndRook2Device.blackKSC = true
-            state.add("BlackKSC")
+            var canCastling = true
+            for (y in 4..6) {
+                if (isCheck(0, y, true)) {
+                    canCastling = false
+                }
+            }
+            if (canCastling) {
+                MovementOfKingAndRook1Device.blackKSC = true
+                MovementOfKingAndRook2Device.blackKSC = true
+                state.add("BlackKSC")
+            }
         }
         if (!MovementOfKingAndRook1Device.isBlackKingMoved && !MovementOfKingAndRook1Device.isBlackLeftRookMoved
             && board[0][1] is Empty && board[0][2] is Empty && board[0][3] is Empty
         ) {
-            MovementOfKingAndRook1Device.blackQSC = true
-            MovementOfKingAndRook2Device.blackQSC = true
-            state.add("BlackQSC")
+            var cancastling = true
+            for (y in 1..4) {
+                if (isCheck(0, y, true)) {
+                    cancastling = false
+                }
+            }
+            if (cancastling) {
+                MovementOfKingAndRook1Device.blackQSC = true
+                MovementOfKingAndRook2Device.blackQSC = true
+                state.add("BlackQSC")
+            }
         }
 
         return state
@@ -141,9 +173,9 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         val whiteKingPos = getKingPosition(true)
         val blackKingPos = getKingPosition(false)
 
-        if(color){
+        if (color) {
             board[whiteKingPos.x][whiteKingPos.y] = Empty()
-        }else {
+        } else {
             board[blackKingPos.x][blackKingPos.y] = Empty()
         }
 
@@ -181,7 +213,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                 pPieceWhichCheckPos.add(Position(i, j))
                                 pPieceWhichCheckKind.add("Pawn")
                                 isCheck = true
-                                android.util.Log.i("ChessGame", "Pawn")
                             }
                         }
                         canEatSet.add(canPawnEatSet)
@@ -199,7 +230,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                 pPieceWhichCheckPos.add(Position(i, j))
                                 pPieceWhichCheckKind.add("Rook")
                                 isCheck = true
-                                android.util.Log.i("ChessGame", "Rook")
                             }
                         }
                     }
@@ -216,7 +246,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                 pPieceWhichCheckPos.add(Position(i, j))
                                 pPieceWhichCheckKind.add("Knight")
                                 isCheck = true
-                                android.util.Log.i("ChessGame", "Knight")
                             }
                         }
                     }
@@ -233,7 +262,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                 pPieceWhichCheckPos.add(Position(i, j))
                                 pPieceWhichCheckKind.add("Bishop")
                                 isCheck = true
-                                android.util.Log.i("ChessGame", "Bishop")
                             }
                         }
                     }
@@ -250,7 +278,6 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                 pPieceWhichCheckPos.add(Position(i, j))
                                 pPieceWhichCheckKind.add("Queen")
                                 isCheck = true
-                                android.util.Log.i("ChessGame", "Queen")
                             }
                         }
                     }
@@ -258,9 +285,9 @@ class DetailedRules(val board: Array<Array<Piece>>) {
             }
         }
 
-        if(color){
+        if (color) {
             board[whiteKingPos.x][whiteKingPos.y] = King(true)
-        }else {
+        } else {
             board[blackKingPos.x][blackKingPos.y] = King(false)
         }
 
@@ -291,7 +318,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                 val iterator2 = pPieceWhichCheckKind.iterator()
                 val pPieceWhichCheckKindStr = iterator2.next()
 
-                if (!isCheck(pPieceWhichCheckPosition.x, pPieceWhichCheckPosition.y, !color)) {
+                if (!isCheck(pPieceWhichCheckPosition.x, pPieceWhichCheckPosition.y, color)) {
                     val canMoveSet =
                         (board[x][y] as King).getCanMoveArea(kingPosition, board, !color)
                     when (pPieceWhichCheckKindStr) {
@@ -383,6 +410,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                         while (iter.hasNext()) {
                                             if (iter.next() == canBlockPos) {
                                                 canBlock = true
+                                                android.util.Log.i("ChessGame", "Pawn")
                                             }
                                         }
                                     }
@@ -397,6 +425,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                         while (iter.hasNext()) {
                                             if (iter.next() == canBlockPos) {
                                                 canBlock = true
+                                                android.util.Log.i("ChessGame", "Rook")
                                             }
                                         }
                                     }
@@ -411,6 +440,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                         while (iter.hasNext()) {
                                             if (iter.next() == canBlockPos) {
                                                 canBlock = true
+                                                android.util.Log.i("ChessGame", "Knight")
                                             }
                                         }
                                     }
@@ -425,6 +455,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                         while (iter.hasNext()) {
                                             if (iter.next() == canBlockPos) {
                                                 canBlock = true
+                                                android.util.Log.i("ChessGame", "Bishop")
                                             }
                                         }
                                     }
@@ -439,6 +470,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                         while (iter.hasNext()) {
                                             if (iter.next() == canBlockPos) {
                                                 canBlock = true
+                                                android.util.Log.i("ChessGame", "Queen")
                                             }
                                         }
                                     }
