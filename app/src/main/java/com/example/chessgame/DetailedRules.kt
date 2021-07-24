@@ -46,7 +46,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         ) {
             var canCastling = true
             for (y in 4..6) {
-                if (isCheck(0, y, true)) {
+                if (isCheck(0, y, false)) {
                     canCastling = false
                 }
             }
@@ -61,7 +61,7 @@ class DetailedRules(val board: Array<Array<Piece>>) {
         ) {
             var cancastling = true
             for (y in 1..4) {
-                if (isCheck(0, y, true)) {
+                if (isCheck(0, y, false)) {
                     cancastling = false
                 }
             }
