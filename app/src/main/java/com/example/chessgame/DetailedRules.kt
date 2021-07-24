@@ -295,45 +295,65 @@ class DetailedRules(val board: Array<Array<Piece>>) {
     }
 
     fun isCheckMate(color: Boolean): Boolean {
-        var aroundOfKingIsEmpty = false
         val kingPosition = getKingPosition(!color)
         val x = kingPosition.x
         val y = kingPosition.y
         val canBlockPositions = HashSet<Position>()
 
-        for (i in -1..1) {
-            for (j in -1..1) {
-                if (isInBoard(x + i, y + j)) {
-                    if (board[x + i][y + j] is Empty) {
-                        aroundOfKingIsEmpty = true
+        if (pPieceWhichCheckPos.size == 1) {
+            val iterator = pPieceWhichCheckPos.iterator()
+            val pPieceWhichCheckPosition = iterator.next()
+            val iterator2 = pPieceWhichCheckKind.iterator()
+            val pPieceWhichCheckKindStr = iterator2.next()
+
+            if (!isCheck(pPieceWhichCheckPosition.x, pPieceWhichCheckPosition.y, color)) {
+                val canMoveSet =
+                    (board[x][y] as King).getCanMoveArea(kingPosition, board, !color)
+                when (pPieceWhichCheckKindStr) {
+                    "Rook" -> {
+                        if (pPieceWhichCheckPosition.x == x) {
+                            for (i in y..pPieceWhichCheckPosition.y) {
+                                canBlockPositions.add(Position(x, i))
+                            }
+                        } else if (pPieceWhichCheckPosition.y == y) {
+                            for (i in x..pPieceWhichCheckPosition.x) {
+                                canBlockPositions.add(Position(i, y))
+                            }
+                        }
                     }
-                }
-            }
-        }
-
-        if (aroundOfKingIsEmpty) {
-            if (pPieceWhichCheckPos.size == 1) {
-                val iterator = pPieceWhichCheckPos.iterator()
-                val pPieceWhichCheckPosition = iterator.next()
-                val iterator2 = pPieceWhichCheckKind.iterator()
-                val pPieceWhichCheckKindStr = iterator2.next()
-
-                if (!isCheck(pPieceWhichCheckPosition.x, pPieceWhichCheckPosition.y, color)) {
-                    val canMoveSet =
-                        (board[x][y] as King).getCanMoveArea(kingPosition, board, !color)
-                    when (pPieceWhichCheckKindStr) {
-                        "Rook" -> {
-                            if (pPieceWhichCheckPosition.x == x) {
-                                for (i in y..pPieceWhichCheckPosition.y) {
-                                    canBlockPositions.add(Position(x, i))
+                    "Bishop" -> {
+                        if (pPieceWhichCheckPosition.x < x) {
+                            if (pPieceWhichCheckPosition.y < y) {
+                                for (i in 1..y - pPieceWhichCheckPosition.y) {
+                                    canBlockPositions.add(Position(x - i, y - i))
                                 }
-                            } else if (pPieceWhichCheckPosition.y == y) {
-                                for (i in x..pPieceWhichCheckPosition.x) {
-                                    canBlockPositions.add(Position(i, y))
+                            } else {
+                                for (i in 1..pPieceWhichCheckPosition.y - y) {
+                                    canBlockPositions.add(Position(x - i, y + i))
+                                }
+                            }
+                        } else {
+                            if (pPieceWhichCheckPosition.y < y) {
+                                for (i in 1..y - pPieceWhichCheckPosition.y) {
+                                    canBlockPositions.add(Position(x + i, y - i))
+                                }
+                            } else {
+                                for (i in 1..pPieceWhichCheckPosition.y - y) {
+                                    canBlockPositions.add(Position(x + i, y + i))
                                 }
                             }
                         }
-                        "Bishop" -> {
+                    }
+                    "Queen" -> {
+                        if (pPieceWhichCheckPosition.x == x) {
+                            for (i in y..pPieceWhichCheckPosition.y) {
+                                canBlockPositions.add(Position(x, i))
+                            }
+                        } else if (pPieceWhichCheckPosition.y == y) {
+                            for (i in x..pPieceWhichCheckPosition.x) {
+                                canBlockPositions.add(Position(i, y))
+                            }
+                        } else {
                             if (pPieceWhichCheckPosition.x < x) {
                                 if (pPieceWhichCheckPosition.y < y) {
                                     for (i in 1..y - pPieceWhichCheckPosition.y) {
@@ -356,132 +376,99 @@ class DetailedRules(val board: Array<Array<Piece>>) {
                                 }
                             }
                         }
-                        "Queen" -> {
-                            if (pPieceWhichCheckPosition.x == x) {
-                                for (i in y..pPieceWhichCheckPosition.y) {
-                                    canBlockPositions.add(Position(x, i))
-                                }
-                            } else if (pPieceWhichCheckPosition.y == y) {
-                                for (i in x..pPieceWhichCheckPosition.x) {
-                                    canBlockPositions.add(Position(i, y))
-                                }
-                            } else {
-                                if (pPieceWhichCheckPosition.x < x) {
-                                    if (pPieceWhichCheckPosition.y < y) {
-                                        for (i in 1..y - pPieceWhichCheckPosition.y) {
-                                            canBlockPositions.add(Position(x - i, y - i))
-                                        }
-                                    } else {
-                                        for (i in 1..pPieceWhichCheckPosition.y - y) {
-                                            canBlockPositions.add(Position(x - i, y + i))
+                    }
+                }
+
+                var canBlock = false
+
+                val canBlockIterator = canBlockPositions.iterator()
+                while (canBlockIterator.hasNext()) {
+                    val canBlockPos = canBlockIterator.next()
+                    for (i in 0..7) {
+                        for (j in 0..7) {
+                            when (board[i][j]) {
+                                is Pawn -> {
+                                    val pawnCanMovePositions =
+                                        (board[i][j] as Pawn).getCanMoveArea(
+                                            Position(i, j),
+                                            board,
+                                            !color
+                                        )
+                                    val iter = pawnCanMovePositions.iterator()
+                                    while (iter.hasNext()) {
+                                        if (iter.next() == canBlockPos) {
+                                            canBlock = true
+                                            android.util.Log.i("ChessGame", "Pawn")
                                         }
                                     }
-                                } else {
-                                    if (pPieceWhichCheckPosition.y < y) {
-                                        for (i in 1..y - pPieceWhichCheckPosition.y) {
-                                            canBlockPositions.add(Position(x + i, y - i))
+                                }
+                                is Rook -> {
+                                    val rookCanMovePositions =
+                                        (board[i][j] as Rook).getCanMoveArea(
+                                            Position(i, j),
+                                            board,
+                                            !color
+                                        )
+                                    val iter = rookCanMovePositions.iterator()
+                                    while (iter.hasNext()) {
+                                        if (iter.next() == canBlockPos) {
+                                            canBlock = true
+                                            android.util.Log.i("ChessGame", "Rook")
                                         }
-                                    } else {
-                                        for (i in 1..pPieceWhichCheckPosition.y - y) {
-                                            canBlockPositions.add(Position(x + i, y + i))
+                                    }
+                                }
+                                is Knight -> {
+                                    val knightCanMovePositions =
+                                        (board[i][j] as Knight).getCanMoveArea(
+                                            Position(i, j),
+                                            board,
+                                            !color
+                                        )
+                                    val iter = knightCanMovePositions.iterator()
+                                    while (iter.hasNext()) {
+                                        if (iter.next() == canBlockPos) {
+                                            canBlock = true
+                                            android.util.Log.i("ChessGame", "Knight")
+                                        }
+                                    }
+                                }
+                                is Bishop -> {
+                                    val bishopCanMovePositions =
+                                        (board[i][j] as Bishop).getCanMoveArea(
+                                            Position(i, j),
+                                            board,
+                                            !color
+                                        )
+                                    val iter = bishopCanMovePositions.iterator()
+                                    while (iter.hasNext()) {
+                                        if (iter.next() == canBlockPos) {
+                                            canBlock = true
+                                            android.util.Log.i("ChessGame", "Bishop")
+                                        }
+                                    }
+                                }
+                                is Queen -> {
+                                    val queenCanMovePositions =
+                                        (board[i][j] as Queen).getCanMoveArea(
+                                            Position(i, j),
+                                            board,
+                                            !color
+                                        )
+                                    val iter = queenCanMovePositions.iterator()
+                                    while (iter.hasNext()) {
+                                        if (iter.next() == canBlockPos) {
+                                            canBlock = true
+                                            android.util.Log.i("ChessGame", "Queen")
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                }
 
-                    var canBlock = false
-
-                    val canBlockIterator = canBlockPositions.iterator()
-                    while (canBlockIterator.hasNext()) {
-                        val canBlockPos = canBlockIterator.next()
-                        for (i in 0..7) {
-                            for (j in 0..7) {
-                                when (board[i][j]) {
-                                    is Pawn -> {
-                                        val pawnCanMovePositions =
-                                            (board[i][j] as Pawn).getCanMoveArea(
-                                                Position(i, j),
-                                                board,
-                                                !color
-                                            )
-                                        val iter = pawnCanMovePositions.iterator()
-                                        while (iter.hasNext()) {
-                                            if (iter.next() == canBlockPos) {
-                                                canBlock = true
-                                                android.util.Log.i("ChessGame", "Pawn")
-                                            }
-                                        }
-                                    }
-                                    is Rook -> {
-                                        val rookCanMovePositions =
-                                            (board[i][j] as Rook).getCanMoveArea(
-                                                Position(i, j),
-                                                board,
-                                                !color
-                                            )
-                                        val iter = rookCanMovePositions.iterator()
-                                        while (iter.hasNext()) {
-                                            if (iter.next() == canBlockPos) {
-                                                canBlock = true
-                                                android.util.Log.i("ChessGame", "Rook")
-                                            }
-                                        }
-                                    }
-                                    is Knight -> {
-                                        val knightCanMovePositions =
-                                            (board[i][j] as Knight).getCanMoveArea(
-                                                Position(i, j),
-                                                board,
-                                                !color
-                                            )
-                                        val iter = knightCanMovePositions.iterator()
-                                        while (iter.hasNext()) {
-                                            if (iter.next() == canBlockPos) {
-                                                canBlock = true
-                                                android.util.Log.i("ChessGame", "Knight")
-                                            }
-                                        }
-                                    }
-                                    is Bishop -> {
-                                        val bishopCanMovePositions =
-                                            (board[i][j] as Bishop).getCanMoveArea(
-                                                Position(i, j),
-                                                board,
-                                                !color
-                                            )
-                                        val iter = bishopCanMovePositions.iterator()
-                                        while (iter.hasNext()) {
-                                            if (iter.next() == canBlockPos) {
-                                                canBlock = true
-                                                android.util.Log.i("ChessGame", "Bishop")
-                                            }
-                                        }
-                                    }
-                                    is Queen -> {
-                                        val queenCanMovePositions =
-                                            (board[i][j] as Queen).getCanMoveArea(
-                                                Position(i, j),
-                                                board,
-                                                !color
-                                            )
-                                        val iter = queenCanMovePositions.iterator()
-                                        while (iter.hasNext()) {
-                                            if (iter.next() == canBlockPos) {
-                                                canBlock = true
-                                                android.util.Log.i("ChessGame", "Queen")
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (canMoveSet.size == 1 && !canBlock) {
-                        return true
-                    }
+                if (canMoveSet.size == 1 && !canBlock) {
+                    return true
                 }
             }
         }
